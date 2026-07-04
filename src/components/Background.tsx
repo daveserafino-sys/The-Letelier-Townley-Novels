@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { emptyChamberBase64 } from "../assets/noir_empty_chamber_base64";
 import emptyChamberImg from "../assets/images/noir_empty_chamber.jpg";
 
 interface BackgroundProps {
@@ -14,12 +15,13 @@ export default function Background({ isNoirMode = true, scrollY = 0, viewportHei
   const parallaxY = -Math.min(scrollY * 0.6, maxTranslation); 
 
   // Robust fallback chain to ensure background always displays on all hosting providers
-  const [imgSrc, setImgSrc] = useState<string>(emptyChamberImg);
+  const [imgSrc, setImgSrc] = useState<string>(emptyChamberBase64);
   const [fallbackCount, setFallbackCount] = useState<number>(0);
 
   const handleImageError = () => {
     console.warn(`Background image failed to load at current path: ${imgSrc}. Trying fallback...`);
     const fallbacks = [
+      emptyChamberImg,
       "/noir_empty_chamber.jpg",
       "/noir_interrogation.jpg",
       "/noir_interrogation_room.jpg",
