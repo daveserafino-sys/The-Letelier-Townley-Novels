@@ -211,11 +211,37 @@ app.get("/api/download/:bookId/:format", (req, res) => {
 
   // Get requested format URL
   const relativeUrl = format === "epub" ? book.epubUrl : book.pdfUrl;
+  const fileName = format === "epub" ? (book.epubFileName || "") : (book.pdfFileName || "");
   
   // Use uploaded file or fallback to sample
-  let fileToServe = relativeUrl ? path.join(process.cwd(), relativeUrl) : "";
-  if (!fileToServe || !fs.existsSync(fileToServe)) {
-    // serve sample
+  let fileToServe = "";
+  const possiblePaths: string[] = [];
+
+  if (relativeUrl) {
+    possiblePaths.push(path.join(process.cwd(), relativeUrl));
+    possiblePaths.push(path.join(process.cwd(), "public", relativeUrl));
+    possiblePaths.push(path.join(process.cwd(), "public", "uploads", path.basename(relativeUrl)));
+    possiblePaths.push(path.join(process.cwd(), "public", "books", path.basename(relativeUrl)));
+    possiblePaths.push(path.join(process.cwd(), "uploads", path.basename(relativeUrl)));
+  }
+
+  if (fileName) {
+    possiblePaths.push(path.join(process.cwd(), "uploads", fileName));
+    possiblePaths.push(path.join(process.cwd(), "public", "uploads", fileName));
+    possiblePaths.push(path.join(process.cwd(), "public", "books", fileName));
+    possiblePaths.push(path.join(process.cwd(), "public", fileName));
+  }
+
+  // Find the first path that actually exists in the file system
+  for (const p of possiblePaths) {
+    if (p && fs.existsSync(p)) {
+      fileToServe = p;
+      break;
+    }
+  }
+
+  if (!fileToServe) {
+    // serve sample fallback
     fileToServe = format === "epub" ? defaultEpubPath : defaultPdfPath;
   }
 

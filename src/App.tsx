@@ -85,7 +85,7 @@ export default function App() {
   return (
     <div 
       className={`relative w-full flex flex-col justify-start pb-2 transition-colors duration-1000 ${isNoirMode ? "text-stone-300" : "text-stone-100"}`}
-      style={{ minHeight: `${viewportHeight * 3.3}px` }}
+      style={{ minHeight: currentView === "books" ? `${viewportHeight * 3.3}px` : "100vh" }}
     >
       {/* Immersive static backdrop & grain textures */}
       <Background isNoirMode={isNoirMode} scrollY={scrollY} viewportHeight={viewportHeight} />

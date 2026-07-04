@@ -45,16 +45,16 @@ export default function PublicationsList({ publications, onBack }: PublicationsL
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: idx * 0.03 }}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6 w-full"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6 w-full min-w-0"
                   id={`pub-item-${pub.id}`}
                 >
-                  <div className="flex flex-col max-w-lg">
+                  <div className="flex flex-col w-full sm:max-w-md md:max-w-lg min-w-0">
                     {/* Story title as a hyperlink */}
                     <a
                       href={pub.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-sans italic font-light tracking-wide text-[24px] sm:text-[29px] leading-snug text-[#e2e7ec] hover:text-white transition-colors duration-300 underline underline-offset-4 decoration-stone-800/40 hover:decoration-white cursor-pointer"
+                      className="font-sans italic font-light tracking-wide text-[22px] sm:text-[29px] leading-snug text-[#e2e7ec] hover:text-white transition-colors duration-300 underline underline-offset-4 decoration-stone-800/40 hover:decoration-white cursor-pointer break-words whitespace-normal block w-full"
                       id={`pub-title-link-${pub.id}`}
                     >
                       {pub.title}
@@ -67,7 +67,7 @@ export default function PublicationsList({ publications, onBack }: PublicationsL
                   </div>
 
                   {/* PDF and EPUB download buttons, no price associated */}
-                  <div className="flex items-center gap-2 shrink-0" id={`pub-downloads-${pub.id}`}>
+                  <div className="flex items-center gap-2 sm:shrink-0 mt-1 sm:mt-0" id={`pub-downloads-${pub.id}`}>
                     <button
                       onClick={() => handleDownload(pub.id, "pdf")}
                       className="px-3 py-1 bg-black/40 hover:bg-black/70 border border-stone-800 hover:border-stone-600 text-stone-400 hover:text-stone-200 text-[10px] font-serif italic tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-1 rounded-sm shadow-sm"

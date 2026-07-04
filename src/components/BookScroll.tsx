@@ -47,7 +47,7 @@ export default function BookScroll({ books, scrollY, merchantConfig }: BookScrol
               }}
             >
               {/* Centered Title with modern italic sans-serif font and silvery/blue color */}
-              <h2 className="font-sans italic font-light tracking-wide text-[45px] sm:text-[54px] leading-tight text-[#e2e7ec] hover:text-white transition-colors duration-300 whitespace-nowrap">
+              <h2 className="font-sans italic font-light tracking-wide text-[24px] xs:text-[32px] sm:text-[48px] md:text-[54px] leading-tight text-[#e2e7ec] hover:text-white transition-colors duration-300 whitespace-nowrap text-center px-2 w-full">
                 {book.title}
               </h2>
               
