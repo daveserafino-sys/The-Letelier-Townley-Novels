@@ -16,7 +16,7 @@ export default function PublicationsList({ publications, onBack }: PublicationsL
   const reversedPublications = [...publications].reverse();
 
   return (
-    <div className="flex flex-col items-center justify-start w-full max-w-2xl mx-auto px-6 pt-[12vh] pb-32 select-none font-sans" id="publications-container">
+    <div className="flex flex-col items-center justify-start w-full max-w-2xl mx-auto px-6 pt-[12vh] pb-32 select-none font-sans pointer-events-auto" id="publications-container">
       {/* Return Button */}
       <button
         onClick={onBack}

@@ -57,7 +57,7 @@ export default function BookScroll({ books, scrollY, merchantConfig }: BookScrol
               </div>
 
               {/* PDF and EPUB Buttons centered underneath, dark glass styling for high-end feel */}
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center justify-center gap-3 pointer-events-auto">
                 <button
                   id={`download-pdf-btn-${book.id}`}
                   onClick={() => handleDownload("pdf")}

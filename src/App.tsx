@@ -218,7 +218,7 @@ export default function App() {
       </header>
 
       {/* Main Container Workspace */}
-      <main className="flex-1 flex flex-col items-center justify-start z-30 py-8">
+      <main className="flex-1 flex flex-col items-center justify-start relative z-[48] pointer-events-none py-8">
         {loading ? (
           <div className="text-center font-serif italic text-sm tracking-widest text-[#8C7A5B] animate-pulse pt-28">
             Unrolling archival scrolls...
@@ -262,7 +262,7 @@ export default function App() {
       )}
 
       {/* Minimalist Editorial Footer with Copyright & CC License */}
-      <footer className="w-full text-center pt-48 pb-4 z-30 relative select-none flex flex-col items-center justify-center gap-1.5 px-4 mt-auto" id="app-footer">
+      <footer className="w-full text-center pt-48 pb-4 z-[48] relative select-none flex flex-col items-center justify-center gap-1.5 px-4 mt-auto" id="app-footer">
         {/* Consolidated Author & Copyright/License Block */}
         <div className="flex flex-col items-center gap-0.5 max-w-lg text-center font-serif" id="footer-consolidated-block">
           {/* Author Credit */}

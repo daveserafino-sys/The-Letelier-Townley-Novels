@@ -219,7 +219,7 @@ export default function WritersStudy({ onToggleNoirMode, isNoirMode, onBack }: W
   };
 
   return (
-    <div className="flex flex-col items-center justify-start w-full max-w-4xl mx-auto px-6 py-4 select-none font-sans pb-32">
+    <div className="flex flex-col items-center justify-start w-full max-w-4xl mx-auto px-6 py-4 select-none font-sans pb-32 pointer-events-auto">
       {/* Return Button */}
       {onBack && (
         <button
