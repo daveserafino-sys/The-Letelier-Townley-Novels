@@ -1,3 +1,4 @@
+import { useState } from "react";
 import emptyChamberImg from "../assets/images/noir_empty_chamber.jpg";
 
 interface BackgroundProps {
@@ -12,6 +13,26 @@ export default function Background({ isNoirMode = true, scrollY = 0, viewportHei
   const maxTranslation = viewportHeight * 1.2;
   const parallaxY = -Math.min(scrollY * 0.6, maxTranslation); 
 
+  // Robust fallback chain to ensure background always displays on all hosting providers
+  const [imgSrc, setImgSrc] = useState<string>(emptyChamberImg);
+  const [fallbackCount, setFallbackCount] = useState<number>(0);
+
+  const handleImageError = () => {
+    console.warn(`Background image failed to load at current path: ${imgSrc}. Trying fallback...`);
+    const fallbacks = [
+      "/noir_empty_chamber.jpg",
+      "/noir_interrogation.jpg",
+      "/noir_interrogation_room.jpg",
+      "/noir_bg_1.jpg",
+      "/noir_bg_2.jpg"
+    ];
+    
+    if (fallbackCount < fallbacks.length) {
+      setImgSrc(fallbacks[fallbackCount]);
+      setFallbackCount(prev => prev + 1);
+    }
+  };
+
   return (
     <div className="fixed inset-0 w-full h-screen z-0 select-none overflow-hidden bg-[#0a0f16]">
       {/* Main atmospheric image - premium old, washed-out silver halide movie still with the light cord, lightbulb, and desk */}
@@ -23,7 +44,8 @@ export default function Background({ isNoirMode = true, scrollY = 0, viewportHei
         }}
       >
         <img 
-          src={emptyChamberImg}
+          src={imgSrc}
+          onError={handleImageError}
           alt="Noir Interrogation Scene"
           referrerPolicy="no-referrer"
           className="absolute inset-0 w-full h-full object-cover"
