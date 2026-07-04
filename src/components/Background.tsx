@@ -1,3 +1,5 @@
+import emptyChamberImg from "../assets/images/noir_empty_chamber.jpg";
+
 interface BackgroundProps {
   isNoirMode?: boolean;
   scrollY?: number;
@@ -21,7 +23,7 @@ export default function Background({ isNoirMode = true, scrollY = 0, viewportHei
         }}
       >
         <img 
-          src="/noir_empty_chamber.jpg"
+          src={emptyChamberImg}
           alt="Noir Interrogation Scene"
           referrerPolicy="no-referrer"
           className="absolute inset-0 w-full h-full object-cover"

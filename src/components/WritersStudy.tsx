@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Download, Sparkles, Volume2, VolumeX, Flame } from "lucide-react";
+import filmNoirRoomImg from "../assets/images/film_noir_room_1782657430302.jpg";
 
 interface WritersStudyProps {
   onToggleNoirMode: () => void;
@@ -269,7 +270,7 @@ export default function WritersStudy({ onToggleNoirMode, isNoirMode, onBack }: W
               <div className="absolute inset-0 w-full h-full bg-[#FAF8F5] border-2 border-stone-200 shadow-xl rounded-sm p-4 flex flex-col items-center backface-hidden justify-between">
                 <div className="w-full h-[240px] bg-stone-900 overflow-hidden relative border border-stone-200/50">
                   <img
-                    src="/src/assets/images/film_noir_room_1782657430302.jpg"
+                    src={filmNoirRoomImg}
                     alt="Writer's Study"
                     className="w-full h-full object-cover filter sepia contrast-125 saturate-50 hover:scale-105 transition-transform duration-500"
                     referrerPolicy="no-referrer"
