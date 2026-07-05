@@ -6,10 +6,11 @@ import AdminPanel from "./components/AdminPanel";
 import PublicationsList from "./components/PublicationsList";
 import WritersStudy from "./components/WritersStudy";
 import { Key, Moon, Sun, Instagram, Facebook, Mail } from "lucide-react";
+import defaultWriterData from "./data/writer-data.json";
 
 export default function App() {
-  const [writerData, setWriterData] = useState<WriterData>({ books: [], publications: [] });
-  const [loading, setLoading] = useState(true);
+  const [writerData, setWriterData] = useState<WriterData>(defaultWriterData as WriterData);
+  const [loading, setLoading] = useState(false);
   
   // UI states
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -228,9 +229,7 @@ export default function App() {
       {/* Main Container Workspace */}
       <main className="flex-1 flex flex-col items-center justify-start relative z-[50] pointer-events-none py-8">
         {loading ? (
-          <div className="text-center font-serif italic text-sm tracking-widest text-[#8C7A5B] animate-pulse pt-28">
-            Unrolling archival scrolls...
-          </div>
+          <div className="text-center font-serif italic text-sm tracking-widest text-[#8C7A5B] animate-pulse pt-28" />
         ) : currentView === "publications" ? (
           <PublicationsList 
             publications={writerData.publications} 
