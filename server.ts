@@ -3,6 +3,8 @@ import path from "path";
 import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
+import { initializeApp as initializeClientApp, getApps as getClientApps } from "firebase/app";
+import { getFirestore as getClientFirestore, doc as firestoreDoc, getDoc as firestoreGetDoc, setDoc as firestoreSetDoc } from "firebase/firestore";
 
 dotenv.config();
 
@@ -40,6 +42,113 @@ const dataFilePath = path.join(process.cwd(), "src", "data", "writer-data.json")
 // Keep an in-memory cache of the last successfully read data to prevent wiping out data on transient filesystem failures
 let cachedWriterData: any = null;
 
+// Emulation classes to wrap Firebase Web SDK with Admin-like API
+class EmulatedDocumentReference {
+  constructor(private db: any, private path: string) {}
+
+  collection(subCollectionName: string) {
+    return new EmulatedCollectionReference(this.db, `${this.path}/${subCollectionName}`);
+  }
+
+  async get() {
+    const docRef = firestoreDoc(this.db, this.path);
+    const snap = await firestoreGetDoc(docRef);
+    return {
+      exists: snap.exists(),
+      id: snap.id,
+      data: () => snap.data()
+    };
+  }
+
+  async set(data: any) {
+    const docRef = firestoreDoc(this.db, this.path);
+    await firestoreSetDoc(docRef, data);
+  }
+}
+
+class EmulatedCollectionReference {
+  constructor(private db: any, private path: string) {}
+
+  doc(docId: string) {
+    return new EmulatedDocumentReference(this.db, `${this.path}/${docId}`);
+  }
+}
+
+class EmulatedFirestore {
+  constructor(private db: any) {}
+
+  collection(collectionName: string) {
+    return new EmulatedCollectionReference(this.db, collectionName);
+  }
+}
+
+// Initialize Firestore safely using Web SDK to bypass container-level IAM service account blocks on custom databases
+let db: any = null;
+try {
+  const configPath = path.join(process.cwd(), "firebase-applet-config.json");
+  if (fs.existsSync(configPath)) {
+    const firebaseConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    let clientApp;
+    if (getClientApps().length === 0) {
+      clientApp = initializeClientApp(firebaseConfig);
+    } else {
+      clientApp = getClientApps()[0];
+    }
+    const dbId = firebaseConfig.firestoreDatabaseId || "(default)";
+    const rawDb = getClientFirestore(clientApp, dbId);
+    db = new EmulatedFirestore(rawDb);
+    console.log("Web SDK Firestore initialized successfully with DB ID:", dbId);
+  } else {
+    console.warn("No firebase-applet-config.json found. Firestore is disabled.");
+  }
+} catch (error) {
+  console.error("Failed to initialize Web SDK Firestore:", error);
+}
+
+enum OperationType {
+  CREATE = "create",
+  UPDATE = "update",
+  DELETE = "delete",
+  LIST = "list",
+  GET = "get",
+  WRITE = "write",
+}
+
+interface FirestoreErrorInfo {
+  error: string;
+  operationType: OperationType;
+  path: string | null;
+  authInfo: {
+    userId?: string | null;
+    email?: string | null;
+    emailVerified?: boolean | null;
+    isAnonymous?: boolean | null;
+    tenantId?: string | null;
+    providerInfo?: {
+      providerId?: string | null;
+      email?: string | null;
+    }[];
+  };
+}
+
+function handleFirestoreError(error: any, operationType: OperationType, path: string | null) {
+  const errInfo: FirestoreErrorInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: null,
+      email: null,
+      emailVerified: null,
+      isAnonymous: null,
+      tenantId: null,
+      providerInfo: []
+    },
+    operationType,
+    path
+  };
+  console.error("Firestore Error: ", JSON.stringify(errInfo));
+  throw new Error(JSON.stringify(errInfo));
+}
+
 function getHardcodedFallback() {
   return {
     books: [
@@ -51,29 +160,103 @@ function getHardcodedFallback() {
   };
 }
 
-// Helper to read data safely
-function readWriterData() {
+// Ensure the Firestore DB is seeded with initial data if empty
+async function ensureDbSeeded() {
+  if (!db) return;
+  try {
+    const docRef = db.collection("app_config").doc("writer_data");
+    let docSnap;
+    try {
+      docSnap = await docRef.get();
+    } catch (err: any) {
+      handleFirestoreError(err, OperationType.GET, "app_config/writer_data");
+    }
+    if (!docSnap.exists) {
+      console.log("Firestore empty. Seeding with local writer-data.json...");
+      if (fs.existsSync(dataFilePath)) {
+        const fileContent = fs.readFileSync(dataFilePath, "utf8");
+        const initialData = JSON.parse(fileContent);
+        try {
+          await docRef.set(initialData);
+        } catch (err: any) {
+          handleFirestoreError(err, OperationType.WRITE, "app_config/writer_data");
+        }
+        console.log(`Firestore successfully seeded with ${initialData.books?.length || 0} books.`);
+      } else {
+        const fallback = getHardcodedFallback();
+        try {
+          await docRef.set(fallback);
+        } catch (err: any) {
+          handleFirestoreError(err, OperationType.WRITE, "app_config/writer_data");
+        }
+        console.log("Firestore successfully seeded with hardcoded fallback.");
+      }
+    } else {
+      console.log("Firestore already seeded.");
+    }
+  } catch (error) {
+    console.error("Error checking or seeding Firestore DB:", error);
+  }
+}
+
+// Safe async reader helper
+async function readWriterDataAsync() {
+  if (db) {
+    try {
+      const docRef = db.collection("app_config").doc("writer_data");
+      let docSnap;
+      try {
+        docSnap = await docRef.get();
+      } catch (err: any) {
+        handleFirestoreError(err, OperationType.GET, "app_config/writer_data");
+      }
+      if (docSnap.exists) {
+        const data = docSnap.data();
+        cachedWriterData = data;
+        return data;
+      }
+    } catch (error) {
+      console.error("Error reading from Firestore, falling back:", error);
+    }
+  }
+
+  // Fallback to local files or cache
   try {
     if (fs.existsSync(dataFilePath)) {
       const content = fs.readFileSync(dataFilePath, "utf8");
       const parsed = JSON.parse(content);
-      cachedWriterData = parsed; // Update in-memory cache on success
+      cachedWriterData = parsed;
       return parsed;
     }
   } catch (error) {
-    console.error("Error reading writer data:", error);
+    console.error("Error reading fallback local file:", error);
   }
-  
+
   if (cachedWriterData) {
-    console.log("Using cached writer data due to filesystem or parse error.");
     return cachedWriterData;
   }
-  
+
   return getHardcodedFallback();
 }
 
-// Helper to write data safely with atomic file rename (prevents half-written file read errors)
-function writeWriterData(data: any) {
+// Safe async writer helper
+async function writeWriterDataAsync(data: any) {
+  cachedWriterData = data; // Keep in-memory cache updated
+
+  if (db) {
+    try {
+      const docRef = db.collection("app_config").doc("writer_data");
+      try {
+        await docRef.set(data);
+      } catch (err: any) {
+        handleFirestoreError(err, OperationType.WRITE, "app_config/writer_data");
+      }
+    } catch (error) {
+      console.error("Error writing to Firestore:", error);
+    }
+  }
+
+  // Backup to local file system
   try {
     const dir = path.dirname(dataFilePath);
     if (!fs.existsSync(dir)) {
@@ -81,50 +264,34 @@ function writeWriterData(data: any) {
     }
     const tempPath = dataFilePath + ".tmp";
     fs.writeFileSync(tempPath, JSON.stringify(data, null, 2), "utf8");
-    fs.renameSync(tempPath, dataFilePath); // Atomic operation
-    cachedWriterData = data; // Keep cache updated
+    fs.renameSync(tempPath, dataFilePath);
     return true;
   } catch (error) {
-    console.error("Error writing writer data:", error);
-    return false;
+    console.error("Error writing backup to local file:", error);
+    return !db; // If Firestore succeeded, we still count as success
   }
 }
 
 // API Routes
 
 // Get data
-app.get("/api/writer-data", (req, res) => {
-  let isFallback = false;
-  let data: any = null;
+app.get("/api/writer-data", async (req, res) => {
   try {
-    if (fs.existsSync(dataFilePath)) {
-      const content = fs.readFileSync(dataFilePath, "utf8");
-      data = JSON.parse(content);
-      cachedWriterData = data;
-    } else {
-      isFallback = true;
-    }
-  } catch (error) {
-    console.error("Error in GET /api/writer-data, returning cached or hardcoded state:", error);
-    isFallback = true;
-  }
-
-  if (isFallback || !data) {
-    // If reading fails, serve cached or fallback, but do NOT overwrite the database on disk
-    data = cachedWriterData || getHardcodedFallback();
-  } else {
-    // Only increment visits and write back if we successfully read the real file!
+    const data = await readWriterDataAsync();
     data.visits = (data.visits || 0) + 1;
-    writeWriterData(data);
+    await writeWriterDataAsync(data);
+    res.json(data);
+  } catch (error) {
+    console.error("Error in GET /api/writer-data:", error);
+    const fallback = cachedWriterData || getHardcodedFallback();
+    res.json(fallback);
   }
-  res.json(data);
 });
 
 // Update data (Admin Panel)
-app.post("/api/writer-data", (req, res) => {
+app.post("/api/writer-data", async (req, res) => {
   const { passcode, data } = req.body;
   
-  // Basic admin protection (can be configured in env, defaults to "writer123")
   const adminPasscode = process.env.ADMIN_PASSCODE || "writer123";
   if (passcode !== adminPasscode) {
     return res.status(401).json({ error: "Unauthorized. Invalid passcode." });
@@ -134,16 +301,16 @@ app.post("/api/writer-data", (req, res) => {
     return res.status(400).json({ error: "Invalid data payload." });
   }
 
-  const success = writeWriterData(data);
+  const success = await writeWriterDataAsync(data);
   if (success) {
-    res.json({ success: true, message: "Data updated successfully." });
+    res.json({ success: true, message: "Data updated successfully in database." });
   } else {
-    res.status(500).json({ error: "Failed to write data to file." });
+    res.status(500).json({ error: "Failed to write data." });
   }
 });
 
-// Handle Admin File Upload (Base64 PDF or EPUB)
-app.post("/api/upload-file", (req, res) => {
+// Handle Admin File Upload (Base64 PDF or EPUB with chunked Firestore backup)
+app.post("/api/upload-file", async (req, res) => {
   const { passcode, fileName, fileData } = req.body;
 
   const adminPasscode = process.env.ADMIN_PASSCODE || "writer123";
@@ -158,7 +325,6 @@ app.post("/api/upload-file", (req, res) => {
   try {
     // Sanitize filename
     const sanitizedName = fileName.replace(/[^a-zA-Z0-9.-]/g, "_");
-    const filePath = path.join(uploadsDir, sanitizedName);
     
     // Extract base64 content
     const base64Content = fileData.split(";base64,").pop();
@@ -166,9 +332,45 @@ app.post("/api/upload-file", (req, res) => {
       return res.status(400).json({ error: "Invalid base64 file data." });
     }
 
+    // 1. Write to local uploads dir for immediate serving/legacy fallback
+    const filePath = path.join(uploadsDir, sanitizedName);
     fs.writeFileSync(filePath, Buffer.from(base64Content, "base64"));
-    
-    // Return the URL pathway to download
+
+    // 2. Write chunked base64 segments to Firestore to bypass 1MB document size limit
+    if (db) {
+      console.log(`Writing file ${sanitizedName} to Firestore...`);
+      const CHUNK_SIZE = 500000; // 500,000 characters per doc (safe < 1MB limit)
+      const totalChunks = Math.ceil(base64Content.length / CHUNK_SIZE);
+
+      const fileRef = db.collection("uploaded_files").doc(sanitizedName);
+      try {
+        await fileRef.set({
+          fileName: sanitizedName,
+          contentType: fileName.endsWith(".epub") ? "application/epub+zip" : "application/pdf",
+          totalChunks,
+          uploadedAt: new Date().toISOString()
+        });
+      } catch (err: any) {
+        handleFirestoreError(err, OperationType.WRITE, `uploaded_files/${sanitizedName}`);
+      }
+
+      const chunkPromises = [];
+      for (let i = 0; i < totalChunks; i++) {
+        const chunkData = base64Content.substring(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
+        const chunkPath = `uploaded_files/${sanitizedName}/chunks/chunk_${i}`;
+        const chunkRef = fileRef.collection("chunks").doc(`chunk_${i}`);
+        chunkPromises.push(
+          chunkRef.set({
+            data: chunkData
+          }).catch((err: any) => {
+            handleFirestoreError(err, OperationType.WRITE, chunkPath);
+          })
+        );
+      }
+      await Promise.all(chunkPromises);
+      console.log(`Successfully persisted ${sanitizedName} to Firestore in ${totalChunks} chunks.`);
+    }
+
     const fileUrl = `/uploads/${sanitizedName}`;
     res.json({ success: true, url: fileUrl, fileName: sanitizedName });
   } catch (error: any) {
@@ -178,14 +380,14 @@ app.post("/api/upload-file", (req, res) => {
 });
 
 // Record PayPal Email Address
-app.post("/api/record-paypal-email", (req, res) => {
+app.post("/api/record-paypal-email", async (req, res) => {
   const { email, bookTitle, format } = req.body;
   if (!email) {
     return res.status(400).json({ error: "Email is required" });
   }
 
   try {
-    const data = readWriterData();
+    const data = await readWriterDataAsync();
     if (!data.paypalEmails) {
       data.paypalEmails = [];
     }
@@ -196,7 +398,7 @@ app.post("/api/record-paypal-email", (req, res) => {
       date: new Date().toISOString()
     });
 
-    const success = writeWriterData(data);
+    const success = await writeWriterDataAsync(data);
     if (success) {
       res.json({ success: true });
     } else {
@@ -208,10 +410,10 @@ app.post("/api/record-paypal-email", (req, res) => {
   }
 });
 
-// Dedicated secure file stream download endpoint to log or guard downloads
-app.get("/api/download/:bookId/:format", (req, res) => {
+// Dedicated secure file stream download endpoint supporting both Firestore stream & local file fallbacks
+app.get("/api/download/:bookId/:format", async (req, res) => {
   const { bookId, format } = req.params;
-  const data = readWriterData();
+  const data = await readWriterDataAsync();
   const book = data.books.find((b: any) => b.id === bookId) || data.publications.find((p: any) => p.id === bookId);
 
   if (!book) {
@@ -243,14 +445,63 @@ app.get("/api/download/:bookId/:format", (req, res) => {
   }
 
   if (found) {
-    writeWriterData(data);
+    await writeWriterDataAsync(data);
   }
 
-  // Get requested format URL
   const relativeUrl = format === "epub" ? book.epubUrl : book.pdfUrl;
   const fileName = format === "epub" ? (book.epubFileName || "") : (book.pdfFileName || "");
-  
-  // Use uploaded file or fallback to sample
+  const sanitizedName = fileName ? fileName.replace(/[^a-zA-Z0-9.-]/g, "_") : (relativeUrl ? path.basename(relativeUrl) : "");
+
+  const fileExt = format === "epub" ? "epub" : "pdf";
+  const contentType = format === "epub" ? "application/epub+zip" : "application/pdf";
+  const downloadName = `${book.title.toLowerCase().replace(/[^a-z0-9]/g, "_")}.${fileExt}`;
+
+  res.setHeader("Content-Disposition", `attachment; filename="${downloadName}"`);
+  res.setHeader("Content-Type", contentType);
+
+  // 1. Try streaming from Firestore chunked database first
+  if (db && sanitizedName) {
+    try {
+      const fileRef = db.collection("uploaded_files").doc(sanitizedName);
+      let fileSnap;
+      try {
+        fileSnap = await fileRef.get();
+      } catch (err: any) {
+        handleFirestoreError(err, OperationType.GET, `uploaded_files/${sanitizedName}`);
+      }
+      if (fileSnap.exists) {
+        const fileMetadata = fileSnap.data();
+        if (fileMetadata && fileMetadata.totalChunks) {
+          console.log(`Streaming ${sanitizedName} from Firestore (${fileMetadata.totalChunks} chunks)...`);
+          const totalChunks = fileMetadata.totalChunks;
+          
+          const chunkSnaps = await Promise.all(
+            Array.from({ length: totalChunks }, (_, i) => {
+              const chunkRef = fileRef.collection("chunks").doc(`chunk_${i}`);
+              return chunkRef.get().catch((err: any) => {
+                handleFirestoreError(err, OperationType.GET, `uploaded_files/${sanitizedName}/chunks/chunk_${i}`);
+              });
+            })
+          );
+          
+          const buffers = chunkSnaps.map((snap: any) => {
+            if (!snap.exists) {
+              throw new Error(`Missing chunk: ${snap.id}`);
+            }
+            return Buffer.from(snap.data()?.data || "", "base64");
+          });
+          
+          const fullBuffer = Buffer.concat(buffers);
+          res.send(fullBuffer);
+          return;
+        }
+      }
+    } catch (error) {
+      console.error("Firestore retrieval failed. Falling back to disk system:", error);
+    }
+  }
+
+  // 2. Fallback to local files if database fails or is bypassed
   let fileToServe = "";
   const possiblePaths: string[] = [];
 
@@ -269,7 +520,6 @@ app.get("/api/download/:bookId/:format", (req, res) => {
     possiblePaths.push(path.join(process.cwd(), "public", fileName));
   }
 
-  // Find the first path that actually exists in the file system
   for (const p of possiblePaths) {
     if (p && fs.existsSync(p)) {
       fileToServe = p;
@@ -278,23 +528,18 @@ app.get("/api/download/:bookId/:format", (req, res) => {
   }
 
   if (!fileToServe) {
-    // serve sample fallback
     fileToServe = format === "epub" ? defaultEpubPath : defaultPdfPath;
   }
 
-  const fileExt = format === "epub" ? "epub" : "pdf";
-  const contentType = format === "epub" ? "application/epub+zip" : "application/pdf";
-  const downloadName = `${book.title.toLowerCase().replace(/[^a-z0-9]/g, "_")}.${fileExt}`;
-
-  res.setHeader("Content-Disposition", `attachment; filename="${downloadName}"`);
-  res.setHeader("Content-Type", contentType);
-  
   const stream = fs.createReadStream(fileToServe);
   stream.pipe(res);
 });
 
 // Serve Vite dev server or build static assets
 async function startServer() {
+  // Ensure the database has seeded initial contents before opening connection
+  await ensureDbSeeded();
+
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },

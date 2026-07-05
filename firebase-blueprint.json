@@ -1,0 +1,36 @@
+{
+  "entities": {
+    "WriterData": {
+      "title": "Writer Data",
+      "description": "App data including books, publications, visits, and PayPal records",
+      "type": "object",
+      "properties": {
+        "visits": { "type": "integer" },
+        "books": { "type": "array" },
+        "publications": { "type": "array" },
+        "paypalEmails": { "type": "array" }
+      }
+    },
+    "UploadedFile": {
+      "title": "Uploaded File",
+      "description": "Chunked upload of PDF/EPUB books",
+      "type": "object",
+      "properties": {
+        "fileName": { "type": "string" },
+        "contentType": { "type": "string" },
+        "totalChunks": { "type": "integer" },
+        "uploadedAt": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/app_config/writer_data": {
+      "schema": "WriterData",
+      "description": "Global application configuration and state"
+    },
+    "/uploaded_files/{fileName}": {
+      "schema": "UploadedFile",
+      "description": "Metadata for uploaded book files"
+    }
+  }
+}
