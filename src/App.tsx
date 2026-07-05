@@ -94,7 +94,7 @@ export default function App() {
       {/* Interactive Easter Egg Layer for the Lightbulb, Water Glass & Pen/Paper (positioned exactly matching background elements) */}
       {currentView === "books" && (
         <div 
-          className="fixed inset-0 w-full h-screen z-[45] select-none overflow-hidden pointer-events-none"
+          className="fixed inset-0 w-full h-screen z-[49] select-none overflow-hidden pointer-events-none"
           id="interactive-easter-eggs"
         >
           <svg 
@@ -270,7 +270,7 @@ export default function App() {
       )}
 
       {/* Minimalist Editorial Footer with Copyright & CC License */}
-      <footer className="w-full text-center pt-56 pb-8 z-[50] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-auto" id="app-footer">
+      <footer className="w-full text-center pt-56 pb-8 z-[50] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-none" id="app-footer">
         {/* Page Navigation anchored to the bottom-left corner of the footer */}
         {(currentView === "books" || currentView === "publications") && (
           <div className="absolute bottom-6 left-6 z-50 pointer-events-auto" id="page-navigation-container">
@@ -304,7 +304,7 @@ export default function App() {
         </div>
 
         {/* Consolidated Author & Copyright/License Block */}
-        <div className="flex flex-col items-center gap-0.5 max-w-lg text-center font-serif" id="footer-consolidated-block">
+        <div className="flex flex-col items-center gap-0.5 max-w-lg text-center font-serif pointer-events-auto" id="footer-consolidated-block">
           {/* Author Credit */}
           <button
             onClick={() => {
