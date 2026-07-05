@@ -225,10 +225,10 @@ export default function AdminPanel({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm font-sans">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm font-sans pointer-events-auto">
       <div 
         id="admin-panel-container"
-        className="w-full max-w-4xl h-[85vh] bg-[#FAF8F5] border-2 border-double border-[#8C7A5B]/40 rounded-lg flex flex-col shadow-2xl overflow-hidden text-[#23211E]"
+        className="w-full max-w-4xl h-[85vh] bg-[#FAF8F5] border-2 border-double border-[#8C7A5B]/40 rounded-lg flex flex-col shadow-2xl overflow-hidden text-[#23211E] pointer-events-auto"
       >
         {/* Hidden File Input */}
         <input
