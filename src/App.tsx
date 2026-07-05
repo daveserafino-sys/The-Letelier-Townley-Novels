@@ -92,96 +92,106 @@ export default function App() {
       <div className="grain-overlay" />
 
       {/* Interactive Easter Egg Layer for the Lightbulb, Water Glass & Pen/Paper (positioned exactly matching background elements) */}
-      <div 
-        className="fixed inset-0 w-full h-screen z-[45] select-none overflow-hidden pointer-events-none"
-        id="interactive-easter-eggs"
-      >
-        <svg 
-          viewBox="0 0 768 1376"
-          preserveAspectRatio="xMidYMid slice"
-          className="absolute inset-0 w-full h-[220vh] transition-transform duration-300 ease-out pointer-events-none"
-          style={{ 
-            transform: `translate3d(0, ${parallaxY}px, 0)`,
-            willChange: "transform",
-          }}
+      {currentView === "books" && (
+        <div 
+          className="fixed inset-0 w-full h-screen z-[49] select-none overflow-hidden pointer-events-none"
+          id="interactive-easter-eggs"
         >
-          {/* Lightbulb - Top/Center Hotspot */}
-          <a 
-            href="https://www.thenation.com/article/archive/the-chicago-boys-in-chile-economic-freedoms-awful-toll/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="cursor-pointer pointer-events-auto"
-            style={{ pointerEvents: "auto" }}
+          <svg 
+            viewBox="0 0 768 1376"
+            preserveAspectRatio="xMidYMid slice"
+            className="absolute inset-0 w-full h-[220vh] transition-transform duration-300 ease-out pointer-events-none"
+            style={{ 
+              transform: `translate3d(0, ${parallaxY}px, 0)`,
+              willChange: "transform",
+            }}
           >
-            <circle 
-              cx="385" 
-              cy="703" 
-              r="40" 
-              fill="rgba(0,0,0,0)" 
-              stroke="none"
-              strokeWidth="0"
-              className="cursor-pointer"
-            />
-          </a>
+            {/* Lightbulb - Top/Center Hotspot */}
+            <a 
+              href="https://www.thenation.com/article/archive/the-chicago-boys-in-chile-economic-freedoms-awful-toll/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="cursor-pointer pointer-events-auto"
+              style={{ pointerEvents: "auto", cursor: "pointer" }}
+            >
+              <circle 
+                cx="385" 
+                cy="703" 
+                r="40" 
+                fill="transparent" 
+                pointerEvents="all"
+                stroke="none"
+                strokeWidth="0"
+                className="cursor-pointer"
+                style={{ cursor: "pointer" }}
+              />
+            </a>
 
-          {/* Glass of Water - Hotspot */}
-          <a 
-            href="https://www.tni.org/es/node/9159" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="cursor-pointer pointer-events-auto"
-            style={{ pointerEvents: "auto" }}
-          >
-            <circle 
-              cx="424" 
-              cy="945" 
-              r="25" 
-              fill="rgba(0,0,0,0)" 
-              stroke="none"
-              strokeWidth="0"
-              className="cursor-pointer"
-            />
-          </a>
+            {/* Glass of Water - Hotspot */}
+            <a 
+              href="https://www.tni.org/es/node/9159" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="cursor-pointer pointer-events-auto"
+              style={{ pointerEvents: "auto", cursor: "pointer" }}
+            >
+              <circle 
+                cx="424" 
+                cy="945" 
+                r="25" 
+                fill="transparent" 
+                pointerEvents="all"
+                stroke="none"
+                strokeWidth="0"
+                className="cursor-pointer"
+                style={{ cursor: "pointer" }}
+              />
+            </a>
 
-          {/* Pen and Paper - Hotspot */}
-          <a 
-            href="https://nsarchive.gwu.edu/document/19608-national-security-archive-doc-1-letelier" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="cursor-pointer pointer-events-auto"
-            style={{ pointerEvents: "auto" }}
-          >
-            <circle 
-              cx="467" 
-              cy="1014" 
-              r="25" 
-              fill="rgba(0,0,0,0)" 
-              stroke="none"
-              strokeWidth="0"
-              className="cursor-pointer"
-            />
-          </a>
+            {/* Pen and Paper - Hotspot */}
+            <a 
+              href="https://nsarchive.gwu.edu/document/19608-national-security-archive-doc-1-letelier" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="cursor-pointer pointer-events-auto"
+              style={{ pointerEvents: "auto", cursor: "pointer" }}
+            >
+              <circle 
+                cx="467" 
+                cy="1014" 
+                r="25" 
+                fill="transparent" 
+                pointerEvents="all"
+                stroke="none"
+                strokeWidth="0"
+                className="cursor-pointer"
+                style={{ cursor: "pointer" }}
+              />
+            </a>
 
-          {/* Ashtray - Hotspot */}
-          <a 
-            href="https://www.youtube.com/watch?reload=9&v=KP9Aqf-NwbI" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="cursor-pointer pointer-events-auto"
-            style={{ pointerEvents: "auto" }}
-          >
-            <circle 
-              cx="502" 
-              cy="968" 
-              r="25" 
-              fill="rgba(0,0,0,0)" 
-              stroke="none"
-              strokeWidth="0"
-              className="cursor-pointer"
-            />
-          </a>
-        </svg>
-      </div>
+            {/* Ashtray - Hotspot */}
+            <a 
+              href="https://www.youtube.com/watch?reload=9&v=KP9Aqf-NwbI" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="cursor-pointer pointer-events-auto"
+              style={{ pointerEvents: "auto", cursor: "pointer" }}
+            >
+              <circle 
+                cx="502" 
+                cy="968" 
+                r="25" 
+                fill="transparent" 
+                pointerEvents="all"
+                stroke="none"
+                strokeWidth="0"
+                className="cursor-pointer"
+                style={{ cursor: "pointer" }}
+              />
+            </a>
+          </svg>
+        </div>
+      )}
 
 
 
@@ -265,7 +275,7 @@ export default function App() {
                 }
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="text-[#c29f72]/60 hover:text-[#c29f72] transition-colors duration-300 cursor-pointer underline underline-offset-4 decoration-[#c29f72]/20 hover:decoration-[#c29f72]/80 text-sm font-medium font-serif italic"
+              className="text-[#c29f72]/60 hover:text-[#ffd29c] hover:drop-shadow-[0_0_6px_#c29f72] transition-all duration-300 cursor-pointer underline underline-offset-4 decoration-[#c29f72]/20 hover:decoration-[#ffd29c]/80 text-sm font-medium font-serif italic"
               id="page-navigation-link"
             >
               {currentView === "books" ? "Page 1 / 2" : "Page 2 / 2"}

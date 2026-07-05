@@ -196,17 +196,28 @@ async function run() {
 
     console.log(`Compiling [${pub.title}]...`);
 
-    // Generate PDF
-    await generatePDF(pub.id, pub.title, pub.outlet, pub.date, textContent, pdfPath);
-    console.log(` - Generated PDF: ${pdfPath}`);
+    const hasCustomPdf = pub.pdfUrl && !pub.pdfUrl.endsWith(`publications/${pub.id}.pdf`) && !pub.pdfUrl.endsWith(`${pub.id}.pdf`);
+    const hasCustomEpub = pub.epubUrl && !pub.epubUrl.endsWith(`publications/${pub.id}.epub`) && !pub.epubUrl.endsWith(`${pub.id}.epub`);
 
-    // Generate EPUB
-    await generateEPUB(pub.id, pub.title, pub.outlet, pub.date, textContent, epubPath);
-    console.log(` - Generated EPUB: ${epubPath}`);
+    if (!hasCustomPdf) {
+      // Generate PDF
+      await generatePDF(pub.id, pub.title, pub.outlet, pub.date, textContent, pdfPath);
+      console.log(` - Generated PDF: ${pdfPath}`);
+      // Update metadata references
+      pub.pdfUrl = `uploads/publications/${pub.id}.pdf`;
+    } else {
+      console.log(` - Keeping custom PDF for [${pub.title}]: ${pub.pdfUrl}`);
+    }
 
-    // Update metadata references
-    pub.pdfUrl = `uploads/publications/${pub.id}.pdf`;
-    pub.epubUrl = `uploads/publications/${pub.id}.epub`;
+    if (!hasCustomEpub) {
+      // Generate EPUB
+      await generateEPUB(pub.id, pub.title, pub.outlet, pub.date, textContent, epubPath);
+      console.log(` - Generated EPUB: ${epubPath}`);
+      // Update metadata references
+      pub.epubUrl = `uploads/publications/${pub.id}.epub`;
+    } else {
+      console.log(` - Keeping custom EPUB for [${pub.title}]: ${pub.epubUrl}`);
+    }
   }
 
   // Save the updated JSON back

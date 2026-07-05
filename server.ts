@@ -37,35 +37,52 @@ if (!fs.existsSync(defaultEpubPath)) {
 
 const dataFilePath = path.join(process.cwd(), "src", "data", "writer-data.json");
 
-// Helper to read data safely
-function readWriterData() {
-  try {
-    if (fs.existsSync(dataFilePath)) {
-      const content = fs.readFileSync(dataFilePath, "utf8");
-      return JSON.parse(content);
-    }
-  } catch (error) {
-    console.error("Error reading writer data:", error);
-  }
-  // Return hardcoded fallback if file does not exist or fails
+// Keep an in-memory cache of the last successfully read data to prevent wiping out data on transient filesystem failures
+let cachedWriterData: any = null;
+
+function getHardcodedFallback() {
   return {
     books: [
-      { id: "corilocho", title: "Corilocho", price: 0, pdfUrl: "", epubUrl: "" },
-      { id: "saltwater-archives", title: "Saltwater Archives", price: 1, pdfUrl: "", epubUrl: "" },
-      { id: "we-are-sympathetic", title: "We Are Sympathetic", price: 2, pdfUrl: "", epubUrl: "" }
+      { id: "corilocho", title: "Corilocho", price: 0, pdfUrl: "", epubUrl: "", pdfFileName: "corilocho-sample.pdf", epubFileName: "corilocho-sample.epub" },
+      { id: "saltwater-archives", title: "Saltwater Archives", price: 1, pdfUrl: "", epubUrl: "", pdfFileName: "saltwater-archives-full.pdf", epubFileName: "saltwater-archives-full.epub" },
+      { id: "we-are-sympathetic", title: "We Are Sympathetic", price: 2, pdfUrl: "", epubUrl: "", pdfFileName: "we-are-sympathetic-full.pdf", epubFileName: "we-are-sympathetic-full.epub" }
     ],
     publications: []
   };
 }
 
-// Helper to write data safely
+// Helper to read data safely
+function readWriterData() {
+  try {
+    if (fs.existsSync(dataFilePath)) {
+      const content = fs.readFileSync(dataFilePath, "utf8");
+      const parsed = JSON.parse(content);
+      cachedWriterData = parsed; // Update in-memory cache on success
+      return parsed;
+    }
+  } catch (error) {
+    console.error("Error reading writer data:", error);
+  }
+  
+  if (cachedWriterData) {
+    console.log("Using cached writer data due to filesystem or parse error.");
+    return cachedWriterData;
+  }
+  
+  return getHardcodedFallback();
+}
+
+// Helper to write data safely with atomic file rename (prevents half-written file read errors)
 function writeWriterData(data: any) {
   try {
     const dir = path.dirname(dataFilePath);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), "utf8");
+    const tempPath = dataFilePath + ".tmp";
+    fs.writeFileSync(tempPath, JSON.stringify(data, null, 2), "utf8");
+    fs.renameSync(tempPath, dataFilePath); // Atomic operation
+    cachedWriterData = data; // Keep cache updated
     return true;
   } catch (error) {
     console.error("Error writing writer data:", error);
@@ -77,9 +94,29 @@ function writeWriterData(data: any) {
 
 // Get data
 app.get("/api/writer-data", (req, res) => {
-  const data = readWriterData();
-  data.visits = (data.visits || 0) + 1;
-  writeWriterData(data);
+  let isFallback = false;
+  let data: any = null;
+  try {
+    if (fs.existsSync(dataFilePath)) {
+      const content = fs.readFileSync(dataFilePath, "utf8");
+      data = JSON.parse(content);
+      cachedWriterData = data;
+    } else {
+      isFallback = true;
+    }
+  } catch (error) {
+    console.error("Error in GET /api/writer-data, returning cached or hardcoded state:", error);
+    isFallback = true;
+  }
+
+  if (isFallback || !data) {
+    // If reading fails, serve cached or fallback, but do NOT overwrite the database on disk
+    data = cachedWriterData || getHardcodedFallback();
+  } else {
+    // Only increment visits and write back if we successfully read the real file!
+    data.visits = (data.visits || 0) + 1;
+    writeWriterData(data);
+  }
   res.json(data);
 });
 
