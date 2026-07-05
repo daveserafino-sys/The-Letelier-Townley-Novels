@@ -5,7 +5,7 @@ import BookScroll from "./components/BookScroll";
 import AdminPanel from "./components/AdminPanel";
 import PublicationsList from "./components/PublicationsList";
 import WritersStudy from "./components/WritersStudy";
-import { Key, Moon, Sun } from "lucide-react";
+import { Key, Moon, Sun, Instagram, Facebook, Mail } from "lucide-react";
 
 export default function App() {
   const [writerData, setWriterData] = useState<WriterData>({ books: [], publications: [] });
@@ -183,17 +183,7 @@ export default function App() {
         </svg>
       </div>
 
-      {/* Low-profile Admin trigger button in bottom-right corner */}
-      <div className="fixed bottom-0 right-0 z-50 opacity-60 hover:opacity-100 transition-opacity duration-300">
-        <button
-          id="admin-open-trigger-btn"
-          onClick={() => setIsAdminOpen(true)}
-          className={`p-2.5 rounded-tl border-t border-l bg-black/65 backdrop-blur-sm transition-all duration-300 cursor-pointer ${isNoirMode ? "border-stone-800 text-stone-400 hover:text-[#c29f72] hover:border-stone-700 hover:bg-stone-900/40" : "border-stone-700 text-stone-300 hover:text-[#c29f72] hover:border-stone-600 hover:bg-stone-800/40"}`}
-          title="Open Administration Deck"
-        >
-          <Key size={15} />
-        </button>
-      </div>
+
 
       {/* Atmospheric Minimalist Header with Parallax Scrolling */}
       <header 
@@ -262,7 +252,39 @@ export default function App() {
       )}
 
       {/* Minimalist Editorial Footer with Copyright & CC License */}
-      <footer className="w-full text-center pt-48 pb-4 z-[48] relative select-none flex flex-col items-center justify-center gap-1.5 px-4 mt-auto" id="app-footer">
+      <footer className="w-full text-center pt-56 pb-8 z-[48] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-auto" id="app-footer">
+        {/* Page Navigation anchored to the bottom-left corner of the footer */}
+        {(currentView === "books" || currentView === "publications") && (
+          <div className="absolute bottom-6 left-6 z-50 pointer-events-auto" id="page-navigation-container">
+            <button
+              onClick={() => {
+                if (currentView === "books") {
+                  setCurrentView("publications");
+                } else {
+                  setCurrentView("books");
+                }
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="text-[#c29f72]/60 hover:text-[#c29f72] transition-colors duration-300 cursor-pointer underline underline-offset-4 decoration-[#c29f72]/20 hover:decoration-[#c29f72]/80 text-sm font-medium font-serif italic"
+              id="page-navigation-link"
+            >
+              {currentView === "books" ? "Page 1 / 2" : "Page 2 / 2"}
+            </button>
+          </div>
+        )}
+
+        {/* Admin trigger button anchored to the bottom-right corner of the footer */}
+        <div className="absolute bottom-6 right-6 z-50 pointer-events-auto" id="admin-trigger-container">
+          <button
+            id="admin-open-trigger-btn"
+            onClick={() => setIsAdminOpen(true)}
+            className="text-[#c29f72]/60 hover:text-[#c29f72] transition-colors duration-300 cursor-pointer p-1"
+            title="Open Administration Deck"
+          >
+            <Key size={16} />
+          </button>
+        </div>
+
         {/* Consolidated Author & Copyright/License Block */}
         <div className="flex flex-col items-center gap-0.5 max-w-lg text-center font-serif" id="footer-consolidated-block">
           {/* Author Credit */}
@@ -276,67 +298,85 @@ export default function App() {
           >
             Novels & Stories by David Serafino
           </button>
-
-          {/* CC License Text (Three lines, centered, block text structure in an old-fashioned serif) */}
-          <p className="text-xs leading-tight text-[#c29f72]/70 italic tracking-wide" id="cc-license-text">
-            CC BY-NC-ND 4.0
-          </p>
-
-          {/* Some Rights Reserved in small caps */}
-          <div 
-            className="text-[10px] tracking-[0.15em] text-[#c29f72]/60" 
-            style={{ fontVariant: "small-caps" }}
-            id="some-rights-reserved"
-          >
-            Some Rights Reserved
-          </div>
         </div>
 
-        {/* CC Icon Group (Inline, vector, high-contrast, scalable) */}
-        <a 
-          href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex justify-center items-center hover:opacity-100 transition-opacity duration-300" 
-          id="creative-commons-logo"
-        >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 120 30" 
-            width="100" 
-            height="25" 
-            fill="none" 
-            className="text-[#c29f72] opacity-60 hover:opacity-90 transition-opacity duration-300"
+        {/* Bottom Row containing CC logo and Social Icons on the same line */}
+        <div className="flex flex-row items-center justify-center gap-8 mt-1.5 pointer-events-auto" id="footer-bottom-row">
+          {/* CC Icon Group (Inline, vector, high-contrast, scalable) */}
+          <a 
+            href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex justify-center items-center hover:opacity-100 transition-opacity duration-300" 
+            id="creative-commons-logo"
           >
-            {/* Circle 1: CC */}
-            <g transform="translate(0, 0)">
-              <circle cx="15" cy="15" r="11" stroke="currentColor" strokeWidth="1.8"/>
-              <path d="M 18,11 A 5.5,5.5 0 0,0 12,15 A 5.5,5.5 0 0,0 18,19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-              <path d="M 23,11 A 5.5,5.5 0 0,0 17,15 A 5.5,5.5 0 0,0 23,19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-            </g>
-            {/* Circle 2: BY (Attribution) */}
-            <g transform="translate(30, 0)">
-              <circle cx="15" cy="15" r="11" stroke="currentColor" strokeWidth="1.8"/>
-              <circle cx="15" cy="10" r="2.2" fill="currentColor"/>
-              <path d="M 11.5,15 C 11.5,13.5 18.5,13.5 18.5,15 L 17.5,19.5 L 16.2,19.5 L 16.2,24 L 13.8,24 L 13.8,19.5 L 12.5,19.5 Z" fill="currentColor"/>
-            </g>
-            {/* Circle 3: NC (Non-Commercial) */}
-            <g transform="translate(60, 0)">
-              <circle cx="15" cy="15" r="11" stroke="currentColor" strokeWidth="1.8"/>
-              {/* Dollar sign symbol inside */}
-              <path d="M 15,6 L 15,24" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-              <path d="M 17.5,10 C 17.5,8 12.5,8 12.5,11 C 12.5,14 17.5,15 17.5,18 C 17.5,21 12.5,21 12.5,19" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" fill="none"/>
-              {/* Circle-strikethrough diagonal line from bottom-left to top-right */}
-              <line x1="7.2" y1="22.8" x2="22.8" y2="7.2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-            </g>
-            {/* Circle 4: ND (NoDerivatives - Equals Sign) */}
-            <g transform="translate(90, 0)">
-              <circle cx="15" cy="15" r="11" stroke="currentColor" strokeWidth="1.8"/>
-              <line x1="10" y1="13" x2="20" y2="13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-              <line x1="10" y1="17" x2="20" y2="17" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-            </g>
-          </svg>
-        </a>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 120 30" 
+              width="100" 
+              height="25" 
+              fill="none" 
+              className="text-[#c29f72] opacity-60 hover:opacity-90 transition-opacity duration-300"
+            >
+              {/* Circle 1: CC */}
+              <g transform="translate(0, 0)">
+                <circle cx="15" cy="15" r="11" stroke="currentColor" strokeWidth="1.8"/>
+                <path d="M 18,11 A 5.5,5.5 0 0,0 12,15 A 5.5,5.5 0 0,0 18,19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                <path d="M 23,11 A 5.5,5.5 0 0,0 17,15 A 5.5,5.5 0 0,0 23,19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+              </g>
+              {/* Circle 2: BY (Attribution) */}
+              <g transform="translate(30, 0)">
+                <circle cx="15" cy="15" r="11" stroke="currentColor" strokeWidth="1.8"/>
+                <circle cx="15" cy="10" r="2.2" fill="currentColor"/>
+                <path d="M 11.5,15 C 11.5,13.5 18.5,13.5 18.5,15 L 17.5,19.5 L 16.2,19.5 L 16.2,24 L 13.8,24 L 13.8,19.5 L 12.5,19.5 Z" fill="currentColor"/>
+              </g>
+              {/* Circle 3: NC (Non-Commercial) */}
+              <g transform="translate(60, 0)">
+                <circle cx="15" cy="15" r="11" stroke="currentColor" strokeWidth="1.8"/>
+                {/* Dollar sign symbol inside */}
+                <path d="M 15,6 L 15,24" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+                <path d="M 17.5,10 C 17.5,8 12.5,8 12.5,11 C 12.5,14 17.5,15 17.5,18 C 17.5,21 12.5,21 12.5,19" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" fill="none"/>
+                {/* Circle-strikethrough diagonal line from bottom-left to top-right */}
+                <line x1="7.2" y1="22.8" x2="22.8" y2="7.2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+              </g>
+              {/* Circle 4: ND (NoDerivatives - Equals Sign) */}
+              <g transform="translate(90, 0)">
+                <circle cx="15" cy="15" r="11" stroke="currentColor" strokeWidth="1.8"/>
+                <line x1="10" y1="13" x2="20" y2="13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                <line x1="10" y1="17" x2="20" y2="17" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+              </g>
+            </svg>
+          </a>
+
+          {/* Social Links Group (Linked Instagram, Facebook, Gmail) */}
+          <div className="flex items-center justify-center gap-5 pointer-events-auto" id="social-links-group">
+            <a
+              href="https://www.instagram.com/daveserafino/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#c29f72]/60 hover:text-[#c29f72] transition-colors duration-300"
+              id="instagram-link"
+            >
+              <Instagram size={18} />
+            </a>
+            <a
+              href="https://www.facebook.com/dave.serafino.7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#c29f72]/60 hover:text-[#c29f72] transition-colors duration-300"
+              id="facebook-link"
+            >
+              <Facebook size={18} />
+            </a>
+            <a
+              href="mailto:daveserafino@gmail.com"
+              className="text-[#c29f72]/60 hover:text-[#c29f72] transition-colors duration-300"
+              id="gmail-link"
+            >
+              <Mail size={18} />
+            </a>
+          </div>
+        </div>
       </footer>
     </div>
   );
