@@ -94,7 +94,7 @@ export default function App() {
       {/* Interactive Easter Egg Layer for the Lightbulb, Water Glass & Pen/Paper (positioned exactly matching background elements) */}
       {currentView === "books" && (
         <div 
-          className="fixed inset-0 w-full h-screen z-[49] select-none overflow-hidden pointer-events-none"
+          className="fixed inset-0 w-full h-screen z-[45] select-none overflow-hidden pointer-events-none"
           id="interactive-easter-eggs"
         >
           <svg 
@@ -203,22 +203,30 @@ export default function App() {
           willChange: "transform"
         }}
       >
-        <a 
-          href="https://en.wikipedia.org/wiki/Assassination_of_Orlando_Letelier"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block cursor-pointer pointer-events-auto hover:opacity-80 transition-opacity"
-        >
+        {currentView === "publications" ? (
           <h1 
-            className="font-portia-serif tracking-[0.3em] text-[11px] sm:text-[13px] font-normal text-[#c29f72] uppercase transition-colors duration-1000"
+            className="font-portia-serif tracking-[0.3em] text-[11px] sm:text-[13px] font-normal text-[#c29f72] uppercase"
           >
-            {currentView === "publications" ? "SELECTED PUBLICATIONS" : "The Letelier / Townley Novels"}
+            SELECTED PUBLICATIONS
           </h1>
-        </a>
+        ) : (
+          <a 
+            href="https://en.wikipedia.org/wiki/Assassination_of_Orlando_Letelier"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block cursor-pointer pointer-events-auto hover:opacity-80 transition-opacity"
+          >
+            <h1 
+              className="font-portia-serif tracking-[0.3em] text-[11px] sm:text-[13px] font-normal text-[#c29f72] uppercase transition-colors duration-1000"
+            >
+              The Letelier / Townley Novels
+            </h1>
+          </a>
+        )}
       </header>
 
       {/* Main Container Workspace */}
-      <main className="flex-1 flex flex-col items-center justify-start relative z-[48] pointer-events-none py-8">
+      <main className="flex-1 flex flex-col items-center justify-start relative z-[50] pointer-events-none py-8">
         {loading ? (
           <div className="text-center font-serif italic text-sm tracking-widest text-[#8C7A5B] animate-pulse pt-28">
             Unrolling archival scrolls...
@@ -262,7 +270,7 @@ export default function App() {
       )}
 
       {/* Minimalist Editorial Footer with Copyright & CC License */}
-      <footer className="w-full text-center pt-56 pb-8 z-[48] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-auto" id="app-footer">
+      <footer className="w-full text-center pt-56 pb-8 z-[50] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-auto" id="app-footer">
         {/* Page Navigation anchored to the bottom-left corner of the footer */}
         {(currentView === "books" || currentView === "publications") && (
           <div className="absolute bottom-6 left-6 z-50 pointer-events-auto" id="page-navigation-container">
