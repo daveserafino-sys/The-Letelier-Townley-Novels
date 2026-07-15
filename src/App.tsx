@@ -211,18 +211,11 @@ export default function App() {
             SELECTED PUBLICATIONS
           </h1>
         ) : (
-          <a 
-            href="https://en.wikipedia.org/wiki/Assassination_of_Orlando_Letelier"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block cursor-pointer pointer-events-auto hover:opacity-80 transition-opacity"
+          <h1 
+            className="font-portia-serif tracking-[0.3em] text-[11px] sm:text-[13px] font-normal text-[#c29f72] uppercase transition-colors duration-1000"
           >
-            <h1 
-              className="font-portia-serif tracking-[0.3em] text-[11px] sm:text-[13px] font-normal text-[#c29f72] uppercase transition-colors duration-1000"
-            >
-              The Letelier / Townley Novels
-            </h1>
-          </a>
+            The Letelier / Townley Novels
+          </h1>
         )}
       </header>
 

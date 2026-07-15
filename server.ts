@@ -85,21 +85,42 @@ class EmulatedFirestore {
 // Initialize Firestore safely using Web SDK to bypass container-level IAM service account blocks on custom databases
 let db: any = null;
 try {
+  let firebaseConfig: any = null;
   const configPath = path.join(process.cwd(), "firebase-applet-config.json");
+  
   if (fs.existsSync(configPath)) {
-    const firebaseConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    firebaseConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  } else if (process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_API_KEY) {
+    firebaseConfig = {
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      apiKey: process.env.FIREBASE_API_KEY,
+      appId: process.env.FIREBASE_APP_ID,
+      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      firestoreDatabaseId: process.env.FIREBASE_FIRESTORE_DATABASE_ID
+    };
+  } else if (process.env.FIREBASE_CONFIG) {
+    try {
+      firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG);
+    } catch (e) {
+      console.error("Failed to parse FIREBASE_CONFIG environment variable:", e);
+    }
+  }
+
+  if (firebaseConfig) {
     let clientApp;
     if (getClientApps().length === 0) {
       clientApp = initializeClientApp(firebaseConfig);
     } else {
       clientApp = getClientApps()[0];
     }
-    const dbId = firebaseConfig.firestoreDatabaseId || "(default)";
+    const dbId = firebaseConfig.firestoreDatabaseId || process.env.FIREBASE_FIRESTORE_DATABASE_ID || "(default)";
     const rawDb = getClientFirestore(clientApp, dbId);
     db = new EmulatedFirestore(rawDb);
     console.log("Web SDK Firestore initialized successfully with DB ID:", dbId);
   } else {
-    console.warn("No firebase-applet-config.json found. Firestore is disabled.");
+    console.warn("No Firebase configuration found (neither firebase-applet-config.json nor environment variables). Firestore is disabled.");
   }
 } catch (error) {
   console.error("Failed to initialize Web SDK Firestore:", error);
