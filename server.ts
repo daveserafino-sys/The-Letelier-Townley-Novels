@@ -293,19 +293,109 @@ async function writeWriterDataAsync(data: any) {
   }
 }
 
+// Helper to resolve request host URL
+function getBaseUrl(req: express.Request): string {
+  const host = req.get("host") || "ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app";
+  const protocol = req.headers["x-forwarded-proto"] || req.protocol || "https";
+  return `${protocol}://${host}`;
+}
+
+// Lightweight Health Check Endpoint (ideal for Render keep-alive monitors & uptime pingers)
+app.all(["/api/health", "/healthz"], (req, res) => {
+  res.status(200).send("OK");
+});
+
+// Robots.txt Handler
+app.get("/robots.txt", (req, res) => {
+  const baseUrl = getBaseUrl(req);
+  res.type("text/plain");
+  res.send(`User-agent: *\nAllow: /\n\nSitemap: ${baseUrl}/sitemap.xml\n`);
+});
+
+// Dynamic Sitemap.xml Handler
+app.get("/sitemap.xml", async (req, res) => {
+  try {
+    const baseUrl = getBaseUrl(req);
+    const data = await readWriterDataAsync();
+    const books: any[] = data.books || [];
+    const publications: any[] = data.publications || [];
+    const now = new Date().toISOString().split("T")[0];
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+    // Root page (Novels trilogy)
+    xml += `  <url>\n    <loc>${baseUrl}/</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n`;
+    xml += `  <url>\n    <loc>${baseUrl}/novels</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
+
+    // Individual Novels
+    for (const b of books) {
+      if (b.id) {
+        xml += `  <url>\n    <loc>${baseUrl}/novels/${encodeURIComponent(b.id)}</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
+      }
+    }
+
+    // Selected Short Stories Page
+    xml += `  <url>\n    <loc>${baseUrl}/stories</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
+
+    // Individual Short Stories
+    for (const p of publications) {
+      if (p.id) {
+        xml += `  <url>\n    <loc>${baseUrl}/stories/${encodeURIComponent(p.id)}</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
+      }
+    }
+
+    xml += `</urlset>`;
+    res.type("application/xml");
+    res.send(xml);
+  } catch (error) {
+    console.error("Error generating sitemap:", error);
+    res.status(500).send("Error generating sitemap");
+  }
+});
+
 // API Routes
 
-// Get data
+// Safe sanitization helper for public storefront API
+function sanitizePublicWriterData(data: any) {
+  return {
+    books: data.books || [],
+    publications: data.publications || [],
+    visits: data.visits || 0,
+    merchantConfig: {
+      paypalEmail: data.merchantConfig?.paypalEmail || "daveserafino@gmail.com"
+    }
+  };
+}
+
+// Get public data (sanitized: banking details and customer emails are strictly withheld)
 app.get("/api/writer-data", async (req, res) => {
   try {
     const data = await readWriterDataAsync();
     data.visits = (data.visits || 0) + 1;
     await writeWriterDataAsync(data);
-    res.json(data);
+    res.json(sanitizePublicWriterData(data));
   } catch (error) {
     console.error("Error in GET /api/writer-data:", error);
     const fallback = cachedWriterData || getHardcodedFallback();
-    res.json(fallback);
+    res.json(sanitizePublicWriterData(fallback));
+  }
+});
+
+// Authenticated Admin Data Access (returns full merchant and audit dataset only after passcode verification)
+app.post("/api/admin-data", async (req, res) => {
+  const { passcode } = req.body;
+  const adminPasscode = process.env.ADMIN_PASSCODE || "writer123";
+  if (passcode !== adminPasscode) {
+    return res.status(401).json({ error: "Unauthorized. Invalid passcode." });
+  }
+
+  try {
+    const data = await readWriterDataAsync();
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching admin data:", error);
+    res.status(500).json({ error: "Failed to read database." });
   }
 });
 
@@ -400,12 +490,17 @@ app.post("/api/upload-file", async (req, res) => {
   }
 });
 
-// Record PayPal Email Address
+// Record customer purchase email safely (Strictly email and order identifiers - NO sensitive credentials)
 app.post("/api/record-paypal-email", async (req, res) => {
   const { email, bookTitle, format } = req.body;
-  if (!email) {
-    return res.status(400).json({ error: "Email is required" });
+  if (!email || typeof email !== "string" || !email.includes("@")) {
+    return res.status(400).json({ error: "A valid email address is required" });
   }
+
+  // Security check: ensure no passwords, credit card numbers, or rogue fields are accepted
+  const sanitizedEmail = email.trim().toLowerCase().slice(0, 150);
+  const sanitizedTitle = String(bookTitle || "Unknown").slice(0, 100);
+  const sanitizedFormat = format === "epub" ? "epub" : "pdf";
 
   try {
     const data = await readWriterDataAsync();
@@ -413,9 +508,9 @@ app.post("/api/record-paypal-email", async (req, res) => {
       data.paypalEmails = [];
     }
     data.paypalEmails.push({
-      email: email.trim(),
-      bookTitle: bookTitle || "Unknown",
-      format: format || "pdf",
+      email: sanitizedEmail,
+      bookTitle: sanitizedTitle,
+      format: sanitizedFormat,
       date: new Date().toISOString()
     });
 

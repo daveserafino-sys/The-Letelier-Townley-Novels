@@ -1,6 +1,6 @@
 {
   "name": "Writer Portfolio and Bookstore",
-  "description": "An elegant, atmospheric writer website for showing manuscripts and selected publications with an integrated admin panel.",
+  "description": "A trilogy of novels on the Letelier & Townley families, and selected short story publications, free to read.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

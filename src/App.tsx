@@ -16,6 +16,81 @@ export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isNoirMode, setIsNoirMode] = useState(true);
   const [currentView, setCurrentView] = useState<"books" | "publications" | "study">("books");
+  const [targetBookId, setTargetBookId] = useState<string | null>(null);
+  const [targetStoryId, setTargetStoryId] = useState<string | null>(null);
+
+  // Deep linking and URL navigation routing
+  const applyRouteFromPath = (path: string) => {
+    const trimmed = path.trim().replace(/\/$/, "");
+    if (trimmed.startsWith("/stories") || trimmed.startsWith("/publications")) {
+      setCurrentView("publications");
+      const parts = trimmed.split("/");
+      if (parts.length >= 3 && parts[2]) {
+        setTargetStoryId(decodeURIComponent(parts[2]));
+      } else {
+        setTargetStoryId(null);
+      }
+      setTargetBookId(null);
+    } else if (trimmed.startsWith("/novels")) {
+      setCurrentView("books");
+      const parts = trimmed.split("/");
+      if (parts.length >= 3 && parts[2]) {
+        setTargetBookId(decodeURIComponent(parts[2]));
+      } else {
+        setTargetBookId(null);
+      }
+      setTargetStoryId(null);
+    } else if (trimmed === "/study") {
+      setCurrentView("study");
+      setTargetBookId(null);
+      setTargetStoryId(null);
+    } else {
+      setCurrentView("books");
+      setTargetBookId(null);
+      setTargetStoryId(null);
+    }
+  };
+
+  useEffect(() => {
+    applyRouteFromPath(window.location.pathname);
+
+    const handlePopState = () => {
+      applyRouteFromPath(window.location.pathname);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const navigateTo = (view: "books" | "publications" | "study", path: string, title?: string) => {
+    if (window.location.pathname !== path) {
+      window.history.pushState(null, "", path);
+    }
+    applyRouteFromPath(path);
+    if (title) {
+      document.title = title;
+    }
+  };
+
+  // Synchronize document title with active view and targets
+  useEffect(() => {
+    if (currentView === "publications") {
+      if (targetStoryId) {
+        const pub = writerData.publications.find((p) => p.id === targetStoryId);
+        document.title = pub ? `${pub.title} – Selected Stories by David Serafino` : "Selected Short Stories – David Serafino";
+      } else {
+        document.title = "Selected Short Stories – David Serafino";
+      }
+    } else if (currentView === "study") {
+      document.title = "Writer's Study – David Serafino";
+    } else {
+      if (targetBookId) {
+        const book = writerData.books.find((b) => b.id === targetBookId);
+        document.title = book ? `${book.title} – David Serafino` : "The Letelier / Townley Novels – David Serafino";
+      } else {
+        document.title = "David Serafino – The Letelier / Townley Novels & Selected Stories";
+      }
+    }
+  }, [currentView, targetStoryId, targetBookId, writerData]);
 
   // Parallax Scroll State
   const [scrollY, setScrollY] = useState(0);
@@ -214,7 +289,16 @@ export default function App() {
           <h1 
             className="font-portia-serif tracking-[0.3em] text-[11px] sm:text-[13px] font-normal text-[#c29f72] uppercase transition-colors duration-1000"
           >
-            The Letelier / Townley Novels
+            <a
+              href="https://en.wikipedia.org/wiki/Assassination_of_Orlando_Letelier"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-inherit no-underline cursor-pointer hover:opacity-90 transition-opacity"
+              style={{ textDecoration: "none", color: "inherit" }}
+              title="The Letelier / Townley Novels"
+            >
+              The Letelier / Townley Novels
+            </a>
           </h1>
         )}
       </header>
@@ -226,8 +310,10 @@ export default function App() {
         ) : currentView === "publications" ? (
           <PublicationsList 
             publications={writerData.publications} 
+            targetStoryId={targetStoryId}
+            onSelectStory={(id) => navigateTo("publications", `/stories/${id}`)}
             onBack={() => {
-              setCurrentView("books");
+              navigateTo("books", "/", "David Serafino – The Letelier / Townley Novels & Selected Stories");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }} 
           />
@@ -236,7 +322,7 @@ export default function App() {
             isNoirMode={isNoirMode} 
             onToggleNoirMode={() => setIsNoirMode(!isNoirMode)} 
             onBack={() => {
-              setCurrentView("books");
+              navigateTo("books", "/", "David Serafino – The Letelier / Townley Novels & Selected Stories");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           />
@@ -244,6 +330,8 @@ export default function App() {
           <div className="w-full flex flex-col items-center">
             <BookScroll
               books={writerData.books}
+              targetBookId={targetBookId}
+              onSelectBook={(id) => navigateTo("books", `/novels/${id}`)}
               scrollY={scrollY}
               merchantConfig={writerData.merchantConfig}
             />
@@ -269,9 +357,9 @@ export default function App() {
             <button
               onClick={() => {
                 if (currentView === "books") {
-                  setCurrentView("publications");
+                  navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
                 } else {
-                  setCurrentView("books");
+                  navigateTo("books", "/", "David Serafino – The Letelier / Townley Novels & Selected Stories");
                 }
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
@@ -295,15 +383,14 @@ export default function App() {
           </button>
         </div>
 
-        {/* Consolidated Author & Copyright/License Block */}
-        <div className="flex flex-col items-center gap-0.5 max-w-lg text-center font-serif pointer-events-auto" id="footer-consolidated-block">
-          {/* Author Credit */}
+        {/* Author Credit */}
+        <div className="flex items-center justify-center pointer-events-auto" id="footer-author-credit-container">
           <button
             onClick={() => {
-              setCurrentView("publications");
+              navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="text-sm font-medium text-[#c29f72]/80 hover:text-[#c29f72] transition-colors duration-300 underline underline-offset-4 cursor-pointer"
+            className="text-sm font-medium font-serif text-[#c29f72] hover:text-[#ffd29c] transition-colors duration-300 underline underline-offset-4 cursor-pointer text-center"
             id="author-credit"
           >
             Novels & Stories by David Serafino

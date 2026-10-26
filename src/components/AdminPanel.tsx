@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Book, Publication, WriterData } from "../types";
 import { Save, Upload, Plus, Trash2, Key, HelpCircle, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
+import { sortPublicationsChronological } from "../utils/publications";
 
 interface AdminPanelProps {
   isOpen: boolean;
@@ -29,27 +30,44 @@ export default function AdminPanel({
 
   if (!isOpen) return null;
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (passcode.trim() === "") {
       setError("Please specify an administrative passcode.");
       return;
     }
     
-    // Attempt authentication by cloning the real data
-    const parsedData = JSON.parse(JSON.stringify(writerData));
-    if (!parsedData.paypalEmails) parsedData.paypalEmails = [];
-    if (!parsedData.merchantConfig) {
-      parsedData.merchantConfig = {
-        paypalEmail: "daveserafino@gmail.com",
-        bankName: "Citadel Credit Union",
-        bankAccountNumber: "198827",
-        bankRoutingNumber: "231380104"
-      };
+    try {
+      const response = await fetch("/api/admin-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ passcode })
+      });
+
+      if (!response.ok) {
+        setError("Invalid administrative passcode.");
+        return;
+      }
+
+      const fullData = await response.json();
+      if (!fullData.paypalEmails) fullData.paypalEmails = [];
+      if (fullData.publications) {
+        fullData.publications = sortPublicationsChronological(fullData.publications);
+      }
+      if (!fullData.merchantConfig) {
+        fullData.merchantConfig = {
+          paypalEmail: "daveserafino@gmail.com",
+          bankName: "Citadel Credit Union",
+          bankAccountNumber: "198827",
+          bankRoutingNumber: "231380104"
+        };
+      }
+      setLocalData(fullData);
+      setIsAuthenticated(true);
+      setError(null);
+    } catch (err) {
+      setError("Failed to connect to authentication server.");
     }
-    setLocalData(parsedData);
-    setIsAuthenticated(true);
-    setError(null);
   };
 
   const handleDownloadEmails = () => {
@@ -76,8 +94,15 @@ export default function AdminPanel({
     setError(null);
     setSuccessMsg(null);
     
-    const success = await onSaveData(localData, passcode);
+    // Ensure publications are sorted reverse-chronologically before saving
+    const dataToSave: WriterData = {
+      ...localData,
+      publications: sortPublicationsChronological(localData.publications)
+    };
+    
+    const success = await onSaveData(dataToSave, passcode);
     if (success) {
+      setLocalData(dataToSave);
       setSuccessMsg("System configuration saved successfully.");
       setTimeout(() => setSuccessMsg(null), 3000);
     } else {
@@ -110,11 +135,13 @@ export default function AdminPanel({
 
   // Publications Edit Helpers
   const addPublication = () => {
+    const now = new Date();
+    const currentDateStr = `${now.getMonth() + 1}/${now.getFullYear()}`;
     const newPub: Publication = {
       id: `pub-${Date.now()}`,
       title: "New Shorter Manuscript",
       outlet: "Literary Quarterly",
-      date: "Spring 2026",
+      date: currentDateStr,
       url: "",
       pdfUrl: "",
       epubUrl: ""

@@ -1,20 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Book, PaymentMerchantConfig } from "../types";
-import { Download } from "lucide-react";
+import { Download, Link as LinkIcon, Check } from "lucide-react";
 import PaymentPanel from "./PaymentPanel";
 
 interface BookScrollProps {
   books: Book[];
   scrollY: number;
   merchantConfig?: PaymentMerchantConfig;
+  targetBookId?: string | null;
+  onSelectBook?: (bookId: string) => void;
 }
 
-export default function BookScroll({ books, scrollY, merchantConfig }: BookScrollProps) {
+export default function BookScroll({ books, scrollY, merchantConfig, targetBookId, onSelectBook }: BookScrollProps) {
   const [activePayment, setActivePayment] = useState<{
     book: Book;
     format: "pdf" | "epub";
   } | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const handleCopyLink = (bookId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}/novels/${bookId}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopiedId(bookId);
+      setTimeout(() => setCopiedId(null), 2500);
+    });
+    if (onSelectBook) {
+      onSelectBook(bookId);
+    }
+  };
+
+  // Auto-scroll to targeted book on deep link
+  useEffect(() => {
+    if (targetBookId) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(`book-${targetBookId}`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [targetBookId]);
 
   return (
     <div className="w-full max-w-xl mx-auto px-6 select-none font-sans flex flex-col items-center">
@@ -37,6 +65,7 @@ export default function BookScroll({ books, scrollY, merchantConfig }: BookScrol
           return (
             <motion.div
               key={book.id}
+              id={`book-${book.id}`}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: idx * 0.12 }}
@@ -56,8 +85,29 @@ export default function BookScroll({ books, scrollY, merchantConfig }: BookScrol
                 {book.price === 0 ? "$0" : `$${book.price}`}
               </div>
 
-              {/* PDF and EPUB Buttons centered underneath, dark glass styling for high-end feel */}
-              <div className="flex items-center justify-center gap-3 pointer-events-auto">
+              {/* PDF, EPUB, and Share Link Buttons centered underneath */}
+              <div className="flex items-center justify-center gap-2.5 pointer-events-auto">
+                <button
+                  id={`book-copy-link-${book.id}`}
+                  onClick={(e) => handleCopyLink(book.id, e)}
+                  className={`px-3 py-1.5 bg-black/50 hover:bg-black/80 border ${
+                    copiedId === book.id ? "border-[#c29f72] text-[#ffd29c]" : "border-stone-700 hover:border-stone-500 text-stone-300 hover:text-stone-100"
+                  } text-xs font-serif italic tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-1 rounded-sm shadow-sm`}
+                  title="Copy direct link for this novel"
+                >
+                  {copiedId === book.id ? (
+                    <>
+                      <span className="lowercase">copied</span>
+                      <Check size={9} className="text-[#c29f72]" />
+                    </>
+                  ) : (
+                    <>
+                      <span className="lowercase">link</span>
+                      <LinkIcon size={9} className="opacity-70" />
+                    </>
+                  )}
+                </button>
+
                 <button
                   id={`download-pdf-btn-${book.id}`}
                   onClick={() => handleDownload("pdf")}
