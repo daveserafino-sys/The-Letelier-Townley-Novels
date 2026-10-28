@@ -5,6 +5,7 @@ import BookScroll from "./components/BookScroll";
 import AdminPanel from "./components/AdminPanel";
 import PublicationsList from "./components/PublicationsList";
 import WritersStudy from "./components/WritersStudy";
+import AuthorProfile from "./components/AuthorProfile";
 import { Key, Moon, Sun, Instagram, Facebook, Mail } from "lucide-react";
 import defaultWriterData from "./data/writer-data.json";
 
@@ -15,14 +16,18 @@ export default function App() {
   // UI states
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isNoirMode, setIsNoirMode] = useState(true);
-  const [currentView, setCurrentView] = useState<"books" | "publications" | "study">("books");
+  const [currentView, setCurrentView] = useState<"books" | "publications" | "author" | "study">("books");
   const [targetBookId, setTargetBookId] = useState<string | null>(null);
   const [targetStoryId, setTargetStoryId] = useState<string | null>(null);
 
   // Deep linking and URL navigation routing
   const applyRouteFromPath = (path: string) => {
     const trimmed = path.trim().replace(/\/$/, "");
-    if (trimmed.startsWith("/stories") || trimmed.startsWith("/publications")) {
+    if (trimmed.startsWith("/author") || trimmed.startsWith("/profile") || trimmed.startsWith("/about")) {
+      setCurrentView("author");
+      setTargetBookId(null);
+      setTargetStoryId(null);
+    } else if (trimmed.startsWith("/stories") || trimmed.startsWith("/publications")) {
       setCurrentView("publications");
       const parts = trimmed.split("/");
       if (parts.length >= 3 && parts[2]) {
@@ -61,7 +66,7 @@ export default function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  const navigateTo = (view: "books" | "publications" | "study", path: string, title?: string) => {
+  const navigateTo = (view: "books" | "publications" | "author" | "study", path: string, title?: string) => {
     if (window.location.pathname !== path) {
       window.history.pushState(null, "", path);
     }
@@ -76,7 +81,10 @@ export default function App() {
     let title = "Novels & Stories by David Serafino";
     let description = "The Letelier / Townley Trilogy and Selected Publications, free novel and stories to read online or download for your e-reader";
 
-    if (currentView === "publications") {
+    if (currentView === "author") {
+      title = "David Serafino – Author Profile";
+      description = "David Serafino is an American writer and translator who lives near Medellín, Colombia, and whose work has appeared in AGNI, The Common, The Los Angeles Review, and various other magazines.";
+    } else if (currentView === "publications") {
       if (targetStoryId) {
         const pub = writerData.publications.find((p) => p.id === targetStoryId);
         title = pub ? `${pub.title} – Selected Stories by David Serafino` : "Selected Short Stories – David Serafino";
@@ -316,7 +324,7 @@ export default function App() {
           >
             SELECTED PUBLICATIONS
           </h1>
-        ) : (
+        ) : currentView === "author" ? null : (
           <h1 
             className="font-portia-serif tracking-[0.3em] text-[11px] sm:text-[13px] font-normal text-[#c29f72] uppercase transition-colors duration-1000"
           >
@@ -338,6 +346,17 @@ export default function App() {
       <main className="flex-1 flex flex-col items-center justify-start relative z-[50] pointer-events-none py-8">
         {loading ? (
           <div className="text-center font-serif italic text-sm tracking-widest text-[#8C7A5B] animate-pulse pt-28" />
+        ) : currentView === "author" ? (
+          <AuthorProfile 
+            onBackToNovels={() => {
+              navigateTo("books", "/", "Novels & Stories by David Serafino");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            onBackToStories={() => {
+              navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          />
         ) : currentView === "publications" ? (
           <PublicationsList 
             publications={writerData.publications} 
@@ -383,12 +402,14 @@ export default function App() {
       {/* Minimalist Editorial Footer with Copyright & CC License */}
       <footer className="w-full text-center pt-56 pb-8 z-[50] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-none" id="app-footer">
         {/* Page Navigation anchored to the bottom-left corner of the footer */}
-        {(currentView === "books" || currentView === "publications") && (
+        {(currentView === "books" || currentView === "publications" || currentView === "author") && (
           <div className="absolute bottom-6 left-6 z-50 pointer-events-auto" id="page-navigation-container">
             <button
               onClick={() => {
                 if (currentView === "books") {
                   navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
+                } else if (currentView === "publications") {
+                  navigateTo("author", "/author", "David Serafino – Author Profile");
                 } else {
                   navigateTo("books", "/", "Novels & Stories by David Serafino");
                 }
@@ -397,7 +418,7 @@ export default function App() {
               className="text-[#c29f72]/60 hover:text-[#ffd29c] hover:drop-shadow-[0_0_6px_#c29f72] transition-all duration-300 cursor-pointer underline underline-offset-4 decoration-[#c29f72]/20 hover:decoration-[#ffd29c]/80 text-sm font-medium font-serif italic"
               id="page-navigation-link"
             >
-              {currentView === "books" ? "Page 1 / 2" : "Page 2 / 2"}
+              {currentView === "books" ? "Page 1 / 3" : currentView === "publications" ? "Page 2 / 3" : "Page 3 / 3"}
             </button>
           </div>
         )}
@@ -418,7 +439,13 @@ export default function App() {
         <div className="flex items-center justify-center pointer-events-auto" id="footer-author-credit-container">
           <button
             onClick={() => {
-              navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
+              if (currentView === "publications") {
+                navigateTo("author", "/author", "David Serafino – Author Profile");
+              } else if (currentView === "author") {
+                navigateTo("books", "/", "Novels & Stories by David Serafino");
+              } else {
+                navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
+              }
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             className="text-sm font-medium font-serif text-[#c29f72] hover:text-[#ffd29c] transition-colors duration-300 underline underline-offset-4 cursor-pointer text-center"

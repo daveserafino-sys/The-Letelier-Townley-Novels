@@ -379,6 +379,9 @@ app.all(["/sitemap.xml", "/sitemap", "/sitemap_index.xml"], async (req, res) => 
       }
     }
 
+    // Author Profile Page
+    xml += `  <url>\n    <loc>${baseUrl}/author</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
+
     // Writer's Study
     xml += `  <url>\n    <loc>${baseUrl}/study</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
 
