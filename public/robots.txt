@@ -21,5 +21,3 @@ Allow: /
 
 User-agent: bingbot
 Allow: /
-
-Sitemap: /sitemap.xml

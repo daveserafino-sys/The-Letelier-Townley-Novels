@@ -344,7 +344,7 @@ async function writeWriterDataAsync(data: any) {
 }
 
 // Dynamic Sitemap.xml Handler
-app.all("/sitemap.xml", async (req, res) => {
+app.all(["/sitemap.xml", "/sitemap", "/sitemap_index.xml"], async (req, res) => {
   try {
     const baseUrl = getBaseUrl(req);
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
