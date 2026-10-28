@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Book, PaymentMerchantConfig } from "../types";
-import { Download, Link as LinkIcon, Check } from "lucide-react";
+import { Download } from "lucide-react";
 import PaymentPanel from "./PaymentPanel";
 
 interface BookScrollProps {
@@ -12,24 +12,11 @@ interface BookScrollProps {
   onSelectBook?: (bookId: string) => void;
 }
 
-export default function BookScroll({ books, scrollY, merchantConfig, targetBookId, onSelectBook }: BookScrollProps) {
+export default function BookScroll({ books, scrollY, merchantConfig, targetBookId }: BookScrollProps) {
   const [activePayment, setActivePayment] = useState<{
     book: Book;
     format: "pdf" | "epub";
   } | null>(null);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
-
-  const handleCopyLink = (bookId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    const url = `${window.location.origin}/novels/${bookId}`;
-    navigator.clipboard.writeText(url).then(() => {
-      setCopiedId(bookId);
-      setTimeout(() => setCopiedId(null), 2500);
-    });
-    if (onSelectBook) {
-      onSelectBook(bookId);
-    }
-  };
 
   // Auto-scroll to targeted book on deep link
   useEffect(() => {
@@ -85,29 +72,8 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
                 {book.price === 0 ? "$0" : `$${book.price}`}
               </div>
 
-              {/* PDF, EPUB, and Share Link Buttons centered underneath */}
+              {/* PDF and EPUB Buttons centered underneath */}
               <div className="flex items-center justify-center gap-2.5 pointer-events-auto">
-                <button
-                  id={`book-copy-link-${book.id}`}
-                  onClick={(e) => handleCopyLink(book.id, e)}
-                  className={`px-3 py-1.5 bg-black/50 hover:bg-black/80 border ${
-                    copiedId === book.id ? "border-[#c29f72] text-[#ffd29c]" : "border-stone-700 hover:border-stone-500 text-stone-300 hover:text-stone-100"
-                  } text-xs font-serif italic tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-1 rounded-sm shadow-sm`}
-                  title="Copy direct link for this novel"
-                >
-                  {copiedId === book.id ? (
-                    <>
-                      <span className="lowercase">copied</span>
-                      <Check size={9} className="text-[#c29f72]" />
-                    </>
-                  ) : (
-                    <>
-                      <span className="lowercase">link</span>
-                      <LinkIcon size={9} className="opacity-70" />
-                    </>
-                  )}
-                </button>
-
                 <button
                   id={`download-pdf-btn-${book.id}`}
                   onClick={() => handleDownload("pdf")}

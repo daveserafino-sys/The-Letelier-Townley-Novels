@@ -3,6 +3,11 @@ export interface PaypalEmail {
   bookTitle: string;
   format: string;
   date: string;
+  amount?: number;
+  paymentMethod?: "paypal" | "card";
+  transactionId?: string;
+  beneficiaryBank?: string;
+  status?: string;
 }
 
 export interface Book {

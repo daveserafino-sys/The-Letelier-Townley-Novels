@@ -2,247 +2,267 @@
   "publications": [
     {
       "id": "pub-1793046452989",
-      "url": "https://thecommononline.org/guava-paste/",
-      "pdfFileName": "David_Serafino_-_Guava_Paste.pdf",
+      "outlet": "The Common",
       "downloads": 1,
+      "downloadsPdf": 1,
       "epubUrl": "/uploads/David_Serafino_-_Guava_Paste.epub",
       "epubFileName": "David_Serafino_-_Guava_Paste.epub",
-      "title": "Guava Paste",
-      "pdfUrl": "/uploads/David_Serafino_-_Guava_Paste.pdf",
       "date": "10/2026",
-      "outlet": "The Common",
-      "downloadsPdf": 1
+      "url": "https://thecommononline.org/guava-paste/",
+      "pdfFileName": "David_Serafino_-_Guava_Paste.pdf",
+      "pdfUrl": "/uploads/David_Serafino_-_Guava_Paste.pdf",
+      "title": "Guava Paste"
     },
     {
       "pdfUrl": "/uploads/David_Serafino_-_Sweetass.pdf",
-      "pdfFileName": "David_Serafino_-_Sweetass.pdf",
+      "epubFileName": "David_Serafino_-_Sweetass.epub",
       "epubUrl": "/uploads/David_Serafino_-_Sweetass.epub",
       "id": "pub-1788982275306",
-      "date": "9/2026",
       "url": "https://heyzine.com/flip-book/4365f8884f.html",
       "outlet": "Rabble Review",
-      "epubFileName": "David_Serafino_-_Sweetass.epub",
-      "title": "Sweetass"
+      "title": "Sweetass",
+      "pdfFileName": "David_Serafino_-_Sweetass.pdf",
+      "date": "9/2026"
     },
     {
-      "date": "2/2024",
-      "pdfUrl": "/uploads/David_Serafino_-_Trapeze_Artist.pdf",
       "id": "trapeze-artist",
+      "outlet": "Los Angeles Review",
+      "url": "https://losangelesreview.org/trapeze-artist-by-david-serafino/",
+      "pdfFileName": "David_Serafino_-_Trapeze_Artist.pdf",
+      "date": "2/2024",
+      "epubFileName": "David_Serafino_-_Trapeze_Artist.epub",
       "downloads": 4,
       "downloadsPdf": 3,
-      "pdfFileName": "David_Serafino_-_Trapeze_Artist.pdf",
-      "outlet": "Los Angeles Review",
-      "epubFileName": "David_Serafino_-_Trapeze_Artist.epub",
+      "title": "Trapeze Artist",
       "epubUrl": "/uploads/David_Serafino_-_Trapeze_Artist.epub",
-      "url": "https://losangelesreview.org/trapeze-artist-by-david-serafino/",
-      "title": "Trapeze Artist"
+      "pdfUrl": "/uploads/David_Serafino_-_Trapeze_Artist.pdf"
     },
     {
-      "url": "https://www.radonjournal.com/issue7/and3",
       "outlet": "Radon Journal",
-      "pdfUrl": "/uploads/David_Serafino_-_And3.pdf",
-      "title": "And3",
-      "pdfFileName": "David_Serafino_-_And3.pdf",
-      "date": "5/2024",
-      "epubFileName": "David_Serafino_-_And3.epub",
+      "url": "https://www.radonjournal.com/issue7/and3",
+      "epubUrl": "/uploads/David_Serafino_-_And3.epub",
       "id": "and3",
-      "epubUrl": "/uploads/David_Serafino_-_And3.epub"
+      "epubFileName": "David_Serafino_-_And3.epub",
+      "pdfUrl": "/uploads/David_Serafino_-_And3.pdf",
+      "date": "5/2024",
+      "pdfFileName": "David_Serafino_-_And3.pdf",
+      "title": "And3"
     },
     {
-      "date": "3/2025",
+      "pdfUrl": "/uploads/David_Serafino_-_Firebreak.pdf",
+      "epubFileName": "David_Serafino_-_Firebreak.epub",
       "id": "firebreak",
       "title": "Firebreak",
-      "outlet": "Dulcet",
-      "pdfFileName": "David_Serafino_-_Firebreak.pdf",
-      "epubFileName": "David_Serafino_-_Firebreak.epub",
+      "url": "https://www.dulcetlitmag.com/david-serafino",
       "epubUrl": "/uploads/David_Serafino_-_Firebreak.epub",
-      "pdfUrl": "/uploads/David_Serafino_-_Firebreak.pdf",
-      "url": "https://www.dulcetlitmag.com/david-serafino"
+      "pdfFileName": "David_Serafino_-_Firebreak.pdf",
+      "date": "3/2025",
+      "outlet": "Dulcet"
     },
     {
+      "outlet": "Muleskinner Journal",
+      "epubFileName": "David_Serafino_-_Asylum.epub",
+      "id": "asylum",
       "epubUrl": "/uploads/David_Serafino_-_Asylum.epub",
       "url": "https://www.muleskinnerjournal.com/s/Journal-Sixteen-Sabotage-FINAL-12-31-2025.pdf",
       "date": "5/2025",
-      "title": "Asylum",
-      "pdfUrl": "/uploads/David_Serafino_-_Asylum.pdf",
-      "id": "asylum",
-      "outlet": "Muleskinner Journal",
       "pdfFileName": "David_Serafino_-_Asylum.pdf",
-      "epubFileName": "David_Serafino_-_Asylum.epub"
+      "title": "Asylum",
+      "pdfUrl": "/uploads/David_Serafino_-_Asylum.pdf"
     },
     {
-      "date": "6/2025",
-      "pdfUrl": "/uploads/David_Serafino_-_Tommy_Rock.pdf",
-      "epubUrl": "/uploads/David_Serafino_-_Tommy_Rock.epub",
-      "pdfFileName": "David_Serafino_-_Tommy_Rock.pdf",
       "outlet": "Oyster River Pages",
-      "id": "tommy-rock",
-      "epubFileName": "David_Serafino_-_Tommy_Rock.epub",
       "url": "https://www.oysterriverpages.com/tommy-rock",
+      "pdfFileName": "David_Serafino_-_Tommy_Rock.pdf",
+      "pdfUrl": "/uploads/David_Serafino_-_Tommy_Rock.pdf",
+      "date": "6/2025",
+      "id": "tommy-rock",
+      "epubUrl": "/uploads/David_Serafino_-_Tommy_Rock.epub",
+      "epubFileName": "David_Serafino_-_Tommy_Rock.epub",
       "title": "Tommy Rock"
     },
     {
-      "url": "https://pagegalleryjournal.com/july/metal-man",
-      "title": "Metal Man Meets Ms. Godiva",
-      "epubUrl": "/uploads/David_Serafino_-_Metal_Man_Meets_Ms_Godiva.epub",
       "date": "7/2025",
+      "epubUrl": "/uploads/David_Serafino_-_Metal_Man_Meets_Ms_Godiva.epub",
+      "title": "Metal Man Meets Ms. Godiva",
       "epubFileName": "David_Serafino_-_Metal_Man_Meets_Ms_Godiva.epub",
       "outlet": "The Page Gallery",
-      "pdfUrl": "/uploads/David_Serafino_-_Metal_Man_Meets_Ms_Godiva.pdf",
+      "url": "https://pagegalleryjournal.com/july/metal-man",
       "pdfFileName": "David_Serafino_-_Metal_Man_Meets_Ms_Godiva.pdf",
-      "id": "metal-man-meets-ms-godiva"
+      "id": "metal-man-meets-ms-godiva",
+      "pdfUrl": "/uploads/David_Serafino_-_Metal_Man_Meets_Ms_Godiva.pdf"
     },
     {
-      "id": "migration-season",
-      "title": "Migration Season",
-      "epubUrl": "/uploads/David_Serafino_-_Migration_Season.epub",
       "epubFileName": "David_Serafino_-_Migration_Season.epub",
-      "date": "7/2025",
       "outlet": "Fiction on the Web UK",
+      "id": "migration-season",
       "pdfFileName": "David_Serafino_-_Migration_Season.pdf",
+      "pdfUrl": "/uploads/David_Serafino_-_Migration_Season.pdf",
+      "epubUrl": "/uploads/David_Serafino_-_Migration_Season.epub",
       "url": "https://www.fictionontheweb.co.uk/2025/07/migration-season-by-david-serafino.html",
-      "pdfUrl": "/uploads/David_Serafino_-_Migration_Season.pdf"
+      "title": "Migration Season",
+      "date": "7/2025"
     },
     {
       "id": "bookseeker",
+      "epubFileName": "David_Serafino_-_Bookseeker.epub",
       "epubUrl": "/uploads/David_Serafino_-_Bookseeker.epub",
       "pdfUrl": "/uploads/David_Serafino_-_Bookseeker.pdf",
-      "pdfFileName": "David_Serafino_-_Bookseeker.pdf",
-      "outlet": "Gulmohur Quarterly",
-      "date": "9/2025",
-      "epubFileName": "David_Serafino_-_Bookseeker.epub",
       "title": "Bookseeker",
-      "url": "https://www.gulmohurquarterly.com/short-fiction/bookseeker-david-serafino-issue-19"
+      "pdfFileName": "David_Serafino_-_Bookseeker.pdf",
+      "url": "https://www.gulmohurquarterly.com/short-fiction/bookseeker-david-serafino-issue-19",
+      "outlet": "Gulmohur Quarterly",
+      "date": "9/2025"
     },
     {
+      "title": "Transposition",
+      "downloads": 1,
+      "pdfFileName": "David_Serafino_-_Transposition.pdf",
+      "date": "9/2025",
+      "pdfUrl": "/uploads/David_Serafino_-_Transposition.pdf",
+      "epubFileName": "David_Serafino_-_Transposition.epub",
+      "downloadsPdf": 1,
+      "url": "https://www.fulcrumreview.org/issue-4",
       "epubUrl": "/uploads/David_Serafino_-_Transposition.epub",
       "outlet": "Fulcrum Review",
-      "title": "Transposition",
-      "downloadsPdf": 1,
-      "downloads": 1,
-      "pdfUrl": "/uploads/David_Serafino_-_Transposition.pdf",
-      "id": "transposition",
-      "url": "https://www.fulcrumreview.org/issue-4",
-      "date": "9/2025",
-      "pdfFileName": "David_Serafino_-_Transposition.pdf",
-      "epubFileName": "David_Serafino_-_Transposition.epub"
+      "id": "transposition"
     },
     {
-      "id": "we-dont-need-no-water",
-      "url": "https://chaoticmergemagazine.com/issue-9/",
       "epubFileName": "David_Serafino_-_We_Don_t_Need_No_Water.epub",
-      "title": "We Don’t Need No Water",
-      "pdfUrl": "/uploads/David_Serafino_-_We_Don_t_Need_No_Water.pdf",
-      "pdfFileName": "David_Serafino_-_We_Don_t_Need_No_Water.pdf",
+      "url": "https://chaoticmergemagazine.com/issue-9/",
       "date": "9/2025",
+      "id": "we-dont-need-no-water",
+      "pdfUrl": "/uploads/David_Serafino_-_We_Don_t_Need_No_Water.pdf",
+      "epubUrl": "/uploads/David_Serafino_-_We_Don_t_Need_No_Water.epub",
       "outlet": "Chaotic Merge",
-      "epubUrl": "/uploads/David_Serafino_-_We_Don_t_Need_No_Water.epub"
+      "title": "We Don’t Need No Water",
+      "pdfFileName": "David_Serafino_-_We_Don_t_Need_No_Water.pdf"
     },
     {
-      "pdfUrl": "/uploads/David_Serafino_-_Chloroquine.pdf",
-      "epubFileName": "David_Serafino_-_Chloroquine.epub",
-      "date": "10/2025",
-      "epubUrl": "/uploads/David_Serafino_-_Chloroquine.epub",
-      "pdfFileName": "David_Serafino_-_Chloroquine.pdf",
-      "outlet": "The Mixtape Review",
       "url": "https://theofficialmixtape.wixsite.com/the-mixtape-review/copy-of-love-didn-t-die-1",
+      "outlet": "The Mixtape Review",
+      "pdfFileName": "David_Serafino_-_Chloroquine.pdf",
       "id": "chloroquine",
+      "epubFileName": "David_Serafino_-_Chloroquine.epub",
+      "pdfUrl": "/uploads/David_Serafino_-_Chloroquine.pdf",
+      "epubUrl": "/uploads/David_Serafino_-_Chloroquine.epub",
+      "date": "10/2025",
       "title": "Chloroquine"
     },
     {
-      "downloadsPdf": 1,
-      "id": "island",
-      "date": "10/2025",
+      "outlet": "The Lit Nerds",
+      "downloads": 1,
       "url": "https://thelitnerds.com/2025/10/16/island/",
-      "pdfUrl": "/uploads/David_Serafino_-_Island.pdf",
-      "downloads": 1,
-      "epubFileName": "David_Serafino_-_Island.epub",
-      "title": "Island",
-      "pdfFileName": "David_Serafino_-_Island.pdf",
-      "epubUrl": "/uploads/David_Serafino_-_Island.epub",
-      "outlet": "The Lit Nerds"
-    },
-    {
-      "epubUrl": "/uploads/David_Serafino_-_The_Garden.epub",
-      "outlet": "AGNI",
-      "pdfUrl": "/uploads/David_Serafino_-_The_Garden.pdf",
-      "title": "The Garden",
       "date": "10/2025",
-      "url": "https://agnionline.bu.edu/about/our-people/authors/david-serafino/",
-      "id": "the-garden",
-      "epubFileName": "David_Serafino_-_The_Garden.epub",
-      "pdfFileName": "David_Serafino_-_The_Garden.pdf"
+      "id": "island",
+      "pdfFileName": "David_Serafino_-_Island.pdf",
+      "downloadsPdf": 1,
+      "pdfUrl": "/uploads/David_Serafino_-_Island.pdf",
+      "title": "Island",
+      "epubFileName": "David_Serafino_-_Island.epub",
+      "epubUrl": "/uploads/David_Serafino_-_Island.epub"
     },
     {
-      "downloads": 1,
-      "epubUrl": "/uploads/David_Serafino_-_A_Cat_and_His_Man.epub",
-      "pdfUrl": "/uploads/David_Serafino_-_A_Cat_and_His_Man.pdf",
-      "outlet": "Gambling the Aisle",
+      "id": "the-garden",
+      "outlet": "AGNI",
+      "pdfFileName": "David_Serafino_-_The_Garden.pdf",
+      "pdfUrl": "/uploads/David_Serafino_-_The_Garden.pdf",
+      "epubUrl": "/uploads/David_Serafino_-_The_Garden.epub",
+      "url": "https://agnionline.bu.edu/about/our-people/authors/david-serafino/",
+      "title": "The Garden",
+      "epubFileName": "David_Serafino_-_The_Garden.epub",
+      "date": "10/2025"
+    },
+    {
       "pdfFileName": "David_Serafino_-_A_Cat_and_His_Man.pdf",
-      "id": "a-cat-and-his-man",
       "url": "https://www.gamblingtheaisle.com/monthly-publications/2c9ri8rrqsijpksr30m5xbtf43rybg",
-      "epubFileName": "David_Serafino_-_A_Cat_and_His_Man.epub",
+      "downloads": 1,
+      "outlet": "Gambling the Aisle",
       "title": "A Cat and His Man",
+      "epubUrl": "/uploads/David_Serafino_-_A_Cat_and_His_Man.epub",
       "date": "12/2025",
+      "pdfUrl": "/uploads/David_Serafino_-_A_Cat_and_His_Man.pdf",
+      "epubFileName": "David_Serafino_-_A_Cat_and_His_Man.epub",
+      "id": "a-cat-and-his-man",
       "downloadsPdf": 1
     },
     {
+      "pdfFileName": "David_Serafino_-_Victimization_Retreat.pdf",
+      "id": "victimization-retreat",
       "epubUrl": "/uploads/David_Serafino_-_Victimization_Retreat.epub",
-      "date": "3/2026",
       "outlet": "Fiction on the Web UK",
       "pdfUrl": "/uploads/David_Serafino_-_Victimization_Retreat.pdf",
-      "epubFileName": "David_Serafino_-_Victimization_Retreat.epub",
-      "title": "Victimization Retreat",
       "url": "https://www.fictionontheweb.co.uk/2026/03/",
-      "pdfFileName": "David_Serafino_-_Victimization_Retreat.pdf",
-      "id": "victimization-retreat"
+      "title": "Victimization Retreat",
+      "epubFileName": "David_Serafino_-_Victimization_Retreat.epub",
+      "date": "3/2026"
+    }
+  ],
+  "books": [
+    {
+      "id": "corilocho",
+      "downloadsEpub": 3,
+      "title": "Corilocho",
+      "pdfFileName": "David_Serafino_-_Corilocho.pdf",
+      "price": 0,
+      "epubUrl": "/uploads/David_Serafino_-_Corilocho.epub",
+      "epubFileName": "David_Serafino_-_Corilocho.epub",
+      "pdfUrl": "/uploads/David_Serafino_-_Corilocho.pdf",
+      "downloadsPdf": 23,
+      "downloads": 26
+    },
+    {
+      "epubUrl": "/uploads/David_Serafino_-_Saltwater_Archives.epub",
+      "id": "saltwater-archives",
+      "price": 1,
+      "epubFileName": "David_Serafino_-_Saltwater_Archives.epub",
+      "title": "Saltwater Archives",
+      "pdfFileName": "David_Serafino_-_Saltwater_Archives.pdf",
+      "downloads": 3,
+      "pdfUrl": "/uploads/David_Serafino_-_Saltwater_Archives.pdf",
+      "downloadsEpub": 1,
+      "downloadsPdf": 2
+    },
+    {
+      "price": 2,
+      "pdfFileName": "David_Serafino_-_We_Are_Sympathetic.pdf",
+      "epubUrl": "/uploads/David_Serafino_-_We_Are_Sympathetic.epub",
+      "pdfUrl": "/uploads/David_Serafino_-_We_Are_Sympathetic.pdf",
+      "title": "We Are Sympathetic",
+      "epubFileName": "David_Serafino_-_We_Are_Sympathetic.epub",
+      "id": "we-are-sympathetic"
     }
   ],
   "paypalEmails": [
     {
       "email": "testreader@example.com",
+      "format": "pdf",
+      "date": "2026-10-26T20:59:49.549Z",
+      "bookTitle": "Saltwater Archives"
+    },
+    {
+      "date": "2026-10-28T18:31:37.707Z",
+      "bookTitle": "Saltwater Archives",
+      "email": "daveserafino@gmail.com",
+      "format": "epub"
+    },
+    {
+      "email": "card-ending-1111@checkout.direct",
       "bookTitle": "Saltwater Archives",
       "format": "pdf",
-      "date": "2026-10-26T20:59:49.549Z"
+      "date": "2026-10-28T18:36:12.507Z",
+      "amount": 1,
+      "paymentMethod": "card",
+      "transactionId": "TXN-MVSGGSBF-IBLD",
+      "beneficiaryBank": "Citadel Credit Union (Routing: 231380104, Acct: ...8827)",
+      "status": "COMPLETED"
     }
   ],
+  "visits": 534,
   "merchantConfig": {
-    "bankRoutingNumber": "231380104",
     "paypalEmail": "daveserafino@gmail.com",
+    "bankRoutingNumber": "231380104",
     "bankAccountNumber": "198827",
     "bankName": "Citadel Credit Union"
-  },
-  "visits": 468,
-  "books": [
-    {
-      "downloads": 23,
-      "title": "Corilocho",
-      "epubFileName": "David_Serafino_-_Corilocho.epub",
-      "id": "corilocho",
-      "price": 0,
-      "downloadsEpub": 3,
-      "downloadsPdf": 20,
-      "epubUrl": "/uploads/David_Serafino_-_Corilocho.epub",
-      "pdfFileName": "David_Serafino_-_Corilocho.pdf",
-      "pdfUrl": "/uploads/David_Serafino_-_Corilocho.pdf"
-    },
-    {
-      "pdfFileName": "David_Serafino_-_Saltwater_Archives.pdf",
-      "epubFileName": "David_Serafino_-_Saltwater_Archives.epub",
-      "title": "Saltwater Archives",
-      "id": "saltwater-archives",
-      "epubUrl": "/uploads/David_Serafino_-_Saltwater_Archives.epub",
-      "pdfUrl": "/uploads/David_Serafino_-_Saltwater_Archives.pdf",
-      "price": 1
-    },
-    {
-      "price": 2,
-      "epubFileName": "David_Serafino_-_We_Are_Sympathetic.epub",
-      "pdfFileName": "David_Serafino_-_We_Are_Sympathetic.pdf",
-      "id": "we-are-sympathetic",
-      "pdfUrl": "/uploads/David_Serafino_-_We_Are_Sympathetic.pdf",
-      "epubUrl": "/uploads/David_Serafino_-_We_Are_Sympathetic.epub",
-      "title": "We Are Sympathetic"
-    }
-  ]
+  }
 }

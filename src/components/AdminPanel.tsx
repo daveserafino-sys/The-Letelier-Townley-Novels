@@ -74,16 +74,16 @@ export default function AdminPanel({
     if (!localData.paypalEmails || localData.paypalEmails.length === 0) return;
     
     // Format as CSV
-    const headers = "Email,Date,Book/Story Title,Format\n";
+    const headers = "Email,Date,Book/Story Title,Format,Amount,Method,Transaction ID,Beneficiary Bank\n";
     const rows = localData.paypalEmails.map(item => 
-      `"${item.email}","${new Date(item.date).toLocaleString()}","${item.bookTitle}","${item.format}"`
+      `"${item.email}","${new Date(item.date).toLocaleString()}","${item.bookTitle}","${item.format}","${item.amount ? `$${item.amount}` : '$1-$2'}","${item.paymentMethod || 'paypal'}","${item.transactionId || ''}","${item.beneficiaryBank || 'Citadel Credit Union'}"`
     ).join("\n");
     
     const blob = new Blob([headers + rows], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", `paypal_collected_emails_${new Date().toISOString().slice(0,10)}.csv`);
+    link.setAttribute("download", `purchases_and_settlements_${new Date().toISOString().slice(0,10)}.csv`);
     link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
@@ -719,9 +719,9 @@ export default function AdminPanel({
                 <div className="space-y-4">
                   <div className="flex justify-between items-center pb-2 border-b border-[#8C7A5B]/15">
                     <div>
-                      <h4 className="text-sm font-serif italic text-[#23211E] font-medium">PayPal Purchased Emails</h4>
+                      <h4 className="text-sm font-serif italic text-[#23211E] font-medium">Purchases & Settlement Transactions</h4>
                       <p className="text-[10px] font-mono tracking-wider text-[#8C7A5B] mt-0.5 uppercase">
-                        Total Collected: {localData.paypalEmails?.length || 0} addresses
+                        Total Recorded: {localData.paypalEmails?.length || 0} transactions (Depositing to {localData.merchantConfig?.bankName || "Citadel Credit Union"})
                       </p>
                     </div>
                     {localData.paypalEmails && localData.paypalEmails.length > 0 && (
@@ -730,24 +730,26 @@ export default function AdminPanel({
                         className="flex items-center gap-1.5 px-3 py-1 bg-[#8C7A5B] text-white hover:bg-[#5E4E35] transition-all rounded text-[10px] font-mono cursor-pointer"
                       >
                         <Upload size={10} className="rotate-180" />
-                        <span>DOWNLOAD LIST (.CSV)</span>
+                        <span>DOWNLOAD TRANSACTIONS (.CSV)</span>
                       </button>
                     )}
                   </div>
 
                   {!localData.paypalEmails || localData.paypalEmails.length === 0 ? (
                     <div className="text-center py-12 bg-[#F1EDE6]/20 border border-stone-200/50 rounded-lg">
-                      <p className="text-xs font-mono text-stone-500">No email addresses collected yet.</p>
+                      <p className="text-xs font-mono text-stone-500">No transactions recorded yet.</p>
                     </div>
                   ) : (
-                    <div className="border border-stone-200 rounded-lg overflow-hidden bg-white shadow-sm">
+                    <div className="border border-stone-200 rounded-lg overflow-hidden bg-white shadow-sm overflow-x-auto">
                       <table className="w-full text-left border-collapse text-xs">
                         <thead>
                           <tr className="bg-[#F1EDE6]/60 font-mono text-[9px] tracking-wider text-[#8C7A5B] border-b border-stone-200 uppercase">
-                            <th className="p-3 font-medium">Email Address</th>
-                            <th className="p-3 font-medium">Book/Story Title</th>
-                            <th className="p-3 font-medium">Format</th>
-                            <th className="p-3 font-medium">Date Collected</th>
+                            <th className="p-3 font-medium">Customer / Email</th>
+                            <th className="p-3 font-medium">Title</th>
+                            <th className="p-3 font-medium">Amount</th>
+                            <th className="p-3 font-medium">Method</th>
+                            <th className="p-3 font-medium">Beneficiary Bank</th>
+                            <th className="p-3 font-medium">Date & Time</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-stone-100">
@@ -755,8 +757,22 @@ export default function AdminPanel({
                             <tr key={index} className="hover:bg-stone-50/50 transition-colors">
                               <td className="p-3 font-mono font-medium text-[#23211E]">{record.email}</td>
                               <td className="p-3 text-stone-700 italic font-serif">{record.bookTitle}</td>
-                              <td className="p-3 font-mono text-stone-500 uppercase text-[10px]">{record.format}</td>
-                              <td className="p-3 text-stone-500 font-mono text-[10px]">
+                              <td className="p-3 font-mono font-bold text-emerald-700">
+                                {record.amount ? `$${record.amount}` : "$1–$2"}
+                              </td>
+                              <td className="p-3 font-mono text-stone-600 uppercase text-[10px]">
+                                <span className={`px-1.5 py-0.5 rounded border text-[9px] font-medium ${
+                                  record.paymentMethod === "card" 
+                                    ? "bg-blue-50 border-blue-200 text-blue-700" 
+                                    : "bg-amber-50 border-amber-200 text-amber-700"
+                                }`}>
+                                  {record.paymentMethod ? record.paymentMethod.toUpperCase() : "PAYPAL"}
+                                </span>
+                              </td>
+                              <td className="p-3 font-mono text-stone-500 text-[10px] truncate max-w-[150px]">
+                                {record.beneficiaryBank || `${localData.merchantConfig?.bankName || "Citadel Credit Union"} (...${(localData.merchantConfig?.bankAccountNumber || "198827").slice(-4)})`}
+                              </td>
+                              <td className="p-3 text-stone-500 font-mono text-[10px] whitespace-nowrap">
                                 {new Date(record.date).toLocaleString()}
                               </td>
                             </tr>
