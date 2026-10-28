@@ -71,24 +71,55 @@ export default function App() {
     }
   };
 
-  // Synchronize document title with active view and targets
+  // Synchronize document title, canonical URL, and SEO meta tags with active view and targets
   useEffect(() => {
+    let title = "David Serafino – The Letelier / Townley Novels & Selected Stories";
+    let description = "A trilogy of novels on the Letelier & Townley families, and selected short story publications, free to read.";
+
     if (currentView === "publications") {
       if (targetStoryId) {
         const pub = writerData.publications.find((p) => p.id === targetStoryId);
-        document.title = pub ? `${pub.title} – Selected Stories by David Serafino` : "Selected Short Stories – David Serafino";
+        title = pub ? `${pub.title} – Selected Stories by David Serafino` : "Selected Short Stories – David Serafino";
+        description = pub?.description || "Selected short story publication by Dave Serafino, free to read.";
       } else {
-        document.title = "Selected Short Stories – David Serafino";
+        title = "Selected Short Stories – David Serafino";
+        description = "Read selected short stories by Dave Serafino across literary journals and publications.";
       }
     } else if (currentView === "study") {
-      document.title = "Writer's Study – David Serafino";
+      title = "Writer's Study – David Serafino";
+      description = "Inside the study of David Serafino. Historical background on Chile, Operation Condor, and the Letelier and Townley families.";
     } else {
       if (targetBookId) {
         const book = writerData.books.find((b) => b.id === targetBookId);
-        document.title = book ? `${book.title} – David Serafino` : "The Letelier / Townley Novels – David Serafino";
+        title = book ? `${book.title} – David Serafino` : "The Letelier / Townley Novels – David Serafino";
+        description = book?.synopsis || book?.description || "A novel from The Letelier / Townley Novels trilogy by Dave Serafino.";
       } else {
-        document.title = "David Serafino – The Letelier / Townley Novels & Selected Stories";
+        title = "David Serafino – The Letelier / Townley Novels & Selected Stories";
+        description = "A trilogy of novels on the Letelier & Townley families, and selected short story publications, free to read.";
       }
+    }
+
+    document.title = title;
+
+    // Helper to safely update meta tags
+    const setMeta = (selector: string, content: string) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute("content", content);
+    };
+
+    setMeta('meta[name="title"]', title);
+    setMeta('meta[name="description"]', description);
+    setMeta('meta[property="og:title"]', title);
+    setMeta('meta[property="og:description"]', description);
+    setMeta('meta[name="twitter:title"]', title);
+    setMeta('meta[name="twitter:description"]', description);
+
+    if (typeof window !== "undefined") {
+      const currentUrl = window.location.origin + window.location.pathname;
+      const canonical = document.getElementById("canonical-url") as HTMLLinkElement | null;
+      if (canonical) canonical.setAttribute("href", currentUrl);
+      const ogUrl = document.getElementById("og-url");
+      if (ogUrl) ogUrl.setAttribute("content", currentUrl);
     }
   }, [currentView, targetStoryId, targetBookId, writerData]);
 

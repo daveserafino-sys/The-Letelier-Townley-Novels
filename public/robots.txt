@@ -1,4 +1,25 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/sitemap.xml
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Google-InspectionTool
+Allow: /
+
+User-agent: Storebot-Google
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+Sitemap: /sitemap.xml

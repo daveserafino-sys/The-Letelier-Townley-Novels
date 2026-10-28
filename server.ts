@@ -21,10 +21,60 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
+// Helper to resolve request host URL dynamically across any host/domain (Render, custom domain, or dev URL)
+function getBaseUrl(req: express.Request): string {
+  const forwardedProto = req.headers["x-forwarded-proto"];
+  const protoStr = Array.isArray(forwardedProto) ? forwardedProto[0] : (forwardedProto ? String(forwardedProto).split(",")[0].trim() : null);
+  const protocol = protoStr || req.protocol || "https";
+  const host = req.get("host") || "localhost:3000";
+  return `${protocol}://${host}`;
+}
+
+// Lightweight Health Check Endpoint (ideal for Render keep-alive monitors & uptime pingers)
+app.all(["/api/health", "/healthz"], (req, res) => {
+  res.status(200).send("OK");
+});
+
+// Dynamic robots.txt explicitly permitting Googlebot and all search engine crawlers with zero obstacles
+app.all("/robots.txt", (req, res) => {
+  const baseUrl = getBaseUrl(req);
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.setHeader("Cache-Control", "public, max-age=86400, s-maxage=86400");
+  res.setHeader("X-Robots-Tag", "all");
+  res.send(
+`User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Google-InspectionTool
+Allow: /
+
+User-agent: Storebot-Google
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+Sitemap: ${baseUrl}/sitemap.xml
+`
+  );
+});
+
 // Serve uploaded PDF/EPUB files statically
 app.use("/uploads", express.static(uploadsDir));
 
-// Serve files from public folder at root
+// Serve files from public folder at root (excluding robots.txt which is dynamically resolved)
 app.use(express.static(path.join(process.cwd(), "public")));
 
 // Create a default fallback sample PDF & EPUB inside uploads so downloads work immediately
@@ -293,29 +343,13 @@ async function writeWriterDataAsync(data: any) {
   }
 }
 
-// Helper to resolve request host URL
-function getBaseUrl(req: express.Request): string {
-  const host = req.get("host") || "ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app";
-  const protocol = req.headers["x-forwarded-proto"] || req.protocol || "https";
-  return `${protocol}://${host}`;
-}
-
-// Lightweight Health Check Endpoint (ideal for Render keep-alive monitors & uptime pingers)
-app.all(["/api/health", "/healthz"], (req, res) => {
-  res.status(200).send("OK");
-});
-
-// Robots.txt Handler
-app.get("/robots.txt", (req, res) => {
-  const baseUrl = getBaseUrl(req);
-  res.type("text/plain");
-  res.send(`User-agent: *\nAllow: /\n\nSitemap: ${baseUrl}/sitemap.xml\n`);
-});
-
 // Dynamic Sitemap.xml Handler
-app.get("/sitemap.xml", async (req, res) => {
+app.all("/sitemap.xml", async (req, res) => {
   try {
     const baseUrl = getBaseUrl(req);
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
+    res.setHeader("Cache-Control", "public, max-age=3600, s-maxage=3600");
+    res.setHeader("X-Robots-Tag", "all");
     const data = await readWriterDataAsync();
     const books: any[] = data.books || [];
     const publications: any[] = data.publications || [];
@@ -345,8 +379,10 @@ app.get("/sitemap.xml", async (req, res) => {
       }
     }
 
+    // Writer's Study
+    xml += `  <url>\n    <loc>${baseUrl}/study</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+
     xml += `</urlset>`;
-    res.type("application/xml");
     res.send(xml);
   } catch (error) {
     console.error("Error generating sitemap:", error);
@@ -665,11 +701,25 @@ async function startServer() {
     console.log("Vite dev middleware attached.");
   } else {
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
+    const indexHtmlPath = path.join(distPath, "index.html");
+    
+    // Serve static assets, skipping default index.html so dynamic canonical/SEO injection applies
+    app.use(express.static(distPath, { index: false }));
+
     app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
+      res.setHeader("X-Robots-Tag", "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
+      const baseUrl = getBaseUrl(req);
+      if (fs.existsSync(indexHtmlPath)) {
+        let html = fs.readFileSync(indexHtmlPath, "utf8");
+        // Dynamically replace any hardcoded dev URLs with the live domain (Render or custom domain)
+        html = html.replace(/https:\/\/ais-dev-[a-z0-9-]+\.us-east1\.run\.app/g, baseUrl);
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        res.send(html);
+      } else {
+        res.status(404).send("Not found");
+      }
     });
-    console.log("Production static handler attached.");
+    console.log("Production static handler attached with dynamic SEO injection.");
   }
 
   app.listen(PORT, "0.0.0.0", () => {
