@@ -73,8 +73,8 @@ export default function App() {
 
   // Synchronize document title, canonical URL, and SEO meta tags with active view and targets
   useEffect(() => {
-    let title = "David Serafino – The Letelier / Townley Novels & Selected Stories";
-    let description = "A trilogy of novels on the Letelier & Townley families, and selected short story publications, free to read.";
+    let title = "Novels & Stories by David Serafino";
+    let description = "The Letelier / Townley Trilogy and Selected Publications, free novel and stories to read online or download for your e-reader";
 
     if (currentView === "publications") {
       if (targetStoryId) {
@@ -94,8 +94,8 @@ export default function App() {
         title = book ? `${book.title} – David Serafino` : "The Letelier / Townley Novels – David Serafino";
         description = book?.synopsis || book?.description || "A novel from The Letelier / Townley Novels trilogy by Dave Serafino.";
       } else {
-        title = "David Serafino – The Letelier / Townley Novels & Selected Stories";
-        description = "A trilogy of novels on the Letelier & Townley families, and selected short story publications, free to read.";
+        title = "Novels & Stories by David Serafino";
+        description = "The Letelier / Townley Trilogy and Selected Publications, free novel and stories to read online or download for your e-reader";
       }
     }
 
@@ -344,7 +344,7 @@ export default function App() {
             targetStoryId={targetStoryId}
             onSelectStory={(id) => navigateTo("publications", `/stories/${id}`)}
             onBack={() => {
-              navigateTo("books", "/", "David Serafino – The Letelier / Townley Novels & Selected Stories");
+              navigateTo("books", "/", "Novels & Stories by David Serafino");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }} 
           />
@@ -353,7 +353,7 @@ export default function App() {
             isNoirMode={isNoirMode} 
             onToggleNoirMode={() => setIsNoirMode(!isNoirMode)} 
             onBack={() => {
-              navigateTo("books", "/", "David Serafino – The Letelier / Townley Novels & Selected Stories");
+              navigateTo("books", "/", "Novels & Stories by David Serafino");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           />
@@ -390,7 +390,7 @@ export default function App() {
                 if (currentView === "books") {
                   navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
                 } else {
-                  navigateTo("books", "/", "David Serafino – The Letelier / Townley Novels & Selected Stories");
+                  navigateTo("books", "/", "Novels & Stories by David Serafino");
                 }
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}

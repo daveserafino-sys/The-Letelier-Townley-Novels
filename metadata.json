@@ -1,6 +1,6 @@
 {
   "name": "Writer Portfolio and Bookstore",
-  "description": "A trilogy of novels on the Letelier & Townley families, and selected short story publications, free to read.",
+  "description": "The Letelier / Townley Trilogy and Selected Publications, free novel and stories to read online or download for your e-reader",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
