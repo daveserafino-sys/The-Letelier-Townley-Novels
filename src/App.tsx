@@ -78,12 +78,12 @@ export default function App() {
 
   // Synchronize document title, canonical URL, and SEO meta tags with active view and targets
   useEffect(() => {
-    let title = "Novels & Stories by David Serafino";
-    let description = "The Letelier / Townley Trilogy and Selected Publications, free novel and stories to read online or download for your e-reader";
+    let title = "The Letelier / Townley Novels & Selected Publications";
+    let description = "Novels and stories for free download or to read online.";
 
     if (currentView === "author") {
       title = "David Serafino – Author Profile";
-      description = "David Serafino is an American writer and translator who lives near Medellín, Colombia, and whose work has appeared in AGNI, The Common, The Los Angeles Review, and various other magazines.";
+      description = "David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and dogs. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other magazines.";
     } else if (currentView === "publications") {
       if (targetStoryId) {
         const pub = writerData.publications.find((p) => p.id === targetStoryId);
@@ -102,8 +102,8 @@ export default function App() {
         title = book ? `${book.title} – David Serafino` : "The Letelier / Townley Novels – David Serafino";
         description = book?.synopsis || book?.description || "A novel from The Letelier / Townley Novels trilogy by Dave Serafino.";
       } else {
-        title = "Novels & Stories by David Serafino";
-        description = "The Letelier / Townley Trilogy and Selected Publications, free novel and stories to read online or download for your e-reader";
+        title = "The Letelier / Townley Novels & Selected Publications";
+        description = "Novels and stories for free download or to read online.";
       }
     }
 
@@ -312,7 +312,7 @@ export default function App() {
 
       {/* Atmospheric Minimalist Header with Parallax Scrolling */}
       <header 
-        className="w-full text-center pt-8 pb-4 z-40 relative select-none"
+        className={`w-full text-center ${currentView === "author" ? "hidden" : "pt-8 pb-4"} z-40 relative select-none`}
         style={{ 
           transform: `translate3d(0, ${scrollY * 0.25}px, 0)`,
           willChange: "transform"
@@ -343,13 +343,13 @@ export default function App() {
       </header>
 
       {/* Main Container Workspace */}
-      <main className="flex-1 flex flex-col items-center justify-start relative z-[50] pointer-events-none py-8">
+      <main className={`flex-1 flex flex-col items-center justify-start relative z-[50] pointer-events-none ${currentView === "author" ? "pt-2 pb-0" : "py-8"}`}>
         {loading ? (
           <div className="text-center font-serif italic text-sm tracking-widest text-[#8C7A5B] animate-pulse pt-28" />
         ) : currentView === "author" ? (
           <AuthorProfile 
             onBackToNovels={() => {
-              navigateTo("books", "/", "Novels & Stories by David Serafino");
+              navigateTo("books", "/", "The Letelier / Townley Novels & Selected Publications");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             onBackToStories={() => {
@@ -363,16 +363,20 @@ export default function App() {
             targetStoryId={targetStoryId}
             onSelectStory={(id) => navigateTo("publications", `/stories/${id}`)}
             onBack={() => {
-              navigateTo("books", "/", "Novels & Stories by David Serafino");
+              navigateTo("books", "/", "The Letelier / Townley Novels & Selected Publications");
               window.scrollTo({ top: 0, behavior: "smooth" });
-            }} 
+            }}
+            onNavigateToAuthor={() => {
+              navigateTo("author", "/author", "David Serafino – Author Profile");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           />
         ) : currentView === "study" ? (
           <WritersStudy 
             isNoirMode={isNoirMode} 
             onToggleNoirMode={() => setIsNoirMode(!isNoirMode)} 
             onBack={() => {
-              navigateTo("books", "/", "Novels & Stories by David Serafino");
+              navigateTo("books", "/", "The Letelier / Townley Novels & Selected Publications");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           />
@@ -400,7 +404,7 @@ export default function App() {
       )}
 
       {/* Minimalist Editorial Footer with Copyright & CC License */}
-      <footer className="w-full text-center pt-56 pb-8 z-[50] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-none" id="app-footer">
+      <footer className={`w-full text-center ${currentView === "author" ? "pt-20 pb-10" : "pt-56 pb-8"} z-[50] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-none`} id="app-footer">
         {/* Page Navigation anchored to the bottom-left corner of the footer */}
         {(currentView === "books" || currentView === "publications" || currentView === "author") && (
           <div className="absolute bottom-6 left-6 z-50 pointer-events-auto" id="page-navigation-container">
@@ -411,7 +415,7 @@ export default function App() {
                 } else if (currentView === "publications") {
                   navigateTo("author", "/author", "David Serafino – Author Profile");
                 } else {
-                  navigateTo("books", "/", "Novels & Stories by David Serafino");
+                  navigateTo("books", "/", "The Letelier / Townley Novels & Selected Publications");
                 }
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
@@ -442,7 +446,7 @@ export default function App() {
               if (currentView === "publications") {
                 navigateTo("author", "/author", "David Serafino – Author Profile");
               } else if (currentView === "author") {
-                navigateTo("books", "/", "Novels & Stories by David Serafino");
+                navigateTo("books", "/", "The Letelier / Townley Novels & Selected Publications");
               } else {
                 navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
               }

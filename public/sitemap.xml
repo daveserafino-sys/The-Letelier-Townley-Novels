@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/</loc>
     <lastmod>2026-10-28</lastmod>
@@ -140,9 +140,69 @@
   </url>
   <url>
     <loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/author</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_2_5c6ee16d.jpg</image:loc>
+      <image:title>David Serafino – Author Portrait</image:title>
+      <image:caption>Primary author portrait of American writer and translator David Serafino, author of the Letelier / Townley Trilogy</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_1_bfa5b058.jpg</image:loc>
+      <image:title>David Serafino Outdoors</image:title>
+      <image:caption>Author David Serafino photographed during South American research travels for his fiction</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_2_ec6870b5.jpg</image:loc>
+      <image:title>David Serafino at Outdoor Cafe</image:title>
+      <image:caption>David Serafino writing outdoors near Medellín, Colombia</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_3_f6a2bc9d.jpg</image:loc>
+      <image:title>David Serafino Mountain Landscape</image:title>
+      <image:caption>Close-up portrait of fiction writer David Serafino in Andean mountain landscape</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_4_326962af.jpg</image:loc>
+      <image:title>David Serafino Lakeside Portrait</image:title>
+      <image:caption>American novelist David Serafino overlooking waterside scenery</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_5_ff97f8e3.jpg</image:loc>
+      <image:title>David Serafino at Ancient Antiquities</image:title>
+      <image:caption>Novelist David Serafino visiting ancient stone relief carvings and monuments</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_6_39d30ab4.jpg</image:loc>
+      <image:title>David Serafino Formal Literary Portrait</image:title>
+      <image:caption>Formal portrait of author David Serafino in dark suit and striped tie</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_7_8081e1cc.jpg</image:loc>
+      <image:title>David Serafino Alpine Skiing</image:title>
+      <image:caption>Author David Serafino alpine skiing in winter mountains</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_8_56c16854.jpg</image:loc>
+      <image:title>David Serafino Window Portrait</image:title>
+      <image:caption>David Serafino looking over a sunlit courtyard from open window</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_9_e35bd35a.jpg</image:loc>
+      <image:title>David Serafino Waterfront Portrait</image:title>
+      <image:caption>Portrait of novelist David Serafino along the coast and harbor</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_10_5f0134bb.jpg</image:loc>
+      <image:title>David Serafino Pond Hockey</image:title>
+      <image:caption>David Serafino playing ice hockey on a frozen outdoor lake</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/serafino2_509ea778.jpg</image:loc>
+      <image:title>David Serafino Literary Portrait</image:title>
+      <image:caption>Portrait of American author David Serafino, novelist and literary translator</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/study</loc>

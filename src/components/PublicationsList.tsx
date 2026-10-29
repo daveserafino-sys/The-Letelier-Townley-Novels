@@ -7,11 +7,12 @@ import { sortPublicationsChronological } from "../utils/publications";
 interface PublicationsListProps {
   publications: Publication[];
   onBack: () => void;
+  onNavigateToAuthor?: () => void;
   targetStoryId?: string | null;
   onSelectStory?: (storyId: string) => void;
 }
 
-export default function PublicationsList({ publications, onBack, targetStoryId, onSelectStory }: PublicationsListProps) {
+export default function PublicationsList({ publications, onBack, onNavigateToAuthor, targetStoryId, onSelectStory }: PublicationsListProps) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const handleDownload = (pubId: string, format: "pdf" | "epub") => {
@@ -48,15 +49,24 @@ export default function PublicationsList({ publications, onBack, targetStoryId, 
 
   return (
     <div className="flex flex-col items-center justify-start w-full max-w-2xl mx-auto px-6 pt-[12vh] pb-32 select-none font-sans pointer-events-auto" id="publications-container">
-      {/* Return Button */}
+      {/* Return and Forward Navigation Buttons */}
       <div className="w-full flex items-center justify-between mb-10">
         <button
           onClick={onBack}
           className="font-serif italic text-[11px] tracking-wider text-[#8C7A5B] hover:text-[#C5B395] transition-colors cursor-pointer flex items-center gap-1.5"
-          id="return-manuscripts-btn"
+          id="publications-to-novels-btn"
         >
-          <span>← back</span>
+          <span>← novels</span>
         </button>
+        {onNavigateToAuthor && (
+          <button
+            onClick={onNavigateToAuthor}
+            className="font-serif italic text-[11px] tracking-wider text-[#8C7A5B] hover:text-[#C5B395] transition-colors cursor-pointer flex items-center gap-1.5"
+            id="publications-to-author-btn"
+          >
+            <span>author →</span>
+          </button>
+        )}
       </div>
 
       {sortedPublications.length === 0 ? (

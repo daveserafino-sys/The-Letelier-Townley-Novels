@@ -1,6 +1,6 @@
 {
   "name": "Writer Portfolio and Bookstore",
-  "description": "The Letelier / Townley Trilogy and Selected Publications, free novel and stories to read online or download for your e-reader",
+  "description": "Novels and stories for free download or to read online.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
