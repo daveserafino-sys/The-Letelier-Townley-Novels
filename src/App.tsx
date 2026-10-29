@@ -79,7 +79,7 @@ export default function App() {
   // Synchronize document title, canonical URL, and SEO meta tags with active view and targets
   useEffect(() => {
     let title = "The Letelier / Townley Novels & Selected Publications";
-    let description = "Novels and stories for free download or to read online.";
+    let description = "In 1976, American fascist Michael Townley planted a car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington, D.C. This trilogy explores their lives.";
 
     if (currentView === "author") {
       title = "David Serafino – Author Profile";

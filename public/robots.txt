@@ -21,3 +21,5 @@ Allow: /
 
 User-agent: bingbot
 Allow: /
+
+Sitemap: https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/sitemap.xml

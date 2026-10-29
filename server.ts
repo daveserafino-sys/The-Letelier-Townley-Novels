@@ -356,7 +356,7 @@ app.all(["/sitemap.xml", "/sitemap", "/sitemap_index.xml"], async (req, res) => 
     const now = new Date().toISOString().split("T")[0];
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n`;
 
     // Root page (Novels trilogy)
     xml += `  <url>\n    <loc>${baseUrl}/</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n`;
@@ -379,8 +379,19 @@ app.all(["/sitemap.xml", "/sitemap", "/sitemap_index.xml"], async (req, res) => 
       }
     }
 
-    // Author Profile Page
-    xml += `  <url>\n    <loc>${baseUrl}/author</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
+    // Author Profile Page with Google Image Search Markup
+    xml += `  <url>\n    <loc>${baseUrl}/author</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n`;
+    xml += `    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/author_photo_2_5c6ee16d.jpg</image:loc>\n      <image:title>David Serafino – Author Portrait</image:title>\n      <image:caption>Primary author portrait of American writer, painter, travel photographer and translator David Serafino, residing near Medellín, Colombia</image:caption>\n    </image:image>\n`;
+    xml += `    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/author_photo_9_e35bd35a.jpg</image:loc>\n      <image:title>David Serafino Waterfront Portrait</image:title>\n      <image:caption>Portrait of novelist and travel photographer David Serafino along the coast</image:caption>\n    </image:image>\n`;
+    xml += `    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/author_photo_7_8081e1cc.jpg</image:loc>\n      <image:title>David Serafino Alpine Skiing</image:title>\n      <image:caption>Author David Serafino alpine skiing in winter mountains</image:caption>\n    </image:image>\n`;
+    xml += `    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/author_photo_2_ec6870b5.jpg</image:loc>\n      <image:title>David Serafino at Outdoor Cafe</image:title>\n      <image:caption>David Serafino writing outdoors near Medellín, Colombia</image:caption>\n    </image:image>\n`;
+    xml += `    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/author_photo_3_f6a2bc9d.jpg</image:loc>\n      <image:title>David Serafino Mountain Landscape</image:title>\n      <image:caption>Close-up portrait of novelist David Serafino in Andean mountain landscape</image:caption>\n    </image:image>\n`;
+    xml += `    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/author_photo_5_ff97f8e3.jpg</image:loc>\n      <image:title>David Serafino at Ancient Antiquities</image:title>\n      <image:caption>Novelist David Serafino visiting ancient stone relief carvings and monuments</image:caption>\n    </image:image>\n`;
+    xml += `    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/author_photo_6_39d30ab4.jpg</image:loc>\n      <image:title>David Serafino Formal Literary Portrait</image:title>\n      <image:caption>Formal portrait of author David Serafino in dark suit and striped tie</image:caption>\n    </image:image>\n`;
+    xml += `    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/author_photo_8_56c16854.jpg</image:loc>\n      <image:title>David Serafino Window Portrait</image:title>\n      <image:caption>David Serafino looking over a sunlit courtyard from open window</image:caption>\n    </image:image>\n`;
+    xml += `    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/author_photo_10_5f0134bb.jpg</image:loc>\n      <image:title>David Serafino Pond Hockey</image:title>\n      <image:caption>David Serafino playing ice hockey on a frozen outdoor lake</image:caption>\n    </image:image>\n`;
+    xml += `    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/serafino2_509ea778.jpg</image:loc>\n      <image:title>David Serafino Literary Portrait</image:title>\n      <image:caption>Portrait photograph of David Serafino, American writer, painter, travel photographer and translator</image:caption>\n    </image:image>\n`;
+    xml += `  </url>\n`;
 
     // Writer's Study
     xml += `  <url>\n    <loc>${baseUrl}/study</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
