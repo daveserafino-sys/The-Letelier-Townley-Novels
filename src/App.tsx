@@ -83,7 +83,7 @@ export default function App() {
 
     if (currentView === "author") {
       title = "David Serafino – Author Profile";
-      description = "David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and dogs. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other magazines.";
+      description = "David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and pups. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other magazines.";
     } else if (currentView === "publications") {
       if (targetStoryId) {
         const pub = writerData.publications.find((p) => p.id === targetStoryId);
