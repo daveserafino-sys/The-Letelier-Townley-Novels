@@ -44,13 +44,6 @@ const AUTHOR_PHOTOS: AuthorPhotoItem[] = [
     description: "Fiction author David Serafino at an outdoor courtyard cafe, writing and editing stories published in AGNI, The Common, and The Los Angeles Review."
   },
   {
-    src: "/assets/aistudio/author_photo_3_f6a2bc9d.jpg",
-    title: "David Serafino Mountain Landscape",
-    alt: "Close-up portrait of novelist David Serafino smiling against mountain highlands",
-    caption: "David Serafino in the Andean highlands",
-    description: "Close-up portrait of fiction writer and translator David Serafino with Andean mountain landscape and high-altitude grassland background."
-  },
-  {
     src: "/assets/aistudio/author_photo_5_ff97f8e3.jpg",
     title: "David Serafino at Ancient Antiquities",
     alt: "David Serafino standing in front of ancient Egyptian wall reliefs and hieroglyphics",
