@@ -197,8 +197,9 @@
     </script>
   </head>
   <body>
-    <div id="root">
-      <!-- Semantic initial content for search crawlers (Googlebot, Bingbot, etc.) before client script execution -->
+    <div id="root"></div>
+    <noscript>
+      <!-- Semantic fallback content for search crawlers without JavaScript execution -->
       <main style="max-width: 800px; margin: 40px auto; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #d1d5db; background-color: #0d0f12;">
         <header style="margin-bottom: 28px; border-bottom: 1px solid #27272a; padding-bottom: 20px;">
           <h1 style="font-size: 26px; font-weight: 700; color: #f3f4f6; margin-bottom: 8px;">The Letelier / Townley Novels &amp; Selected Publications</h1>
@@ -226,10 +227,10 @@
         </section>
         <section id="author-profile-summary">
           <h2 style="font-size: 20px; font-weight: 600; color: #e5e7eb; margin-bottom: 12px;">Author Profile – David Serafino</h2>
-          <p style="font-size: 14px; color: #a1a1aa; line-height: 1.6;">David Serafino is an American writer and translator who lives near Medellín, Colombia, and whose work has appeared in AGNI, The Common, The Los Angeles Review, and various other magazines and websites in the U.S., U.K., Canada and India, several of which have been nominated for prizes such as the O. Henry, Pushcart, Best of the Net, and the WSFA award. He has an MFA in Fiction from the University of Virginia, a BA in English from the College of William and Mary, has lived in a dozen countries, and has also written a novel in Spanish. All novels and stories are available for representation.</p>
+          <p style="font-size: 14px; color: #a1a1aa; line-height: 1.6;">David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and pups. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other magazines and websites in the U.S., U.K., Canada and India, several of which have been nominated for prizes such as the O. Henry, Pushcart, Best of the Net, and the WSFA award. He has an MFA in Fiction from the University of Virginia, a BA in English from the College of William and Mary, has lived in a dozen countries, and has recently written a novel in Spanish. His travel photography is on Instagram at the link below. All novels and stories are available for representation.</p>
         </section>
       </main>
-    </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
