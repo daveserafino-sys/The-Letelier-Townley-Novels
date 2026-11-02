@@ -6,6 +6,7 @@ import AdminPanel from "./components/AdminPanel";
 import PublicationsList from "./components/PublicationsList";
 import WritersStudy from "./components/WritersStudy";
 import AuthorProfile from "./components/AuthorProfile";
+import InterviewsReadings from "./components/InterviewsReadings";
 import { Key, Moon, Sun, Instagram, Facebook, Mail } from "lucide-react";
 import defaultWriterData from "./data/writer-data.json";
 
@@ -16,14 +17,18 @@ export default function App() {
   // UI states
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isNoirMode, setIsNoirMode] = useState(true);
-  const [currentView, setCurrentView] = useState<"books" | "publications" | "author" | "study">("books");
+  const [currentView, setCurrentView] = useState<"books" | "publications" | "author" | "interviews" | "study">("books");
   const [targetBookId, setTargetBookId] = useState<string | null>(null);
   const [targetStoryId, setTargetStoryId] = useState<string | null>(null);
 
   // Deep linking and URL navigation routing
   const applyRouteFromPath = (path: string) => {
     const trimmed = path.trim().replace(/\/$/, "");
-    if (trimmed.startsWith("/author") || trimmed.startsWith("/profile") || trimmed.startsWith("/about")) {
+    if (trimmed.startsWith("/interviews") || trimmed.startsWith("/readings") || trimmed.startsWith("/interviews-and-readings") || trimmed.startsWith("/readings-and-interviews")) {
+      setCurrentView("interviews");
+      setTargetBookId(null);
+      setTargetStoryId(null);
+    } else if (trimmed.startsWith("/author") || trimmed.startsWith("/profile") || trimmed.startsWith("/about")) {
       setCurrentView("author");
       setTargetBookId(null);
       setTargetStoryId(null);
@@ -66,7 +71,7 @@ export default function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  const navigateTo = (view: "books" | "publications" | "author" | "study", path: string, title?: string) => {
+  const navigateTo = (view: "books" | "publications" | "author" | "interviews" | "study", path: string, title?: string) => {
     if (window.location.pathname !== path) {
       window.history.pushState(null, "", path);
     }
@@ -81,9 +86,12 @@ export default function App() {
     let title = "The Letelier / Townley Novels & Selected Publications";
     let description = "In 1976, American fascist Michael Townley planted a car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington, D.C. This trilogy explores their lives.";
 
-    if (currentView === "author") {
+    if (currentView === "interviews") {
+      title = "Interviews & Readings – David Serafino";
+      description = "Literary interviews and video readings with American author David Serafino across literary journals and publications.";
+    } else if (currentView === "author") {
       title = "David Serafino – Author Profile";
-      description = "David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and pups. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other magazines.";
+      description = "David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and pups. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other literary magazines and websites. All novels and stories are available for representation.";
     } else if (currentView === "publications") {
       if (targetStoryId) {
         const pub = writerData.publications.find((p) => p.id === targetStoryId);
@@ -312,7 +320,7 @@ export default function App() {
 
       {/* Atmospheric Minimalist Header with Parallax Scrolling */}
       <header 
-        className={`w-full text-center ${currentView === "author" ? "hidden" : "pt-8 pb-4"} z-40 relative select-none`}
+        className="w-full text-center pt-8 pb-4 z-40 relative select-none"
         style={{ 
           transform: `translate3d(0, ${scrollY * 0.25}px, 0)`,
           willChange: "transform"
@@ -324,7 +332,19 @@ export default function App() {
           >
             SELECTED PUBLICATIONS
           </h1>
-        ) : currentView === "author" ? null : (
+        ) : currentView === "author" ? (
+          <h1 
+            className="font-portia-serif tracking-[0.3em] text-[11px] sm:text-[13px] font-normal text-[#c29f72] uppercase"
+          >
+            AUTHOR
+          </h1>
+        ) : currentView === "interviews" ? (
+          <h1 
+            className="font-portia-serif tracking-[0.3em] text-[11px] sm:text-[13px] font-normal text-[#c29f72] uppercase"
+          >
+            INTERVIEWS & READINGS
+          </h1>
+        ) : (
           <h1 
             className="font-portia-serif tracking-[0.3em] text-[11px] sm:text-[13px] font-normal text-[#c29f72] uppercase transition-colors duration-1000"
           >
@@ -343,7 +363,7 @@ export default function App() {
       </header>
 
       {/* Main Container Workspace */}
-      <main className={`flex-1 flex flex-col items-center justify-start relative z-[50] pointer-events-none ${currentView === "author" ? "pt-2 pb-0" : "py-8"}`}>
+      <main className={`flex-1 flex flex-col items-center justify-start relative z-[50] pointer-events-none ${currentView === "books" ? "py-8" : "pt-2 pb-8"}`}>
         {loading ? (
           <div className="text-center font-serif italic text-sm tracking-widest text-[#8C7A5B] animate-pulse pt-28" />
         ) : currentView === "author" ? (
@@ -354,6 +374,23 @@ export default function App() {
             }}
             onBackToStories={() => {
               navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            onForwardToInterviews={() => {
+              navigateTo("interviews", "/interviews", "Interviews & Readings – David Serafino");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          />
+        ) : currentView === "interviews" ? (
+          <InterviewsReadings
+            interviews={writerData.interviews}
+            videos={writerData.videos}
+            onBackToAuthor={() => {
+              navigateTo("author", "/author", "David Serafino – Author Profile");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            onForwardToNovels={() => {
+              navigateTo("books", "/", "The Letelier / Townley Novels & Selected Publications");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           />
@@ -404,9 +441,9 @@ export default function App() {
       )}
 
       {/* Minimalist Editorial Footer with Copyright & CC License */}
-      <footer className={`w-full text-center ${currentView === "author" ? "pt-20 pb-10" : "pt-56 pb-8"} z-[50] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-none`} id="app-footer">
+      <footer className={`w-full text-center ${currentView === "books" ? "pt-56 pb-8" : "pt-20 pb-10"} z-[50] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-none`} id="app-footer">
         {/* Page Navigation anchored to the bottom-left corner of the footer */}
-        {(currentView === "books" || currentView === "publications" || currentView === "author") && (
+        {(currentView === "books" || currentView === "publications" || currentView === "author" || currentView === "interviews") && (
           <div className="absolute bottom-6 left-6 z-50 pointer-events-auto" id="page-navigation-container">
             <button
               onClick={() => {
@@ -414,6 +451,8 @@ export default function App() {
                   navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
                 } else if (currentView === "publications") {
                   navigateTo("author", "/author", "David Serafino – Author Profile");
+                } else if (currentView === "author") {
+                  navigateTo("interviews", "/interviews", "Interviews & Readings – David Serafino");
                 } else {
                   navigateTo("books", "/", "The Letelier / Townley Novels & Selected Publications");
                 }
@@ -422,7 +461,7 @@ export default function App() {
               className="text-[#c29f72]/60 hover:text-[#ffd29c] hover:drop-shadow-[0_0_6px_#c29f72] transition-all duration-300 cursor-pointer underline underline-offset-4 decoration-[#c29f72]/20 hover:decoration-[#ffd29c]/80 text-sm font-medium font-serif italic"
               id="page-navigation-link"
             >
-              {currentView === "books" ? "Page 1 / 3" : currentView === "publications" ? "Page 2 / 3" : "Page 3 / 3"}
+              {currentView === "books" ? "Page 1 / 4" : currentView === "publications" ? "Page 2 / 4" : currentView === "author" ? "Page 3 / 4" : "Page 4 / 4"}
             </button>
           </div>
         )}
@@ -443,12 +482,14 @@ export default function App() {
         <div className="flex items-center justify-center pointer-events-auto" id="footer-author-credit-container">
           <button
             onClick={() => {
-              if (currentView === "publications") {
+              if (currentView === "books") {
+                navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
+              } else if (currentView === "publications") {
                 navigateTo("author", "/author", "David Serafino – Author Profile");
               } else if (currentView === "author") {
-                navigateTo("books", "/", "The Letelier / Townley Novels & Selected Publications");
+                navigateTo("interviews", "/interviews", "Interviews & Readings – David Serafino");
               } else {
-                navigateTo("publications", "/stories", "Selected Short Stories – David Serafino");
+                navigateTo("books", "/", "The Letelier / Townley Novels & Selected Publications");
               }
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}

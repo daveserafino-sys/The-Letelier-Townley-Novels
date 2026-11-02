@@ -45,9 +45,24 @@ export interface PaymentMerchantConfig {
   bankRoutingNumber: string;
 }
 
+export interface MediaItem {
+  id: string;
+  title: string;
+  outlet: string;
+  date: string;
+  url: string;
+  type: "interview" | "video";
+  description?: string;
+  thumbnailUrl?: string;
+  logoUrl?: string;
+  videoSrc?: string;
+}
+
 export interface WriterData {
   books: Book[];
   publications: Publication[];
+  interviews?: MediaItem[];
+  videos?: MediaItem[];
   paypalEmails?: PaypalEmail[];
   merchantConfig?: PaymentMerchantConfig;
   visits?: number;

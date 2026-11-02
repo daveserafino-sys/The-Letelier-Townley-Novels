@@ -48,9 +48,9 @@ export default function PublicationsList({ publications, onBack, onNavigateToAut
   }, [targetStoryId]);
 
   return (
-    <div className="flex flex-col items-center justify-start w-full max-w-2xl mx-auto px-6 pt-[12vh] pb-32 select-none font-sans pointer-events-auto" id="publications-container">
+    <div className="flex flex-col items-center justify-start w-full max-w-2xl mx-auto px-6 pt-6 sm:pt-8 pb-32 select-none font-sans pointer-events-auto" id="publications-container">
       {/* Return and Forward Navigation Buttons */}
-      <div className="w-full flex items-center justify-between mb-10">
+      <div className="w-full flex items-center justify-between mb-8 sm:mb-10">
         <button
           onClick={onBack}
           className="font-serif italic text-[11px] tracking-wider text-[#8C7A5B] hover:text-[#C5B395] transition-colors cursor-pointer flex items-center gap-1.5"

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 interface AuthorProfileProps {
   onBackToNovels: () => void;
   onBackToStories: () => void;
+  onForwardToInterviews?: () => void;
 }
 
 interface AuthorPhotoItem {
@@ -23,13 +24,6 @@ const AUTHOR_PHOTOS: AuthorPhotoItem[] = [
     description: "Primary author portrait of American writer and translator David Serafino, residing near Medellín, Colombia, author of the Letelier / Townley Trilogy and short stories nominated for the Pushcart and O. Henry prizes."
   },
   {
-    src: "/assets/aistudio/author_photo_9_e35bd35a.jpg",
-    title: "David Serafino Waterfront Portrait",
-    alt: "David Serafino in grey shirt outdoors with boats and nautical waterfront background",
-    caption: "David Serafino along the coast",
-    description: "Portrait of novelist David Serafino by a nautical harbor and boats, echoing maritime themes from The Saltwater Archives."
-  },
-  {
     src: "/assets/aistudio/author_photo_7_8081e1cc.jpg",
     title: "David Serafino Alpine Skiing",
     alt: "David Serafino in winter jacket, hat, and sunglasses on sunny snow-covered ski slope",
@@ -42,6 +36,13 @@ const AUTHOR_PHOTOS: AuthorPhotoItem[] = [
     alt: "Writer David Serafino seated under red sun umbrella wearing dark glasses",
     caption: "David Serafino writing outdoors near Medellín, Colombia",
     description: "Fiction author David Serafino at an outdoor courtyard cafe, writing and editing stories published in AGNI, The Common, and The Los Angeles Review."
+  },
+  {
+    src: "/assets/aistudio/author_photo_9_e35bd35a.jpg",
+    title: "David Serafino Waterfront Portrait",
+    alt: "David Serafino in grey shirt outdoors with boats and nautical waterfront background",
+    caption: "David Serafino along the coast",
+    description: "Portrait of novelist David Serafino by a nautical harbor and boats, echoing maritime themes from The Saltwater Archives."
   },
   {
     src: "/assets/aistudio/author_photo_5_ff97f8e3.jpg",
@@ -80,7 +81,7 @@ const AUTHOR_PHOTOS: AuthorPhotoItem[] = [
   }
 ];
 
-export default function AuthorProfile({ onBackToNovels, onBackToStories }: AuthorProfileProps) {
+export default function AuthorProfile({ onBackToNovels, onBackToStories, onForwardToInterviews }: AuthorProfileProps) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>(0);
 
   // Preload all author photos to prevent any flicker during rotations
@@ -112,7 +113,7 @@ export default function AuthorProfile({ onBackToNovels, onBackToStories }: Autho
       document.head.appendChild(scriptTag);
     }
 
-    const bioText = "David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and pups. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other magazines and websites in the U.S., U.K., Canada and India, several of which have been nominated for prizes such as the O. Henry, Pushcart, Best of the Net, and the WSFA award. He has an MFA in Fiction from the University of Virginia, a BA in English from the College of William and Mary, has lived in a dozen countries, and has recently written a novel in Spanish. His travel photography is on Instagram at the link below. All novels and stories are available for representation.";
+    const bioText = "David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and pups. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other literary magazines and websites in the U.S., U.K., Canada and India, several of which have been nominated for prizes such as the O. Henry, Pushcart, Best of the Net, and the WSFA award. He has an MFA in Fiction from the University of Virginia, a BA in English from the College of William and Mary, has lived in a dozen countries, and has recently written a novel in Spanish. His travel photography is on Instagram at the link below.\n\nAll novels and stories are available for representation.";
 
     // Schema.org ImageObject structured metadata for Google Image Search
     const imageObjects = AUTHOR_PHOTOS.map((photo, index) => ({
@@ -218,9 +219,9 @@ export default function AuthorProfile({ onBackToNovels, onBackToStories }: Autho
   const activePhoto = AUTHOR_PHOTOS[currentPhotoIndex] || AUTHOR_PHOTOS[0];
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-6 pt-8 sm:pt-10 pb-12 select-none font-sans flex flex-col items-center pointer-events-auto" id="author-profile-container">
-      {/* Return & Navigation with Yellow Arrows (matching Page 2 style) */}
-      <div className="w-full flex items-center justify-between mb-7">
+    <div className="w-full max-w-2xl mx-auto px-6 pt-6 sm:pt-8 pb-12 select-none font-sans flex flex-col items-center pointer-events-auto" id="author-profile-container">
+      {/* Return & Navigation with Yellow Arrows (matching Page 2 and Page 4 style) */}
+      <div className="w-full flex items-center justify-between mb-8 sm:mb-10">
         <button
           onClick={onBackToStories}
           className="font-serif italic text-[11px] tracking-wider text-[#8C7A5B] hover:text-[#C5B395] transition-colors cursor-pointer flex items-center gap-1.5"
@@ -229,11 +230,11 @@ export default function AuthorProfile({ onBackToNovels, onBackToStories }: Autho
           <span>← stories</span>
         </button>
         <button
-          onClick={onBackToNovels}
+          onClick={onForwardToInterviews || onBackToNovels}
           className="font-serif italic text-[11px] tracking-wider text-[#8C7A5B] hover:text-[#C5B395] transition-colors cursor-pointer flex items-center gap-1.5"
-          id="profile-forward-to-novels"
+          id="profile-forward-to-interviews"
         >
-          <span>novels →</span>
+          <span>interviews & readings →</span>
         </button>
       </div>
 
@@ -273,14 +274,28 @@ export default function AuthorProfile({ onBackToNovels, onBackToStories }: Autho
         className="w-full max-w-xl text-center px-4"
       >
         <div className="p-6 sm:p-8 rounded-lg bg-black/40 border border-stone-800/60 backdrop-blur-xs shadow-xl relative">
-          <p className="font-serif italic font-light text-stone-200 text-sm sm:text-base md:text-[17px] leading-relaxed tracking-wide text-center">
-            David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and pups. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other magazines and websites in the U.S., U.K., Canada and India, several of which have been nominated for prizes such as the O. Henry, Pushcart, Best of the Net, and the WSFA award. He has an MFA in Fiction from the University of Virginia, a BA in English from the College of William and Mary, has lived in a dozen countries, and has recently written a novel in Spanish. His travel photography is on Instagram at the link below. All novels and stories are available for representation.
-          </p>
+          <div className="font-serif italic font-light text-stone-200 text-sm sm:text-base md:text-[17px] leading-relaxed tracking-wide text-center flex flex-col gap-4">
+            <p>
+              David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and pups. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other literary magazines and websites in the U.S., U.K., Canada and India, several of which have been nominated for prizes such as the O. Henry, Pushcart, Best of the Net, and the WSFA award. He has an MFA in Fiction from the University of Virginia, a BA in English from the College of William and Mary, has lived in a dozen countries, and has recently written a novel in Spanish. His travel photography is on Instagram at the link below.
+            </p>
+            <p className="text-[#c29f72]/90">
+              All novels and stories are available for representation.
+            </p>
+          </div>
         </div>
       </motion.div>
 
       {/* Search Engine Optimization (SEO) & Google Image Search Markup - Visually Hidden */}
-      <section className="sr-only" aria-label="Author Photo Gallery and Descriptive Metadata">
+      <section className="sr-only" aria-label="Author Profile and Biography Indexing">
+        <h2>Author Profile – David Serafino</h2>
+        <div itemProp="description">
+          <p>
+            David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and pups. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other literary magazines and websites in the U.S., U.K., Canada and India, several of which have been nominated for prizes such as the O. Henry, Pushcart, Best of the Net, and the WSFA award. He has an MFA in Fiction from the University of Virginia, a BA in English from the College of William and Mary, has lived in a dozen countries, and has recently written a novel in Spanish. His travel photography is on Instagram at the link below.
+          </p>
+          <p>
+            All novels and stories are available for representation.
+          </p>
+        </div>
         <h2>David Serafino – Author Photographs and Portraits</h2>
         <p>
           High-resolution photographs of American author and novelist David Serafino, writer of the Letelier / Townley Trilogy and short stories.

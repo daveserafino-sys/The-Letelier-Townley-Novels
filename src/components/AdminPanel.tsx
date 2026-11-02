@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
-import { Book, Publication, WriterData } from "../types";
-import { Save, Upload, Plus, Trash2, Key, HelpCircle, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
-import { sortPublicationsChronological } from "../utils/publications";
+import { Book, Publication, MediaItem, WriterData } from "../types";
+import { Save, Upload, Plus, Trash2, Key, HelpCircle, Loader2, CheckCircle, AlertTriangle, Video, MessageSquare } from "lucide-react";
+import { sortPublicationsChronological, sortMediaChronological } from "../utils/publications";
 
 interface AdminPanelProps {
   isOpen: boolean;
@@ -22,8 +22,14 @@ export default function AdminPanel({
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   
   // Local working copy of state
-  const [localData, setLocalData] = useState<WriterData>({ books: [], publications: [], paypalEmails: [] });
-  const [activeTab, setActiveTab] = useState<"analytics" | "books" | "publications" | "emails" | "merchant">("analytics");
+  const [localData, setLocalData] = useState<WriterData>({
+    books: [],
+    publications: [],
+    interviews: [],
+    videos: [],
+    paypalEmails: []
+  });
+  const [activeTab, setActiveTab] = useState<"analytics" | "books" | "publications" | "media" | "emails" | "merchant">("analytics");
   const [uploadingFor, setUploadingFor] = useState<{ id: string; type: "book" | "pub"; field: "pdf" | "epub" } | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -54,6 +60,10 @@ export default function AdminPanel({
       if (fullData.publications) {
         fullData.publications = sortPublicationsChronological(fullData.publications);
       }
+      if (!fullData.interviews) fullData.interviews = [];
+      if (!fullData.videos) fullData.videos = [];
+      fullData.interviews = sortMediaChronological(fullData.interviews);
+      fullData.videos = sortMediaChronological(fullData.videos);
       if (!fullData.merchantConfig) {
         fullData.merchantConfig = {
           paypalEmail: "daveserafino@gmail.com",
@@ -94,10 +104,12 @@ export default function AdminPanel({
     setError(null);
     setSuccessMsg(null);
     
-    // Ensure publications are sorted reverse-chronologically before saving
+    // Ensure publications, interviews, and videos are sorted reverse-chronologically before saving
     const dataToSave: WriterData = {
       ...localData,
-      publications: sortPublicationsChronological(localData.publications)
+      publications: sortPublicationsChronological(localData.publications),
+      interviews: sortMediaChronological(localData.interviews || []),
+      videos: sortMediaChronological(localData.videos || [])
     };
     
     const success = await onSaveData(dataToSave, passcode);
@@ -163,6 +175,71 @@ export default function AdminPanel({
     setLocalData(prev => ({
       ...prev,
       publications: prev.publications.map(p => p.id === id ? { ...p, [field]: value } : p)
+    }));
+  };
+
+  // Interviews & Videos Edit Helpers
+  const addInterview = () => {
+    const now = new Date();
+    const currentDateStr = `${now.getMonth() + 1}/${now.getFullYear()}`;
+    const newItem: MediaItem = {
+      id: `int-${Date.now()}`,
+      title: "New Interview Title",
+      outlet: "Literary Review",
+      date: currentDateStr,
+      url: "",
+      type: "interview",
+      description: ""
+    };
+    setLocalData(prev => ({
+      ...prev,
+      interviews: [newItem, ...(prev.interviews || [])]
+    }));
+  };
+
+  const removeInterview = (id: string) => {
+    setLocalData(prev => ({
+      ...prev,
+      interviews: (prev.interviews || []).filter(item => item.id !== id)
+    }));
+  };
+
+  const updateInterviewField = (id: string, field: keyof MediaItem, value: any) => {
+    setLocalData(prev => ({
+      ...prev,
+      interviews: (prev.interviews || []).map(item => item.id === id ? { ...item, [field]: value } : item)
+    }));
+  };
+
+  const addVideo = () => {
+    const now = new Date();
+    const currentDateStr = `${now.getMonth() + 1}/${now.getFullYear()}`;
+    const newItem: MediaItem = {
+      id: `vid-${Date.now()}`,
+      title: "New Video Reading Title",
+      outlet: "Dulcet Literary Magazine",
+      date: currentDateStr,
+      url: "",
+      type: "video",
+      description: ""
+    };
+    setLocalData(prev => ({
+      ...prev,
+      videos: [newItem, ...(prev.videos || [])]
+    }));
+  };
+
+  const removeVideo = (id: string) => {
+    setLocalData(prev => ({
+      ...prev,
+      videos: (prev.videos || []).filter(item => item.id !== id)
+    }));
+  };
+
+  const updateVideoField = (id: string, field: keyof MediaItem, value: any) => {
+    setLocalData(prev => ({
+      ...prev,
+      videos: (prev.videos || []).map(item => item.id === id ? { ...item, [field]: value } : item)
     }));
   };
 
@@ -355,6 +432,16 @@ export default function AdminPanel({
                   SELECTED PUBLICATIONS
                 </button>
                 <button
+                  onClick={() => setActiveTab("media")}
+                  className={`py-2 text-[10px] font-mono tracking-wider transition-all border-b-2 cursor-pointer ${
+                    activeTab === "media"
+                      ? "text-[#8C7A5B] border-[#8C7A5B] font-semibold"
+                      : "text-[#625E57]/50 border-transparent hover:text-[#23211E]"
+                  }`}
+                >
+                  INTERVIEWS & VIDEOS
+                </button>
+                <button
                   onClick={() => setActiveTab("emails")}
                   className={`py-2 text-[10px] font-mono tracking-wider transition-all border-b-2 cursor-pointer ${
                     activeTab === "emails"
@@ -376,7 +463,7 @@ export default function AdminPanel({
                 </button>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 {activeTab === "publications" && (
                   <button
                     id="add-publication-btn"
@@ -386,6 +473,27 @@ export default function AdminPanel({
                     <Plus size={12} />
                     <span>ADD ITEM</span>
                   </button>
+                )}
+
+                {activeTab === "media" && (
+                  <>
+                    <button
+                      id="add-interview-btn"
+                      onClick={addInterview}
+                      className="flex items-center gap-1.5 px-2.5 py-1 bg-[#FAF8F5] border border-[#8C7A5B]/30 text-[#8C7A5B] hover:bg-[#8C7A5B]/10 transition-all rounded text-[10px] font-mono cursor-pointer"
+                    >
+                      <Plus size={11} />
+                      <span>ADD INTERVIEW</span>
+                    </button>
+                    <button
+                      id="add-video-btn"
+                      onClick={addVideo}
+                      className="flex items-center gap-1.5 px-2.5 py-1 bg-[#FAF8F5] border border-[#8C7A5B]/30 text-[#8C7A5B] hover:bg-[#8C7A5B]/10 transition-all rounded text-[10px] font-mono cursor-pointer"
+                    >
+                      <Plus size={11} />
+                      <span>ADD VIDEO</span>
+                    </button>
+                  </>
                 )}
 
                 <button
@@ -713,6 +821,201 @@ export default function AdminPanel({
                       </div>
                     </div>
                   ))}
+                </div>
+              ) : activeTab === "media" ? (
+                /* Edit Interviews & Videos (Two Columns / Tabs) */
+                <div className="space-y-8">
+                  {/* Top explanation note */}
+                  <div className="bg-[#F1EDE6]/60 border border-[#8C7A5B]/20 p-3.5 rounded text-xs text-[#625E57] flex items-center justify-between">
+                    <p className="font-serif italic">
+                      Interviews and video readings are automatically organized with the most current items placed at the top of their respective columns on Page 4.
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={addInterview}
+                        className="px-2.5 py-1 bg-[#8C7A5B] text-white hover:bg-[#5E4E35] rounded text-[10px] font-mono flex items-center gap-1 cursor-pointer"
+                      >
+                        <Plus size={10} />
+                        <span>+ INTERVIEW</span>
+                      </button>
+                      <button
+                        onClick={addVideo}
+                        className="px-2.5 py-1 bg-[#8C7A5B] text-white hover:bg-[#5E4E35] rounded text-[10px] font-mono flex items-center gap-1 cursor-pointer"
+                      >
+                        <Plus size={10} />
+                        <span>+ VIDEO</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Left Column: Interviews */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between pb-2 border-b border-[#8C7A5B]/30">
+                        <div className="flex items-center gap-2">
+                          <MessageSquare size={14} className="text-[#8C7A5B]" />
+                          <h4 className="text-sm font-serif italic text-[#23211E] font-medium">Interviews (Column 1)</h4>
+                        </div>
+                        <span className="text-[10px] font-mono text-[#8C7A5B]">
+                          {localData.interviews?.length || 0} ITEMS
+                        </span>
+                      </div>
+
+                      {(!localData.interviews || localData.interviews.length === 0) ? (
+                        <p className="text-xs font-mono text-stone-500 py-4 italic">No interviews listed. Click "+ INTERVIEW" to add one.</p>
+                      ) : (
+                        localData.interviews.map((item) => (
+                          <div
+                            key={item.id}
+                            className="bg-[#F1EDE6]/30 border border-[#8C7A5B]/15 p-4 rounded-lg space-y-3 relative group"
+                          >
+                            <button
+                              onClick={() => removeInterview(item.id)}
+                              className="absolute top-3 right-3 text-[#8C7A5B] hover:text-red-700 transition-colors p-1 rounded bg-[#FAF8F5] hover:bg-red-50 border border-stone-200 cursor-pointer"
+                              title="Delete Interview"
+                            >
+                              <Trash2 size={12} />
+                            </button>
+
+                            <span className="font-mono text-[9px] text-[#8C7A5B] uppercase tracking-widest block">
+                              INTERVIEW ITEM
+                            </span>
+
+                            <div className="space-y-1">
+                              <label className="text-[9px] font-mono tracking-wider text-[#625E57] block">TITLE</label>
+                              <input
+                                type="text"
+                                value={item.title}
+                                onChange={(e) => updateInterviewField(item.id, "title", e.target.value)}
+                                className="w-full px-2.5 py-1 bg-[#FAF8F5] border border-stone-200 rounded text-xs text-[#23211E] focus:outline-none focus:border-[#8C7A5B]"
+                              />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1">
+                                <label className="text-[9px] font-mono tracking-wider text-[#625E57] block">OUTLET</label>
+                                <input
+                                  type="text"
+                                  value={item.outlet}
+                                  onChange={(e) => updateInterviewField(item.id, "outlet", e.target.value)}
+                                  className="w-full px-2.5 py-1 bg-[#FAF8F5] border border-stone-200 rounded text-xs text-[#23211E] focus:outline-none focus:border-[#8C7A5B]"
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <label className="text-[9px] font-mono tracking-wider text-[#625E57] block">DATE (M/YYYY)</label>
+                                <input
+                                  type="text"
+                                  value={item.date}
+                                  onChange={(e) => updateInterviewField(item.id, "date", e.target.value)}
+                                  className="w-full px-2.5 py-1 bg-[#FAF8F5] border border-stone-200 rounded text-xs text-[#23211E] focus:outline-none focus:border-[#8C7A5B] font-mono"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="space-y-1">
+                              <label className="text-[9px] font-mono tracking-wider text-[#625E57] block">URL / HYPERLINK</label>
+                              <input
+                                type="text"
+                                value={item.url}
+                                onChange={(e) => updateInterviewField(item.id, "url", e.target.value)}
+                                placeholder="https://..."
+                                className="w-full px-2.5 py-1 bg-[#FAF8F5] border border-stone-200 rounded text-xs text-[#23211E] focus:outline-none focus:border-[#8C7A5B] font-mono"
+                              />
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
+                    {/* Right Column: Readings & Videos */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between pb-2 border-b border-[#8C7A5B]/30">
+                        <div className="flex items-center gap-2">
+                          <Video size={14} className="text-[#8C7A5B]" />
+                          <h4 className="text-sm font-serif italic text-[#23211E] font-medium">Readings (Column 2)</h4>
+                        </div>
+                        <span className="text-[10px] font-mono text-[#8C7A5B]">
+                          {localData.videos?.length || 0} ITEMS
+                        </span>
+                      </div>
+
+                      {(!localData.videos || localData.videos.length === 0) ? (
+                        <p className="text-xs font-mono text-stone-500 py-4 italic">No videos listed. Click "+ VIDEO" to add one.</p>
+                      ) : (
+                        localData.videos.map((vid) => (
+                          <div
+                            key={vid.id}
+                            className="bg-[#F1EDE6]/30 border border-[#8C7A5B]/15 p-4 rounded-lg space-y-3 relative group"
+                          >
+                            <button
+                              onClick={() => removeVideo(vid.id)}
+                              className="absolute top-3 right-3 text-[#8C7A5B] hover:text-red-700 transition-colors p-1 rounded bg-[#FAF8F5] hover:bg-red-50 border border-stone-200 cursor-pointer"
+                              title="Delete Video"
+                            >
+                              <Trash2 size={12} />
+                            </button>
+
+                            <span className="font-mono text-[9px] text-[#8C7A5B] uppercase tracking-widest block">
+                              VIDEO / READING RECORD
+                            </span>
+
+                            <div className="space-y-1">
+                              <label className="text-[9px] font-mono tracking-wider text-[#625E57] block">TITLE</label>
+                              <input
+                                type="text"
+                                value={vid.title}
+                                onChange={(e) => updateVideoField(vid.id, "title", e.target.value)}
+                                className="w-full px-2.5 py-1 bg-[#FAF8F5] border border-stone-200 rounded text-xs text-[#23211E] focus:outline-none focus:border-[#8C7A5B]"
+                              />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1">
+                                <label className="text-[9px] font-mono tracking-wider text-[#625E57] block">OUTLET / PUBLISHER</label>
+                                <input
+                                  type="text"
+                                  value={vid.outlet}
+                                  onChange={(e) => updateVideoField(vid.id, "outlet", e.target.value)}
+                                  className="w-full px-2.5 py-1 bg-[#FAF8F5] border border-stone-200 rounded text-xs text-[#23211E] focus:outline-none focus:border-[#8C7A5B]"
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <label className="text-[9px] font-mono tracking-wider text-[#625E57] block">DATE (M/YYYY)</label>
+                                <input
+                                  type="text"
+                                  value={vid.date}
+                                  onChange={(e) => updateVideoField(vid.id, "date", e.target.value)}
+                                  className="w-full px-2.5 py-1 bg-[#FAF8F5] border border-stone-200 rounded text-xs text-[#23211E] focus:outline-none focus:border-[#8C7A5B] font-mono"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="space-y-1">
+                              <label className="text-[9px] font-mono tracking-wider text-[#625E57] block">VIDEO URL (e.g. Instagram Reel, YouTube)</label>
+                              <input
+                                type="text"
+                                value={vid.url}
+                                onChange={(e) => updateVideoField(vid.id, "url", e.target.value)}
+                                placeholder="https://www.instagram.com/reel/... or https://www.youtube.com/watch?v=..."
+                                className="w-full px-2.5 py-1 bg-[#FAF8F5] border border-stone-200 rounded text-xs text-[#23211E] focus:outline-none focus:border-[#8C7A5B] font-mono"
+                              />
+                            </div>
+
+                            <div className="space-y-1">
+                              <label className="text-[9px] font-mono tracking-wider text-[#625E57] block">MAGAZINE / OUTLET LOGO URL (OPTIONAL)</label>
+                              <input
+                                type="text"
+                                value={vid.logoUrl || ""}
+                                onChange={(e) => updateVideoField(vid.id, "logoUrl", e.target.value)}
+                                placeholder="e.g. /assets/logos/dulcet_logo_white.png or direct image URL"
+                                className="w-full px-2.5 py-1 bg-[#FAF8F5] border border-stone-200 rounded text-xs text-[#23211E] focus:outline-none focus:border-[#8C7A5B] font-mono"
+                              />
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
                 </div>
               ) : activeTab === "emails" ? (
                 /* Collected Emails tab */

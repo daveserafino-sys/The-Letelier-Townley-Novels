@@ -270,6 +270,68 @@ async function ensureDbSeeded() {
   }
 }
 
+const DEFAULT_INITIAL_INTERVIEWS = [
+  {
+    id: "int-rabble-review-2026",
+    title: "Artist Spotlight: David Serafino",
+    outlet: "Rabble Review",
+    date: "10/2026",
+    url: "https://www.instagram.com/p/DeaEyEPkgtd/",
+    type: "interview",
+    description: "Artist and contributor spotlight on fiction author David Serafino for Rabble Review."
+  },
+  {
+    id: "int-oyster-river-pages-2026",
+    title: "Contributor Showcase: Dave Serafino",
+    outlet: "Oyster River Pages",
+    date: "5/2026",
+    url: "https://www.oysterriverpages.com/contributor-showcase-41/daveserafino",
+    type: "interview",
+    description: "Contributor showcase and interview exploring writing craft and creative process with Dave Serafino."
+  },
+  {
+    id: "int-dulcet-2025",
+    title: "David Serafino in Conversation with Tyler Martinez",
+    outlet: "Dulcet Literary Magazine",
+    date: "3/2025",
+    url: "https://www.dulcetlitmag.com/david-serafino",
+    type: "interview",
+    description: "In-depth literary conversation conducted by Tyler Martinez on fiction craft and 'Firebreak'."
+  },
+  {
+    id: "int-radon-journal-2024",
+    title: "A Conversation with Dave Serafino on 'And3' & Translation",
+    outlet: "Radon Journal",
+    date: "5/2024",
+    url: "https://www.radonjournal.com/interviews/conversation-with-dave-serafino",
+    type: "interview",
+    description: "Conversation on speculative fiction, literary translation, and the story 'And3' in Radon Journal Issue 7."
+  }
+];
+
+const DEFAULT_INITIAL_VIDEOS = [
+  {
+    id: "vid-youtube-sweetass-2026",
+    title: "Sweetass by David Serafino",
+    outlet: "Rabble Review",
+    date: "10/2026",
+    url: "https://www.youtube.com/watch?v=sSGAwsXGTKA",
+    type: "video",
+    description: "David Serafino reads Sweetass for Rabble Review.",
+    thumbnailUrl: "/assets/sweetass_youtube_thumbnail.jpg"
+  },
+  {
+    id: "vid-dulcet-reel-2025",
+    title: "David Serafino Reads Excerpt from Firebreak",
+    outlet: "Dulcet Literary Magazine",
+    date: "2/2025",
+    url: "https://www.instagram.com/reel/DGgBg4XJ0dk/",
+    type: "video",
+    description: "Author David Serafino reads an excerpt from his published short story 'Firebreak' for Dulcet Literary Magazine.",
+    thumbnailUrl: "/assets/aistudio/author_photo_2_5c6ee16d.jpg"
+  }
+];
+
 // Safe async reader helper
 async function readWriterDataAsync() {
   if (db) {
@@ -283,6 +345,39 @@ async function readWriterDataAsync() {
       }
       if (docSnap.exists) {
         const data = docSnap.data();
+        let changed = false;
+        if (!data.interviews || data.interviews.length === 0) {
+          data.interviews = DEFAULT_INITIAL_INTERVIEWS;
+          changed = true;
+        }
+        if (!data.videos || data.videos.length === 0) {
+          data.videos = DEFAULT_INITIAL_VIDEOS;
+          changed = true;
+        } else {
+          const hasSweetass = data.videos.some((v: any) => v.id === "vid-youtube-sweetass-2026" || v.url?.includes("sSGAwsXGTKA"));
+          if (!hasSweetass) {
+            data.videos.unshift({
+              id: "vid-youtube-sweetass-2026",
+              title: "Sweetass by David Serafino",
+              outlet: "Rabble Review",
+              date: "10/2026",
+              url: "https://www.youtube.com/watch?v=sSGAwsXGTKA",
+              type: "video",
+              description: "David Serafino reads Sweetass for Rabble Review.",
+              thumbnailUrl: "/assets/sweetass_youtube_thumbnail.jpg"
+            });
+            changed = true;
+          }
+          for (const v of data.videos) {
+            if (v.id === "vid-dulcet-reel-2025" && v.title !== "David Serafino Reads Excerpt from Firebreak") {
+              v.title = "David Serafino Reads Excerpt from Firebreak";
+              changed = true;
+            }
+          }
+        }
+        if (changed) {
+          docRef.set(data).catch(() => {});
+        }
         cachedWriterData = data;
         return data;
       }
@@ -296,6 +391,12 @@ async function readWriterDataAsync() {
     if (fs.existsSync(dataFilePath)) {
       const content = fs.readFileSync(dataFilePath, "utf8");
       const parsed = JSON.parse(content);
+      if (!parsed.interviews || parsed.interviews.length === 0) {
+        parsed.interviews = DEFAULT_INITIAL_INTERVIEWS;
+      }
+      if (!parsed.videos || parsed.videos.length === 0) {
+        parsed.videos = DEFAULT_INITIAL_VIDEOS;
+      }
       cachedWriterData = parsed;
       return parsed;
     }
@@ -304,10 +405,18 @@ async function readWriterDataAsync() {
   }
 
   if (cachedWriterData) {
+    if (!cachedWriterData.interviews || cachedWriterData.interviews.length === 0) {
+      cachedWriterData.interviews = DEFAULT_INITIAL_INTERVIEWS;
+    }
+    if (!cachedWriterData.videos || cachedWriterData.videos.length === 0) {
+      cachedWriterData.videos = DEFAULT_INITIAL_VIDEOS;
+    }
     return cachedWriterData;
   }
 
-  return getHardcodedFallback();
+  const fallback = getHardcodedFallback();
+  (fallback as any).interviews = DEFAULT_INITIAL_INTERVIEWS;
+  (fallback as any).videos = DEFAULT_INITIAL_VIDEOS;
 }
 
 // Safe async writer helper
@@ -356,7 +465,7 @@ app.all(["/sitemap.xml", "/sitemap", "/sitemap_index.xml"], async (req, res) => 
     const now = new Date().toISOString().split("T")[0];
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n`;
+    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n`;
 
     // Root page (Novels trilogy)
     xml += `  <url>\n    <loc>${baseUrl}/</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n`;
@@ -392,6 +501,29 @@ app.all(["/sitemap.xml", "/sitemap", "/sitemap_index.xml"], async (req, res) => 
     xml += `    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/serafino2_509ea778.jpg</image:loc>\n      <image:title>David Serafino Literary Portrait</image:title>\n      <image:caption>Portrait photograph of David Serafino, American writer, painter, travel photographer and translator</image:caption>\n    </image:image>\n`;
     xml += `  </url>\n`;
 
+    // Page 4 / Interviews & Readings Page with Video & Rich Schema Markup
+    const videoList: any[] = (data.videos && data.videos.length > 0) ? data.videos : DEFAULT_INITIAL_VIDEOS;
+    xml += `  <url>\n    <loc>${baseUrl}/interviews</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n`;
+    for (const vid of videoList) {
+      const ytMatch = (vid.url || "").match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      const thumb = ytMatch ? `https://i.ytimg.com/vi/${ytMatch[1]}/hqdefault.jpg` : `${baseUrl}/assets/aistudio/author_photo_2_5c6ee16d.jpg`;
+      const pubDate = vid.date && vid.date.includes("/")
+        ? `${vid.date.split("/")[1]}-${vid.date.split("/")[0].padStart(2, "0")}-01`
+        : (vid.date || "2025-02-25");
+      const safeTitle = (vid.title || "David Serafino Reading").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      const safeDesc = (vid.description || (vid.title + " - Reading by author David Serafino.")).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      xml += `    <video:video>\n`;
+      xml += `      <video:thumbnail_loc>${thumb}</video:thumbnail_loc>\n`;
+      xml += `      <video:title>${safeTitle}</video:title>\n`;
+      xml += `      <video:description>${safeDesc}</video:description>\n`;
+      xml += `      <video:player_loc>${vid.url.replace(/&/g, "&amp;")}</video:player_loc>\n`;
+      xml += `      <video:publication_date>${pubDate}</video:publication_date>\n`;
+      xml += `      <video:family_friendly>yes</video:family_friendly>\n`;
+      xml += `    </video:video>\n`;
+    }
+    xml += `  </url>\n`;
+    xml += `  <url>\n    <loc>${baseUrl}/readings</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
+
     // Writer's Study
     xml += `  <url>\n    <loc>${baseUrl}/study</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
 
@@ -410,6 +542,8 @@ function sanitizePublicWriterData(data: any) {
   return {
     books: data.books || [],
     publications: data.publications || [],
+    interviews: data.interviews || [],
+    videos: data.videos || [],
     visits: data.visits || 0,
     merchantConfig: {
       paypalEmail: data.merchantConfig?.paypalEmail || "daveserafino@gmail.com"

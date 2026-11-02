@@ -143,3 +143,28 @@ export function sortPublicationsChronological(publications: Publication[]): Publ
     return 0;
   });
 }
+
+/**
+ * Sorts media items (interviews, videos) in reverse-chronological order (newest date at the top).
+ */
+export function sortMediaChronological<T extends { date?: string; id?: string }>(items?: T[]): T[] {
+  if (!items || !Array.isArray(items)) return [];
+
+  return [...items].sort((a, b) => {
+    const scoreA = parsePublicationDate(a.date);
+    const scoreB = parsePublicationDate(b.date);
+
+    if (scoreB !== scoreA) {
+      return scoreB - scoreA;
+    }
+
+    // Tie-break: id with timestamp
+    const tsA = a.id && a.id.includes("-") ? parseInt(a.id.split("-").pop() || "0", 10) : 0;
+    const tsB = b.id && b.id.includes("-") ? parseInt(b.id.split("-").pop() || "0", 10) : 0;
+    if (tsA || tsB) {
+      return tsB - tsA;
+    }
+
+    return 0;
+  });
+}
