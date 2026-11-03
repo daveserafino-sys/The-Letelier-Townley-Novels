@@ -85,44 +85,66 @@ export default function InterviewsReadings({
 
     const videoObjects = sortedVideos.map((vid) => {
       const embedInfo = getVideoEmbedInfo(vid.url, vid.thumbnailUrl);
+      
+      // Strict ISO 8601 date format required by Google Search Console
       let isoUploadDate = "2025-02-25T00:00:00Z";
       if (vid.url.includes("sSGAwsXGTKA") || vid.id.includes("sweetass")) {
         isoUploadDate = "2026-10-04T00:00:00Z";
       } else if (vid.date) {
-        isoUploadDate = vid.date.includes("/")
-          ? `${vid.date.split("/")[1]}-${vid.date.split("/")[0].padStart(2, "0")}-01T00:00:00Z`
-          : `${vid.date}T00:00:00Z`;
+        const trimmed = vid.date.trim();
+        const parts = trimmed.split("/");
+        if (parts.length === 2) {
+          const month = parts[0].padStart(2, "0");
+          const year = parts[1];
+          isoUploadDate = `${year}-${month}-01T00:00:00Z`;
+        } else if (/^\d{4}-\d{2}-\d{2}/.test(trimmed)) {
+          isoUploadDate = trimmed.includes("T") ? trimmed : `${trimmed}T00:00:00Z`;
+        }
       }
 
-      const thumb = embedInfo.thumbnailUrl.startsWith("http")
-        ? embedInfo.thumbnailUrl
-        : `${origin}${embedInfo.thumbnailUrl}`;
+      // Ensure every thumbnailUrl is an absolute, crawlable URL
+      const thumbCandidates: string[] = [];
+      if (embedInfo.type === "youtube" && embedInfo.videoId) {
+        thumbCandidates.push(`https://i.ytimg.com/vi/${embedInfo.videoId}/maxresdefault.jpg`);
+        thumbCandidates.push(`https://i.ytimg.com/vi/${embedInfo.videoId}/hqdefault.jpg`);
+      }
+      if (vid.thumbnailUrl) {
+        thumbCandidates.push(
+          vid.thumbnailUrl.startsWith("http") ? vid.thumbnailUrl : `${origin}${vid.thumbnailUrl}`
+        );
+      }
+      thumbCandidates.push(`${origin}/assets/aistudio/author_photo_2_5c6ee16d.jpg`);
+      const validThumbnails = Array.from(new Set(thumbCandidates.filter(Boolean)));
 
-      const richThumbnails = [
-        thumb,
-        ...(embedInfo.videoId
-          ? [
-              `https://i.ytimg.com/vi/${embedInfo.videoId}/maxresdefault.jpg`,
-              `https://i.ytimg.com/vi/${embedInfo.videoId}/hqdefault.jpg`,
-              `${origin}/assets/sweetass_youtube_thumbnail.jpg`
-            ]
-          : []),
-        `${origin}/assets/aistudio/author_photo_2_5c6ee16d.jpg`
-      ];
+      // Non-empty description required by Google
+      const description = (vid.description && vid.description.trim().length > 0)
+        ? vid.description.trim()
+        : vid.url.includes("sSGAwsXGTKA")
+          ? "Author David Serafino reads an excerpt from Sweetass, featured in Rabble Review."
+          : `Author David Serafino reads an excerpt from ${vid.title}. Published by ${vid.outlet || "David Serafino"}.`;
+
+      const duration = (vid.url.includes("sSGAwsXGTKA") || vid.id.includes("sweetass"))
+        ? "PT2M45S"
+        : "PT1M15S";
+
+      const contentUrl = embedInfo.directUrl && embedInfo.directUrl.startsWith("http")
+        ? embedInfo.directUrl
+        : (vid.url && vid.url.startsWith("http") ? vid.url : `${origin}/readings`);
+
+      const embedUrl = embedInfo.embedUrl && embedInfo.embedUrl.startsWith("http")
+        ? embedInfo.embedUrl
+        : contentUrl;
 
       return {
         "@type": "VideoObject",
         "@id": `${origin}/readings#${vid.id}`,
         "name": vid.title,
-        "description": vid.description || `Author David Serafino reads an excerpt from ${vid.title}. Published by ${vid.outlet}.`,
-        "thumbnailUrl": Array.from(new Set(richThumbnails)),
+        "description": description,
+        "thumbnailUrl": validThumbnails,
         "uploadDate": isoUploadDate,
-        "contentUrl": embedInfo.directUrl,
-        "embedUrl": embedInfo.embedUrl,
-        "potentialAction": {
-          "@type": "WatchAction",
-          "target": embedInfo.directUrl
-        },
+        "contentUrl": contentUrl,
+        "embedUrl": embedUrl,
+        "duration": duration,
         "inLanguage": "en-US",
         "isFamilyFriendly": true,
         "genre": ["Literary Fiction Reading", "Author Excerpt", "Audiobook / Video Reading"],
@@ -134,12 +156,14 @@ export default function InterviewsReadings({
         },
         "publisher": {
           "@type": "Organization",
-          "name": vid.outlet,
-          "url": vid.outlet.toLowerCase().includes("rabble") ? "https://www.youtube.com/@rabblereview" : vid.url
-        },
-        "interactionStatistic": {
-          "@type": "InteractionCounter",
-          "interactionType": { "@type": "WatchAction" }
+          "name": vid.outlet || "David Serafino",
+          "url": vid.outlet && vid.outlet.toLowerCase().includes("rabble")
+            ? "https://www.youtube.com/@rabblereview"
+            : (contentUrl || `${origin}/`),
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${origin}/assets/aistudio/author_photo_2_5c6ee16d.jpg`
+          }
         }
       };
     });
@@ -275,8 +299,6 @@ export default function InterviewsReadings({
                   transition={{ duration: 0.3, delay: idx * 0.04 }}
                   className="py-5 w-full flex flex-col justify-between gap-3 group"
                   id={`interview-item-${item.id}`}
-                  itemScope
-                  itemType="https://schema.org/Article"
                 >
                   <div className="flex flex-col w-full min-w-0">
                     {/* Interview Title as a hyperlink (matches Page 2 font, formatting & style) */}
@@ -286,15 +308,14 @@ export default function InterviewsReadings({
                       rel="noopener noreferrer"
                       className="font-sans italic font-light tracking-wide text-[19px] sm:text-[22px] leading-snug text-[#e2e7ec] group-hover:text-white transition-colors duration-300 underline underline-offset-4 decoration-stone-800/40 hover:decoration-white cursor-pointer break-words block w-full"
                       id={`interview-title-link-${item.id}`}
-                      itemProp="url"
                     >
-                      <span itemProp="headline">{item.title}</span>
+                      <span>{item.title}</span>
                     </a>
 
                     {/* Outlet & Date */}
                     <p className="font-serif text-stone-400 text-[12px] mt-1.5 flex items-center justify-between" id={`interview-meta-${item.id}`}>
                       <span>
-                        <span itemProp="publisher">{item.outlet}</span> — <span itemProp="datePublished">{item.date}</span>
+                        <span>{item.outlet}</span> — <span>{item.date}</span>
                       </span>
                     </p>
                   </div>
@@ -342,8 +363,6 @@ export default function InterviewsReadings({
                     transition={{ duration: 0.3, delay: idx * 0.04 }}
                     className="py-5 w-full flex flex-col justify-between gap-3 group"
                     id={`video-item-${vid.id}`}
-                    itemScope
-                    itemType="https://schema.org/VideoObject"
                   >
                     {/* Minimalist Title and Meta - EXACT SAME STYLE as left column, no magazine title image */}
                     <div className="flex flex-col w-full min-w-0">
@@ -354,15 +373,14 @@ export default function InterviewsReadings({
                         rel="noopener noreferrer"
                         className="font-sans italic font-light tracking-wide text-[19px] sm:text-[22px] leading-snug text-[#e2e7ec] group-hover:text-white transition-colors duration-300 underline underline-offset-4 decoration-stone-800/40 hover:decoration-white cursor-pointer break-words block w-full"
                         id={`video-title-link-${vid.id}`}
-                        itemProp="url"
                       >
-                        <span itemProp="name">{vid.title}</span>
+                        <span>{vid.title}</span>
                       </a>
 
                       {/* Outlet & Date */}
                       <p className="font-serif text-stone-400 text-[12px] mt-1.5 flex items-center justify-between" id={`video-meta-${vid.id}`}>
                         <span>
-                          <span itemProp="publisher">{vid.outlet}</span> — <span itemProp="uploadDate">{vid.date}</span>
+                          <span>{vid.outlet}</span> — <span>{vid.date}</span>
                         </span>
                       </p>
                     </div>
@@ -379,7 +397,6 @@ export default function InterviewsReadings({
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowFullScreen
                             loading="lazy"
-                            itemProp="embedUrl"
                           />
                           <div className="absolute inset-0 rounded-md bg-[#c29f72]/5 blur-lg pointer-events-none -z-10" />
                         </div>
@@ -400,7 +417,6 @@ export default function InterviewsReadings({
                             scrolling="no"
                             allow="encrypted-media; autoplay; clipboard-write; picture-in-picture"
                             loading="lazy"
-                            itemProp="embedUrl"
                           />
                           <div className="absolute inset-0 rounded-md bg-[#c29f72]/5 blur-lg pointer-events-none -z-10" />
                         </div>
@@ -422,7 +438,6 @@ export default function InterviewsReadings({
                               title={vid.title}
                               allowFullScreen
                               loading="lazy"
-                              itemProp="embedUrl"
                             />
                           )}
                           <div className="absolute inset-0 rounded-md bg-[#c29f72]/5 blur-lg pointer-events-none -z-10" />
@@ -448,29 +463,21 @@ export default function InterviewsReadings({
             const embed = getVideoEmbedInfo(v.url, v.thumbnailUrl);
             return (
               <li key={v.id}>
-                <article itemScope itemType="https://schema.org/VideoObject">
-                  <span itemProp="name">{v.title}</span>
-                  <span itemProp="uploadDate">{v.date}</span>
-                  <span itemProp="description">{v.description || v.title}</span>
-                  <a href={embed.directUrl} itemProp="contentUrl">{embed.directUrl}</a>
-                  <a href={embed.embedUrl} itemProp="embedUrl">{embed.embedUrl}</a>
-                  <img src={embed.thumbnailUrl} alt={v.title} itemProp="thumbnailUrl" />
-                  <span itemProp="publisher">{v.outlet}</span>
-                  <span itemProp="author">David Serafino</span>
-                  <span itemProp="inLanguage">en-US</span>
-                  <span itemProp="isFamilyFriendly">true</span>
+                <article>
+                  <h3>{v.title}</h3>
+                  <p>{v.outlet} — {v.date}</p>
+                  <p>{v.description || v.title}</p>
+                  <a href={embed.directUrl}>Watch reading video on {v.outlet}</a>
                 </article>
               </li>
             );
           })}
           {sortedInterviews.map((i) => (
             <li key={i.id}>
-              <article itemScope itemType="https://schema.org/Article">
-                <span itemProp="headline">{i.title}</span>
-                <span itemProp="datePublished">{i.date}</span>
-                <span itemProp="publisher">{i.outlet}</span>
-                <a href={i.url} itemProp="url">{i.url}</a>
-                <span itemProp="author">David Serafino</span>
+              <article>
+                <h3>{i.title}</h3>
+                <p>{i.outlet} — {i.date}</p>
+                <a href={i.url}>Read interview on {i.outlet}</a>
               </article>
             </li>
           ))}

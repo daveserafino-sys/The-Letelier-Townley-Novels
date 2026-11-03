@@ -21,6 +21,8 @@ export interface Book {
   downloads?: number;
   downloadsPdf?: number;
   downloadsEpub?: number;
+  coverImage?: string;
+  synopsis?: string[];
 }
 
 export interface Publication {

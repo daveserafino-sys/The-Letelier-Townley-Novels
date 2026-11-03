@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Imperial+Script&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Caveat:wght@400;500;600;700&family=Marck+Script&family=Pinyon+Script&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -6,10 +6,48 @@
   --font-serif: "Playfair Display", Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-portia-serif: "Bodoni Moda", "Cinzel", Georgia, serif;
+  --font-handwriting: "Caveat", "Marck Script", cursive;
+  --font-classic-cursive: "Pinyon Script", "Imperial Script", cursive;
+  --font-constitution: "Pinyon Script", "Imperial Script", cursive;
 }
 
 .font-portia-serif {
   font-family: var(--font-portia-serif);
+}
+
+.font-handwriting {
+  font-family: var(--font-handwriting);
+}
+
+.font-classic-cursive {
+  font-family: var(--font-classic-cursive);
+}
+
+.font-constitution {
+  font-family: var(--font-constitution);
+}
+
+.silver-halide-filter {
+  filter: grayscale(100%) contrast(1.18) brightness(0.95);
+}
+
+.ghost-cover {
+  filter: grayscale(100%) contrast(1.15) brightness(0.92);
+  opacity: 0.74;
+}
+
+.ghost-text {
+  font-family: "Pinyon Script", "Imperial Script", cursive;
+  color: rgba(226, 235, 245, 0.90);
+  text-shadow: 0 0 14px rgba(220, 230, 240, 0.28), 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Base custom styles to ensure full immersive layout */

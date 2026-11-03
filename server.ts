@@ -223,9 +223,52 @@ function handleFirestoreError(error: any, operationType: OperationType, path: st
 function getHardcodedFallback() {
   return {
     books: [
-      { id: "corilocho", title: "Corilocho", price: 0, pdfUrl: "", epubUrl: "", pdfFileName: "corilocho-sample.pdf", epubFileName: "corilocho-sample.epub" },
-      { id: "saltwater-archives", title: "Saltwater Archives", price: 1, pdfUrl: "", epubUrl: "", pdfFileName: "saltwater-archives-full.pdf", epubFileName: "saltwater-archives-full.epub" },
-      { id: "we-are-sympathetic", title: "We Are Sympathetic", price: 2, pdfUrl: "", epubUrl: "", pdfFileName: "we-are-sympathetic-full.pdf", epubFileName: "we-are-sympathetic-full.epub" }
+      {
+        id: "corilocho",
+        title: "Corilocho",
+        price: 0,
+        pdfUrl: "",
+        epubUrl: "",
+        pdfFileName: "corilocho-sample.pdf",
+        epubFileName: "corilocho-sample.epub",
+        coverImage: "/assets/aistudio/Corilocho_cover_a3b33bf7.jpg",
+        synopsis: [
+          "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ambition, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics and diplomacy while trying to preserve the personal relationships that give his life meaning. His marriage to Isabel unfolds alongside his growing responsibilities, as his political convictions draw him into an increasingly turbulent national landscape and the choices he makes lead to consequences for the people closest to him.",
+          "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them into the ideological circles of the Chilean right, where political commitment and personal advancement become increasingly difficult to separate. As saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel's lives in the most consequential ways.",
+          "A story of love, idealism, and betrayal, Corilocho traces the personal costs of choices made in the name of political conviction."
+        ]
+      },
+      {
+        id: "saltwater-archives",
+        title: "Saltwater Archives",
+        price: 1,
+        pdfUrl: "",
+        epubUrl: "",
+        pdfFileName: "saltwater-archives-full.pdf",
+        epubFileName: "saltwater-archives-full.epub",
+        coverImage: "/assets/aistudio/saltwater_archives_cover_5aad74d9.jpg",
+        synopsis: [
+          "As Chile descends into fascism, the ambitions and loyalties of four individuals draw them into an increasingly dangerous world.",
+          "Michael Townley and Mariana Callejas find themselves at the center of a network operating behind the scenes of Chilean politics. Drawn by promises of wealth and influence, Mariana becomes increasingly involved with right-wing paramilitary men, while Michael discovers that his technical abilities offer opportunities far beyond ordinary employment.",
+          "Meanwhile, Orlando Letelier is sent to Dawson Island, near the Antarctic Circle, where he and his fellow political detainees face harsh conditions and an uncertain future, and Isabel mounts an international campaign to save him even as the military regime targets her personally.",
+          "As personal loyalties collide with political ambition, the consequences of personal choices extend far beyond the people who make them."
+        ]
+      },
+      {
+        id: "we-are-sympathetic",
+        title: "We Are Sympathetic",
+        price: 2,
+        pdfUrl: "",
+        epubUrl: "",
+        pdfFileName: "we-are-sympathetic-full.pdf",
+        epubFileName: "we-are-sympathetic-full.epub",
+        coverImage: "/assets/aistudio/we_are_sympathetic_cover_869e764f.jpg",
+        synopsis: [
+          "The Leteliers resume their lives in Washington after Orlando’s imprisonment and exile, where they emerge as leaders of the resistance to Chile’s military government. Determined to expose the regime's abuses and challenge its influence abroad, Orlando draws on his political experience and international connections, while Isabel founds a human rights institution and stages rallies that include a benefit concert at Madison Square Garden headlined by Joan Baez and Pete Seeger, where Orlando was the keynote speaker. But the demands of their public campaigns are matched by growing complications. His marriage to Isabel, tested by years of separation and political upheaval, faces new strains after an affair is exposed, which he’s still carrying on in secret.",
+          "Meanwhile, Michael Townley and Mariana Callejas have become important operatives whose assignments take them from Miami to Mexico City and across Europe, where they cultivate alliances with far-right organizations and organize assassination plots targeting opponents of the Chilean government. As Mariana manages these relationships and Michael produces biological, chemical and conventional weapons, their private ambitions become inseparable from the regime's political violence.",
+          "As Orlando's campaign gains momentum, Michael Townley is closing in, and the political conflict that has shaped their lives will resonate far beyond them."
+        ]
+      }
     ],
     publications: []
   };
@@ -332,6 +375,34 @@ const DEFAULT_INITIAL_VIDEOS = [
   }
 ];
 
+const DEFAULT_BOOK_META: Record<string, { coverImage: string; synopsis: string[] }> = {
+  corilocho: {
+    coverImage: "/assets/aistudio/Corilocho_cover_a3b33bf7.jpg",
+    synopsis: [
+      "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ambition, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics and diplomacy while trying to preserve the personal relationships that give his life meaning. His marriage to Isabel unfolds alongside his growing responsibilities, as his political convictions draw him into an increasingly turbulent national landscape and the choices he makes lead to consequences for the people closest to him.",
+      "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them into the ideological circles of the Chilean right, where political commitment and personal advancement become increasingly difficult to separate. As saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel's lives in the most consequential ways.",
+      "A story of love, idealism, and betrayal, Corilocho traces the personal costs of choices made in the name of political conviction."
+    ]
+  },
+  "saltwater-archives": {
+    coverImage: "/assets/aistudio/saltwater_archives_cover_5aad74d9.jpg",
+    synopsis: [
+      "As Chile descends into fascism, the ambitions and loyalties of four individuals draw them into an increasingly dangerous world.",
+      "Michael Townley and Mariana Callejas find themselves at the center of a network operating behind the scenes of Chilean politics. Drawn by promises of wealth and influence, Mariana becomes increasingly involved with right-wing paramilitary men, while Michael discovers that his technical abilities offer opportunities far beyond ordinary employment.",
+      "Meanwhile, Orlando Letelier is sent to Dawson Island, near the Antarctic Circle, where he and his fellow political detainees face harsh conditions and an uncertain future, and Isabel mounts an international campaign to save him even as the military regime targets her personally.",
+      "As personal loyalties collide with political ambition, the consequences of personal choices extend far beyond the people who make them."
+    ]
+  },
+  "we-are-sympathetic": {
+    coverImage: "/assets/aistudio/we_are_sympathetic_cover_869e764f.jpg",
+    synopsis: [
+      "The Leteliers resume their lives in Washington after Orlando’s imprisonment and exile, where they emerge as leaders of the resistance to Chile’s military government. Determined to expose the regime's abuses and challenge its influence abroad, Orlando draws on his political experience and international connections, while Isabel founds a human rights institution and stages rallies that include a benefit concert at Madison Square Garden headlined by Joan Baez and Pete Seeger, where Orlando was the keynote speaker. But the demands of their public campaigns are matched by growing complications. His marriage to Isabel, tested by years of separation and political upheaval, faces new strains after an affair is exposed, which he’s still carrying on in secret.",
+      "Meanwhile, Michael Townley and Mariana Callejas have become important operatives whose assignments take them from Miami to Mexico City and across Europe, where they cultivate alliances with far-right organizations and organize assassination plots targeting opponents of the Chilean government. As Mariana manages these relationships and Michael produces biological, chemical and conventional weapons, their private ambitions become inseparable from the regime's political violence.",
+      "As Orlando's campaign gains momentum, Michael Townley is closing in, and the political conflict that has shaped their lives will resonate far beyond them."
+    ]
+  }
+};
+
 // Safe async reader helper
 async function readWriterDataAsync() {
   if (db) {
@@ -375,6 +446,24 @@ async function readWriterDataAsync() {
             }
           }
         }
+
+        // Enrich books with coverImage and synopsis if missing or outdated
+        if (data.books && Array.isArray(data.books)) {
+          for (const b of data.books) {
+            const meta = DEFAULT_BOOK_META[b.id];
+            if (meta) {
+              if (!b.coverImage) {
+                b.coverImage = meta.coverImage;
+                changed = true;
+              }
+              if (!b.synopsis || b.synopsis.length === 0 || (b.id === "we-are-sympathetic" && b.synopsis.length === 4)) {
+                b.synopsis = meta.synopsis;
+                changed = true;
+              }
+            }
+          }
+        }
+
         if (changed) {
           docRef.set(data).catch(() => {});
         }

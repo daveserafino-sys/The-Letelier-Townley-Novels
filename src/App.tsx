@@ -418,7 +418,7 @@ export default function App() {
             }}
           />
         ) : (
-          <div className="w-full flex flex-col items-center">
+          <div className="w-full flex flex-col items-center pointer-events-auto">
             <BookScroll
               books={writerData.books}
               targetBookId={targetBookId}
