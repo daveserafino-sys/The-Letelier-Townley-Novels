@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Imperial+Script&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Caveat:wght@400;500;600;700&family=Marck+Script&family=Pinyon+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Imperial+Script&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Caveat:wght@400;500;600;700&family=Marck+Script&family=Pinyon+Script&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -9,6 +9,7 @@
   --font-handwriting: "Caveat", "Marck Script", cursive;
   --font-classic-cursive: "Pinyon Script", "Imperial Script", cursive;
   --font-constitution: "Pinyon Script", "Imperial Script", cursive;
+  --font-newspaper: "Newsreader", "Libre Baskerville", "Playfair Display", Georgia, serif;
 }
 
 .font-portia-serif {
@@ -27,6 +28,10 @@
   font-family: var(--font-constitution);
 }
 
+.font-newspaper {
+  font-family: var(--font-newspaper);
+}
+
 .silver-halide-filter {
   filter: grayscale(100%) contrast(1.18) brightness(0.95);
 }
@@ -37,9 +42,9 @@
 }
 
 .ghost-text {
-  font-family: "Pinyon Script", "Imperial Script", cursive;
-  color: rgba(226, 235, 245, 0.90);
-  text-shadow: 0 0 14px rgba(220, 230, 240, 0.28), 0 1px 3px rgba(0, 0, 0, 0.9);
+  font-family: var(--font-newspaper);
+  color: #f1f5f9;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 12px rgba(220, 230, 240, 0.2);
 }
 
 .no-scrollbar::-webkit-scrollbar {

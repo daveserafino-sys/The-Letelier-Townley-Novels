@@ -108,10 +108,10 @@ export default function App() {
       if (targetBookId) {
         const book = writerData.books.find((b) => b.id === targetBookId);
         title = book ? `${book.title} – David Serafino` : "The Letelier / Townley Novels – David Serafino";
-        description = book?.synopsis || book?.description || "A novel from The Letelier / Townley Novels trilogy by Dave Serafino.";
+        description = (Array.isArray(book?.synopsis) ? book.synopsis.join(" ") : book?.synopsis) || book?.description || "A novel from The Letelier / Townley Novels trilogy by Dave Serafino.";
       } else {
         title = "The Letelier / Townley Novels & Selected Publications";
-        description = "Novels and stories for free download or to read online.";
+        description = "In 1976, American fascist Michael Townley planted a car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington, D.C. This trilogy explores their lives.";
       }
     }
 

@@ -17,8 +17,8 @@ const DEFAULT_BOOK_META: Record<string, { title: string; coverImage: string; syn
     title: "CORILOCHO",
     coverImage: "/assets/aistudio/Corilocho_cover_a3b33bf7.jpg",
     synopsis: [
-      "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ambition, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics and diplomacy while trying to preserve the personal relationships that give his life meaning. His marriage to Isabel unfolds alongside his growing responsibilities, as his political convictions draw him into an increasingly turbulent national landscape and the choices he makes lead to consequences for the people closest to him.",
-      "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them into the ideological circles of the Chilean right, where political commitment and personal advancement become increasingly difficult to separate. As saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel's lives in the most consequential ways.",
+      "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ambition, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics and diplomacy while his marriage to Isabel unfolds alongside his growing responsibilities, as his political convictions draw him into an increasingly turbulent national landscape and the choices he makes lead to dire consequences for the people closest to him.",
+      "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them into the ideological circles of the Chilean right, where political commitment and personal advancement become increasingly difficult to separate. As saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel's lives in the most fundamental ways.",
       "A story of love, idealism, and betrayal, Corilocho traces the personal costs of choices made in the name of political conviction."
     ]
   },
@@ -28,7 +28,7 @@ const DEFAULT_BOOK_META: Record<string, { title: string; coverImage: string; syn
     synopsis: [
       "As Chile descends into fascism, the ambitions and loyalties of four individuals draw them into an increasingly dangerous world.",
       "Michael Townley and Mariana Callejas find themselves at the center of a network operating behind the scenes of Chilean politics. Drawn by promises of wealth and influence, Mariana becomes increasingly involved with right-wing paramilitary men, while Michael discovers that his technical abilities offer opportunities far beyond ordinary employment.",
-      "Meanwhile, Orlando Letelier is sent to Dawson Island, near the Antarctic Circle, where he and his fellow political detainees face harsh conditions and an uncertain future, and Isabel mounts an international campaign to save him even as the military regime targets her personally.",
+      "Meanwhile, Orlando Letelier is sent to Dawson Island, near the Antarctic Circle, where he and his fellow political prisoners face harsh conditions and an uncertain future, and Isabel mounts an international campaign to save him even as the military regime targets her personally.",
       "As personal loyalties collide with political ambition, the consequences of personal choices extend far beyond the people who make them."
     ]
   },
@@ -36,9 +36,10 @@ const DEFAULT_BOOK_META: Record<string, { title: string; coverImage: string; syn
     title: "WE ARE SYMPATHETIC",
     coverImage: "/assets/aistudio/we_are_sympathetic_cover_869e764f.jpg",
     synopsis: [
+      "As the political conflict in Chile extends beyond its borders, the lives of Orlando and Isabel Letelier, Michael Townley, and Mariana Callejas converge in a series of events with international consequences.",
       "The Leteliers resume their lives in Washington after Orlando’s imprisonment and exile, where they emerge as leaders of the resistance to Chile’s military government. Determined to expose the regime's abuses and challenge its influence abroad, Orlando draws on his political experience and international connections, while Isabel founds a human rights institution and stages rallies that include a benefit concert at Madison Square Garden headlined by Joan Baez and Pete Seeger, where Orlando was the keynote speaker. But the demands of their public campaigns are matched by growing complications. His marriage to Isabel, tested by years of separation and political upheaval, faces new strains after an affair is exposed, which he’s still carrying on in secret.",
-      "Meanwhile, Michael Townley and Mariana Callejas have become important operatives whose assignments take them from Miami to Mexico City and across Europe, where they cultivate alliances with far-right organizations and organize assassination plots targeting opponents of the Chilean government. As Mariana manages these relationships and Michael produces biological, chemical and conventional weapons, their private ambitions become inseparable from the regime's political violence.",
-      "As Orlando's campaign gains momentum, Michael Townley is closing in, and the political conflict that has shaped their lives will resonate far beyond them."
+      "Meanwhile, Michael Townley and Mariana Callejas have become intelligence operatives whose assignments take them from Miami to Mexico City and across Europe, where they cultivate alliances with far-right organizations and organize assassination plots targeting opponents of the Chilean government. As Mariana manages these relationships and Michael produces biological, chemical and conventional weapons, their private ambitions become inseparable from the regime's political violence.",
+      "Orlando's campaign is gaining momentum, but Michael Townley is closing in, and the political conflict that has shaped their lives will resonate far beyond them."
     ]
   }
 };
@@ -173,15 +174,34 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: idx * 0.12 }}
+              itemScope
+              itemType="https://schema.org/Product https://schema.org/Book"
               className="flex flex-col items-center w-full text-center pointer-events-auto"
               style={{
                 transform: `translate3d(0, ${titleParallax}px, 0)`,
                 willChange: "transform"
               }}
             >
-              {/* Centered Title with cursor hover triggers for ghost cover & cursive synopsis */}
+              <meta itemProp="sku" content={`LETELIER-${book.id.toUpperCase()}`} />
+              <span itemProp="brand" itemScope itemType="https://schema.org/Brand" className="hidden">
+                <meta itemProp="name" content="David Serafino" />
+              </span>
+              <meta itemProp="url" content={`https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/novels/${book.id}`} />
+              <meta itemProp="inLanguage" content="en" />
+              <meta itemProp="bookFormat" content="https://schema.org/EBook" />
+              <link itemProp="image" href={book.coverImage || DEFAULT_BOOK_META[book.id]?.coverImage} />
+              <span itemProp="author" itemScope itemType="https://schema.org/Person" className="hidden">
+                <meta itemProp="name" content="David Serafino" />
+                <meta itemProp="url" content="https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/author" />
+              </span>
+              <span itemProp="isPartOf" itemScope itemType="https://schema.org/BookSeries" className="hidden">
+                <meta itemProp="name" content="The Letelier / Townley Novels" />
+              </span>
+
+              {/* Centered Title with cursor hover triggers for ghost cover & synopsis */}
               <h2
                 id={`title-heading-${book.id}`}
+                itemProp="name"
                 onMouseEnter={() => handleTitleMouseEnter(book)}
                 onMouseMove={() => handleTitleMouseMove(book)}
                 onMouseLeave={handleTitleMouseLeave}
@@ -192,8 +212,19 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
                 </span>
               </h2>
               
-              {/* Centered Price underneath ($0 for complimentary, strip decimals for others) */}
-              <div className="font-serif text-[14.3px] sm:text-[15.4px] text-[#8C7A5B] italic tracking-wide mt-1 mb-4 font-light pointer-events-auto">
+              {/* Centered Price underneath with Schema.org Product Offer */}
+              <div 
+                itemProp="offers" 
+                itemScope 
+                itemType="https://schema.org/Offer" 
+                className="font-serif text-[14.3px] sm:text-[15.4px] text-[#8C7A5B] italic tracking-wide mt-1 mb-4 font-light pointer-events-auto"
+              >
+                <meta itemProp="priceCurrency" content="USD" />
+                <meta itemProp="price" content={String(book.price)} />
+                <link itemProp="availability" href="https://schema.org/InStock" />
+                <link itemProp="itemCondition" href="https://schema.org/NewCondition" />
+                <meta itemProp="priceValidUntil" content="2028-12-31" />
+                <meta itemProp="url" content={`https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/novels/${book.id}`} />
                 {book.price === 0 ? "$0" : `$${book.price}`}
               </div>
 
@@ -203,7 +234,7 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
                   id={`download-pdf-btn-${book.id}`}
                   onClick={() => handleDownload(book, "pdf")}
                   className="px-4 py-1.5 bg-black/50 hover:bg-black/80 border border-stone-700 hover:border-stone-500 text-stone-300 hover:text-stone-100 text-xs font-serif italic tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-1.5 rounded-sm shadow-sm"
-                  title="Download PDF"
+                  title={`Download ${book.title} PDF`}
                 >
                   <span className="lowercase">pdf</span>
                   <Download size={9} className="opacity-70" />
@@ -213,7 +244,7 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
                   id={`download-epub-btn-${book.id}`}
                   onClick={() => handleDownload(book, "epub")}
                   className="px-4 py-1.5 bg-black/50 hover:bg-black/80 border border-stone-700 hover:border-stone-500 text-stone-300 hover:text-stone-100 text-xs font-serif italic tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-1.5 rounded-sm shadow-sm"
-                  title="Download EPUB"
+                  title={`Download ${book.title} EPUB`}
                 >
                   <span className="lowercase">epub</span>
                   <Download size={9} className="opacity-70" />
@@ -226,10 +257,10 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
 
       {/* 
         Ghost-like Minimalist Pop-up:
-        - Background image remains fully visible beneath
-        - No boxes, borders, buttons, or scrollbars
-        - Cover and text laid over top in a faded, ghost-like manner
-        - Classic cursive handwriting style
+        - Two-column newspaper dispatch presentation imitating broadsheet news columns
+        - Background image remains fully visible beneath with subtle dimming
+        - No extra headers, borders, buttons, or scrollbars
+        - Newspaper serif font (Newsreader / Libre Baskerville)
       */}
       <AnimatePresence>
         {popupBook && currentMeta && (
@@ -239,36 +270,65 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.45, ease: "easeInOut" }}
-            className="fixed inset-0 z-[70] flex items-center justify-center p-3 sm:p-4 md:p-6 pointer-events-none select-none bg-black/60 backdrop-blur-[1.5px] transition-colors duration-500"
+            className="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-6 md:p-8 pointer-events-none select-none bg-black/65 backdrop-blur-[2px] transition-colors duration-500"
           >
-            <div 
-              className="max-w-6xl xl:max-w-7xl w-full flex flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 pointer-events-auto px-3 sm:px-6"
+            <article 
+              itemScope 
+              itemType="https://schema.org/Product https://schema.org/Book"
+              className="w-[94vw] max-w-7xl flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 lg:gap-14 pointer-events-auto px-4 sm:px-8"
               onMouseEnter={handleModalMouseEnter}
               onMouseLeave={handleModalMouseLeave}
             >
-              {/* Ghost-like Faded Cover Image (Always side-by-side, auto-scaled to viewport height) */}
-              <div className="flex-shrink-0 flex items-center justify-center">
+              <meta itemProp="name" content={currentMeta.title} />
+              <meta itemProp="sku" content={`LETELIER-${popupBook.id.toUpperCase()}`} />
+              <span itemProp="brand" itemScope itemType="https://schema.org/Brand" className="hidden">
+                <meta itemProp="name" content="David Serafino" />
+              </span>
+              <link itemProp="author" href="https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/author" />
+              <div itemProp="offers" itemScope itemType="https://schema.org/Offer" className="hidden">
+                <meta itemProp="priceCurrency" content="USD" />
+                <meta itemProp="price" content={String(popupBook.price)} />
+                <link itemProp="availability" href="https://schema.org/InStock" />
+                <link itemProp="itemCondition" href="https://schema.org/NewCondition" />
+                <meta itemProp="priceValidUntil" content="2028-12-31" />
+                <meta itemProp="url" content={`https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/novels/${popupBook.id}`} />
+              </div>
+              
+              {/* Ghost-like Faded Cover Image with rich Schema ImageObject markup */}
+              <figure 
+                itemProp="image" 
+                itemScope 
+                itemType="https://schema.org/ImageObject"
+                className="flex-shrink-0 flex items-center justify-center m-0"
+              >
                 <img
+                  itemProp="contentUrl"
                   src={currentMeta.coverImage}
-                  alt={`${popupBook.title} cover`}
-                  className="w-auto h-auto max-h-[46vh] sm:max-h-[52vh] md:max-h-[58vh] max-w-[130px] sm:max-w-[180px] md:max-w-[230px] lg:max-w-[270px] object-contain ghost-cover"
+                  alt={`${popupBook.title} - Book cover by David Serafino`}
+                  className="w-auto h-auto max-h-[55vh] md:max-h-[70vh] lg:max-h-[76vh] max-w-[160px] sm:max-w-[220px] md:max-w-[280px] lg:max-w-[340px] xl:max-w-[380px] object-contain ghost-cover"
                   style={{
                     filter: "grayscale(100%) contrast(115%) brightness(92%)",
                     opacity: 0.82,
-                    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.7)"
+                    boxShadow: "0 12px 35px rgba(0, 0, 0, 0.75)"
                   }}
                 />
-              </div>
+                <meta itemProp="caption" content={`${currentMeta.title} - Book cover by David Serafino`} />
+                <meta itemProp="license" content="https://creativecommons.org/licenses/by-nc-nd/4.0/" />
+                <meta itemProp="acquireLicensePage" content="https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/" />
+                <meta itemProp="creditText" content="David Serafino" />
+                <meta itemProp="copyrightNotice" content="© David Serafino" />
+              </figure>
 
-              {/* Ghost-like Constitutional Calligraphy Text (Compact sizing & line height with high legibility over dimmed backdrop) */}
+              {/* Ghost-like Newspaper Font Text presented in a single column */}
               <div 
-                className="flex-1 min-w-0 max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl font-constitution ghost-text select-text"
+                itemProp="description"
+                className="flex-1 min-w-0 max-w-3xl lg:max-w-4xl xl:max-w-5xl font-newspaper ghost-text select-text"
               >
                 <div 
-                  className="space-y-1.5 sm:space-y-2 text-[13.5px] xs:text-[14px] sm:text-[15px] md:text-[16px] lg:text-[17px] leading-[1.24] sm:leading-[1.26] md:leading-[1.3] font-normal tracking-wide text-[#f2f7fc]"
+                  className="space-y-2.5 sm:space-y-3 md:space-y-3.5 text-[14.5px] sm:text-[15.5px] md:text-[16.5px] lg:text-[17.5px] xl:text-[18.5px] leading-[1.42] sm:leading-[1.46] md:leading-[1.48] font-normal text-[#f1f5f9] tracking-normal"
                   style={{ 
-                    fontFamily: '"Pinyon Script", "Imperial Script", cursive',
-                    textShadow: "0 0 12px rgba(220, 230, 240, 0.35), 0 1px 3px rgba(0, 0, 0, 0.99)"
+                    fontFamily: '"Newsreader", "Libre Baskerville", "Playfair Display", Georgia, serif',
+                    textShadow: "0 1px 3px rgba(0, 0, 0, 0.95), 0 0 12px rgba(220, 230, 240, 0.2)"
                   }}
                 >
                   {currentMeta.synopsis.map((paragraph, pIdx) => (
@@ -278,7 +338,7 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
                   ))}
                 </div>
               </div>
-            </div>
+            </article>
           </motion.div>
         )}
       </AnimatePresence>
