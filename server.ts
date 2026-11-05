@@ -362,7 +362,7 @@ const DEFAULT_INITIAL_VIDEOS = [
     date: "10/2026",
     url: "https://www.youtube.com/watch?v=sSGAwsXGTKA",
     type: "video",
-    description: "David Serafino reads Sweetass for Rabble Review.",
+    description: "Author David Serafino reads an excerpt from Sweetass, featured in Rabble Review.",
     thumbnailUrl: "/assets/sweetass_youtube_thumbnail.jpg"
   },
   {

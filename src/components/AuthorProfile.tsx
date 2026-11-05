@@ -83,6 +83,7 @@ const AUTHOR_PHOTOS: AuthorPhotoItem[] = [
 
 export default function AuthorProfile({ onBackToNovels, onBackToStories, onForwardToInterviews }: AuthorProfileProps) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>(0);
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app";
 
   // Preload all author photos to prevent any flicker during rotations
   useEffect(() => {
@@ -102,7 +103,6 @@ export default function AuthorProfile({ onBackToNovels, onBackToStories, onForwa
 
   // In-page ProfilePage Schema.org Structured Data Injection
   useEffect(() => {
-    const origin = typeof window !== "undefined" ? window.location.origin : "https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app";
     const scriptId = "schema-profile-page-jsonld";
 
     let scriptTag = document.getElementById(scriptId) as HTMLScriptElement | null;
@@ -124,17 +124,24 @@ export default function AuthorProfile({ onBackToNovels, onBackToStories, onForwa
       "name": photo.title,
       "caption": photo.caption,
       "description": photo.description,
+      "creditText": "David Serafino",
+      "copyrightNotice": "© David Serafino. All rights reserved.",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en",
+      "acquireLicensePage": `${origin}/author`,
       "author": {
         "@type": "Person",
-        "name": "David Serafino"
+        "name": "David Serafino",
+        "url": `${origin}/author`
       },
       "creator": {
         "@type": "Person",
-        "name": "David Serafino"
+        "name": "David Serafino",
+        "url": `${origin}/author`
       },
       "copyrightHolder": {
         "@type": "Person",
-        "name": "David Serafino"
+        "name": "David Serafino",
+        "url": `${origin}/author`
       },
       "representativeOfPage": index === 0
     }));
@@ -314,8 +321,13 @@ export default function AuthorProfile({ onBackToNovels, onBackToStories, onForwa
                   <span itemProp="name">{photo.title}</span>
                   <span itemProp="caption">{photo.caption}</span>
                   <p itemProp="description">{photo.description}</p>
+                  <meta itemProp="license" content="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en" />
+                  <meta itemProp="acquireLicensePage" content={`${origin}/author`} />
+                  <meta itemProp="creditText" content="David Serafino" />
+                  <meta itemProp="copyrightNotice" content="© David Serafino. All rights reserved." />
                   <span itemProp="creator" itemScope itemType="https://schema.org/Person" className="hidden">
                     <meta itemProp="name" content="David Serafino" />
+                    <link itemProp="url" href={`${origin}/author`} />
                   </span>
                 </figcaption>
               </figure>

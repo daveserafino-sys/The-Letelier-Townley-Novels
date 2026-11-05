@@ -79,6 +79,7 @@ const BOOK_REVIEWS: Record<string, { author: string; body: string }> = {
 };
 
 export default function BookScroll({ books, scrollY, merchantConfig, targetBookId }: BookScrollProps) {
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app";
   const [activePayment, setActivePayment] = useState<{
     book: Book;
     format: "pdf" | "epub";
@@ -182,6 +183,9 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
           // Subtle parallax offset per title
           const titleParallax = scrollY * 0.08 * (idx + 1) * 0.4;
 
+          const rawCover = book.coverImage || DEFAULT_BOOK_META[book.id]?.coverImage || "";
+          const absoluteCover = rawCover.startsWith("http") ? rawCover : `${origin}${rawCover}`;
+
           return (
             <motion.div
               key={book.id}
@@ -207,8 +211,8 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
               <meta itemProp="url" content={`https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/novels/${book.id}`} />
               <meta itemProp="inLanguage" content="en" />
               <meta itemProp="bookFormat" content="https://schema.org/EBook" />
-              <link itemProp="image" href={book.coverImage || DEFAULT_BOOK_META[book.id]?.coverImage} />
-              <meta itemProp="image" content={book.coverImage || DEFAULT_BOOK_META[book.id]?.coverImage} />
+              <link itemProp="image" href={absoluteCover} />
+              <meta itemProp="image" content={absoluteCover} />
               <span itemProp="author" itemScope itemType="https://schema.org/Person" className="hidden">
                 <meta itemProp="name" content="David Serafino" />
                 <meta itemProp="url" content="https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/author" />
@@ -220,11 +224,16 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
               {/* Hidden AggregateRating & Review for Product Snippets */}
               <div itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating" className="hidden">
                 <meta itemProp="ratingValue" content={BOOK_RATINGS[book.id]?.rating || "4.9"} />
+                <meta itemProp="bestRating" content="5" />
+                <meta itemProp="worstRating" content="1" />
+                <meta itemProp="ratingCount" content={BOOK_RATINGS[book.id]?.count || "46"} />
                 <meta itemProp="reviewCount" content={BOOK_RATINGS[book.id]?.count || "46"} />
               </div>
               <div itemProp="review" itemScope itemType="https://schema.org/Review" className="hidden">
                 <div itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
                   <meta itemProp="ratingValue" content="5" />
+                  <meta itemProp="bestRating" content="5" />
+                  <meta itemProp="worstRating" content="1" />
                 </div>
                 <span itemProp="author" itemScope itemType="https://schema.org/Organization">
                   <meta itemProp="name" content={BOOK_REVIEWS[book.id]?.author || "Rabble Review"} />
@@ -332,19 +341,29 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
               <meta itemProp="sku" content={`LETELIER-${popupBook.id.toUpperCase()}`} />
               <meta itemProp="gtin13" content={BOOK_GTIN[popupBook.id] || "9780998877601"} />
               <meta itemProp="isbn" content={BOOK_ISBN[popupBook.id] || "978-0-9988776-0-1"} />
+              <link itemProp="image" href={currentMeta.coverImage.startsWith("http") ? currentMeta.coverImage : `${origin}${currentMeta.coverImage}`} />
+              <meta itemProp="image" content={currentMeta.coverImage.startsWith("http") ? currentMeta.coverImage : `${origin}${currentMeta.coverImage}`} />
               <span itemProp="brand" itemScope itemType="https://schema.org/Brand" className="hidden">
                 <meta itemProp="name" content="David Serafino" />
               </span>
-              <link itemProp="author" href="https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/author" />
+              <span itemProp="author" itemScope itemType="https://schema.org/Person" className="hidden">
+                <meta itemProp="name" content="David Serafino" />
+                <link itemProp="url" href="https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/author" />
+              </span>
               
               {/* Hidden AggregateRating & Review for Product Snippets */}
               <div itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating" className="hidden">
                 <meta itemProp="ratingValue" content={BOOK_RATINGS[popupBook.id]?.rating || "4.9"} />
+                <meta itemProp="bestRating" content="5" />
+                <meta itemProp="worstRating" content="1" />
+                <meta itemProp="ratingCount" content={BOOK_RATINGS[popupBook.id]?.count || "46"} />
                 <meta itemProp="reviewCount" content={BOOK_RATINGS[popupBook.id]?.count || "46"} />
               </div>
               <div itemProp="review" itemScope itemType="https://schema.org/Review" className="hidden">
                 <div itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
                   <meta itemProp="ratingValue" content="5" />
+                  <meta itemProp="bestRating" content="5" />
+                  <meta itemProp="worstRating" content="1" />
                 </div>
                 <span itemProp="author" itemScope itemType="https://schema.org/Organization">
                   <meta itemProp="name" content={BOOK_REVIEWS[popupBook.id]?.author || "Rabble Review"} />
@@ -397,12 +416,13 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
                   }}
                 />
                 <meta itemProp="caption" content={`${currentMeta.title} - Book cover by David Serafino`} />
-                <meta itemProp="license" content="https://creativecommons.org/licenses/by-nc-nd/4.0/" />
+                <meta itemProp="license" content="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en" />
                 <meta itemProp="acquireLicensePage" content="https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/" />
                 <meta itemProp="creditText" content="David Serafino" />
-                <meta itemProp="copyrightNotice" content="© David Serafino" />
+                <meta itemProp="copyrightNotice" content="© David Serafino. All rights reserved." />
                 <span itemProp="creator" itemScope itemType="https://schema.org/Person" className="hidden">
                   <meta itemProp="name" content="David Serafino" />
+                  <link itemProp="url" href="https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/author" />
                 </span>
               </figure>
 
