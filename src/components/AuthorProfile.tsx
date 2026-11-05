@@ -314,6 +314,9 @@ export default function AuthorProfile({ onBackToNovels, onBackToStories, onForwa
                   <span itemProp="name">{photo.title}</span>
                   <span itemProp="caption">{photo.caption}</span>
                   <p itemProp="description">{photo.description}</p>
+                  <span itemProp="creator" itemScope itemType="https://schema.org/Person" className="hidden">
+                    <meta itemProp="name" content="David Serafino" />
+                  </span>
                 </figcaption>
               </figure>
             </li>

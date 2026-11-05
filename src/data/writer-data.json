@@ -1,133 +1,55 @@
 {
-  "books": [
+  "interviews": [
     {
-      "price": 0,
-      "epubFileName": "David_Serafino_-_Corilocho.epub",
-      "downloadsEpub": 4,
-      "synopsis": [
-        "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ambition, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics and diplomacy while his marriage to Isabel unfolds alongside his growing responsibilities, as his political convictions draw him into an increasingly turbulent national landscape and the choices he makes lead to dire consequences for the people closest to him.",
-        "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them into the ideological circles of the Chilean right, where political commitment and personal advancement become increasingly difficult to separate. As saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel's lives in the most fundamental ways.",
-        "A story of love, idealism, and betrayal, Corilocho traces the personal costs of choices made in the name of political conviction."
-      ],
-      "epubUrl": "/uploads/David_Serafino_-_Corilocho.epub",
-      "downloads": 32,
-      "id": "corilocho",
-      "title": "Corilocho",
-      "pdfUrl": "/uploads/David_Serafino_-_Corilocho.pdf",
-      "coverImage": "/assets/aistudio/Corilocho_cover_a3b33bf7.jpg",
-      "downloadsPdf": 28,
-      "pdfFileName": "David_Serafino_-_Corilocho.pdf"
+      "id": "int-rabble-review-2026",
+      "date": "10/2026",
+      "type": "interview",
+      "description": "Artist and contributor spotlight on fiction author David Serafino for Rabble Review.",
+      "title": "Artist Spotlight: David Serafino",
+      "url": "https://www.instagram.com/p/DeaEyEPkgtd/",
+      "outlet": "Rabble Review"
     },
     {
-      "title": "Saltwater Archives",
-      "downloadsEpub": 1,
-      "downloadsPdf": 2,
-      "pdfFileName": "David_Serafino_-_Saltwater_Archives.pdf",
-      "id": "saltwater-archives",
-      "downloads": 3,
-      "synopsis": [
-        "As Chile descends into fascism, the ambitions and loyalties of four individuals draw them into an increasingly dangerous world.",
-        "Michael Townley and Mariana Callejas find themselves at the center of a network operating behind the scenes of Chilean politics. Drawn by promises of wealth and influence, Mariana becomes increasingly involved with right-wing paramilitary men, while Michael discovers that his technical abilities offer opportunities far beyond ordinary employment.",
-        "Meanwhile, Orlando Letelier is sent to Dawson Island, near the Antarctic Circle, where he and his fellow political prisoners face harsh conditions and an uncertain future, and Isabel mounts an international campaign to save him even as the military regime targets her personally.",
-        "As personal loyalties collide with political ambition, the consequences of personal choices extend far beyond the people who make them."
-      ],
-      "epubUrl": "/uploads/David_Serafino_-_Saltwater_Archives.epub",
-      "epubFileName": "David_Serafino_-_Saltwater_Archives.epub",
-      "pdfUrl": "/uploads/David_Serafino_-_Saltwater_Archives.pdf",
-      "price": 1,
-      "coverImage": "/assets/aistudio/saltwater_archives_cover_5aad74d9.jpg"
+      "type": "interview",
+      "date": "5/2026",
+      "url": "https://www.oysterriverpages.com/contributor-showcase-41/daveserafino",
+      "id": "int-oyster-river-pages-2026",
+      "title": "Contributor Showcase: Dave Serafino",
+      "outlet": "Oyster River Pages",
+      "description": "Contributor showcase and interview exploring writing craft and creative process with Dave Serafino."
     },
     {
-      "pdfUrl": "/uploads/David_Serafino_-_We_Are_Sympathetic.pdf",
-      "coverImage": "/assets/aistudio/we_are_sympathetic_cover_869e764f.jpg",
-      "synopsis": [
-        "As the political conflict in Chile extends beyond its borders, the lives of Orlando and Isabel Letelier, Michael Townley, and Mariana Callejas converge in a series of events with international consequences.",
-        "The Leteliers resume their lives in Washington after Orlando’s imprisonment and exile, where they emerge as leaders of the resistance to Chile’s military government. Determined to expose the regime's abuses and challenge its influence abroad, Orlando draws on his political experience and international connections, while Isabel founds a human rights institution, but the demands of their public campaigns are matched by growing complications. His marriage to Isabel, tested by years of separation and political upheaval, faces new strains after an affair is exposed, which he’s still carrying on in secret.",
-        "Meanwhile, Michael Townley and Mariana Callejas have become intelligence operatives whose assignments take them from Miami to Mexico City and across Europe, where they cultivate alliances with far-right organizations and organize assassination plots targeting opponents of the Chilean government. As Mariana manages these relationships and Michael produces biological, chemical and conventional weapons, their private ambitions become inseparable from the regime's political violence.",
-        "Orlando's campaign is gaining momentum, but Michael Townley is closing in, and the political conflict that has shaped their lives will resonate far beyond them."
-      ],
-      "id": "we-are-sympathetic",
-      "pdfFileName": "David_Serafino_-_We_Are_Sympathetic.pdf",
-      "epubUrl": "/uploads/David_Serafino_-_We_Are_Sympathetic.epub",
-      "title": "We Are Sympathetic",
-      "price": 2,
-      "epubFileName": "David_Serafino_-_We_Are_Sympathetic.epub"
+      "description": "In-depth literary conversation conducted by Tyler Martinez on fiction craft and 'Firebreak'.",
+      "type": "interview",
+      "outlet": "Dulcet Literary Magazine",
+      "date": "3/2025",
+      "title": "David Serafino in Conversation with Tyler Martinez",
+      "id": "int-dulcet-2025",
+      "url": "https://www.dulcetlitmag.com/david-serafino"
+    },
+    {
+      "title": "A Conversation with Dave Serafino on 'And3' & Translation",
+      "outlet": "Radon Journal",
+      "type": "interview",
+      "date": "5/2024",
+      "id": "int-radon-journal-2024",
+      "url": "https://www.radonjournal.com/interviews/conversation-with-dave-serafino",
+      "description": "Conversation on speculative fiction, literary translation, and the story 'And3' in Radon Journal Issue 7."
     }
   ],
+  "visits": 843,
   "merchantConfig": {
-    "bankName": "Citadel Credit Union",
     "paypalEmail": "daveserafino@gmail.com",
+    "bankName": "Citadel Credit Union",
     "bankRoutingNumber": "231380104",
     "bankAccountNumber": "198827"
   },
-  "videos": [
-    {
-      "url": "https://www.youtube.com/watch?v=sSGAwsXGTKA",
-      "title": "Sweetass by David Serafino",
-      "description": "David Serafino reads Sweetass for Rabble Review.",
-      "thumbnailUrl": "/assets/sweetass_youtube_thumbnail.jpg",
-      "date": "10/2026",
-      "outlet": "Rabble Review",
-      "type": "video",
-      "id": "vid-youtube-sweetass-2026"
-    },
-    {
-      "title": "David Serafino Reads Excerpt from Firebreak",
-      "date": "2/2025",
-      "logoUrl": "/assets/logos/dulcet_logo_white.png",
-      "description": "Author David Serafino reads an excerpt from his published short story 'Firebreak' for Dulcet Literary Magazine.",
-      "type": "video",
-      "thumbnailUrl": "/assets/aistudio/author_photo_2_5c6ee16d.jpg",
-      "url": "https://www.instagram.com/reel/DGgBg4XJ0dk/",
-      "outlet": "Dulcet Literary Magazine",
-      "id": "vid-dulcet-reel-2025"
-    }
-  ],
-  "visits": 827,
-  "interviews": [
-    {
-      "url": "https://www.instagram.com/p/DeaEyEPkgtd/",
-      "description": "Artist and contributor spotlight on fiction author David Serafino for Rabble Review.",
-      "title": "Artist Spotlight: David Serafino",
-      "date": "10/2026",
-      "outlet": "Rabble Review",
-      "id": "int-rabble-review-2026",
-      "type": "interview"
-    },
-    {
-      "id": "int-oyster-river-pages-2026",
-      "url": "https://www.oysterriverpages.com/contributor-showcase-41/daveserafino",
-      "outlet": "Oyster River Pages",
-      "type": "interview",
-      "description": "Contributor showcase and interview exploring writing craft and creative process with Dave Serafino.",
-      "date": "5/2026",
-      "title": "Contributor Showcase: Dave Serafino"
-    },
-    {
-      "type": "interview",
-      "title": "David Serafino in Conversation with Tyler Martinez",
-      "url": "https://www.dulcetlitmag.com/david-serafino",
-      "outlet": "Dulcet Literary Magazine",
-      "description": "In-depth literary conversation conducted by Tyler Martinez on fiction craft and 'Firebreak'.",
-      "date": "3/2025",
-      "id": "int-dulcet-2025"
-    },
-    {
-      "outlet": "Radon Journal",
-      "title": "A Conversation with Dave Serafino on 'And3' & Translation",
-      "id": "int-radon-journal-2024",
-      "description": "Conversation on speculative fiction, literary translation, and the story 'And3' in Radon Journal Issue 7.",
-      "date": "5/2024",
-      "url": "https://www.radonjournal.com/interviews/conversation-with-dave-serafino",
-      "type": "interview"
-    }
-  ],
   "paypalEmails": [
     {
       "bookTitle": "Saltwater Archives",
       "date": "2026-10-26T20:59:49.549Z",
-      "format": "pdf",
-      "email": "testreader@example.com"
+      "email": "testreader@example.com",
+      "format": "pdf"
     },
     {
       "format": "epub",
@@ -136,214 +58,293 @@
       "email": "daveserafino@gmail.com"
     },
     {
-      "date": "2026-10-28T18:36:12.507Z",
-      "transactionId": "TXN-MVSGGSBF-IBLD",
-      "email": "card-ending-1111@checkout.direct",
-      "bookTitle": "Saltwater Archives",
-      "amount": 1,
       "status": "COMPLETED",
-      "beneficiaryBank": "Citadel Credit Union (Routing: 231380104, Acct: ...8827)",
+      "date": "2026-10-28T18:36:12.507Z",
+      "paymentMethod": "card",
+      "amount": 1,
       "format": "pdf",
-      "paymentMethod": "card"
+      "email": "card-ending-1111@checkout.direct",
+      "beneficiaryBank": "Citadel Credit Union (Routing: 231380104, Acct: ...8827)",
+      "transactionId": "TXN-MVSGGSBF-IBLD",
+      "bookTitle": "Saltwater Archives"
+    }
+  ],
+  "books": [
+    {
+      "pdfUrl": "/uploads/David_Serafino_-_Corilocho.pdf",
+      "downloadsEpub": 4,
+      "epubFileName": "David_Serafino_-_Corilocho.epub",
+      "coverImage": "/assets/aistudio/Corilocho_cover_a3b33bf7.jpg",
+      "synopsis": [
+        "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics while his marriage to Isabel unfolds alongside his growing responsibilities, as his principles draw him into an increasingly turbulent national landscape and the choices he makes lead to dire consequences for the people closest to him.",
+        "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them toward the Chilean right, where militant commitment and personal advancement become increasingly difficult to separate. As provocateurs, then saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel’s lives in fundamental ways.",
+        "A story of love, idealism, and betrayal, Corilocho traces the personal costs of choices made in the name of political conviction."
+      ],
+      "title": "Corilocho",
+      "downloads": 32,
+      "downloadsPdf": 28,
+      "price": 0,
+      "id": "corilocho",
+      "epubUrl": "/uploads/David_Serafino_-_Corilocho.epub",
+      "pdfFileName": "David_Serafino_-_Corilocho.pdf"
+    },
+    {
+      "epubFileName": "David_Serafino_-_Saltwater_Archives.epub",
+      "downloads": 3,
+      "pdfFileName": "David_Serafino_-_Saltwater_Archives.pdf",
+      "id": "saltwater-archives",
+      "epubUrl": "/uploads/David_Serafino_-_Saltwater_Archives.epub",
+      "synopsis": [
+        "As Chile descends into fascism, the loyalties of four individuals draw them into an increasingly dangerous world.",
+        "Drawn by promises of wealth and influence, Mariana becomes increasingly involved with right-wing paramilitary men, while Michael discovers that his talents as a bomb-maker are evolving into an expectation that he will plant the bombs himself.",
+        "Meanwhile, Orlando Letelier is sent to a prison camp on an island near the Antarctic Circle, where he and his fellow political prisoners face harsh conditions and an uncertain future, while Isabel mounts an international campaign to save him, even as the military targets her and her children.",
+        "Where personal loyalties collide with political ambition, the consequences of individual choices extend far beyond the people who make them."
+      ],
+      "coverImage": "/assets/aistudio/saltwater_archives_cover_5aad74d9.jpg",
+      "downloadsPdf": 2,
+      "pdfUrl": "/uploads/David_Serafino_-_Saltwater_Archives.pdf",
+      "price": 1,
+      "title": "Saltwater Archives",
+      "downloadsEpub": 1
+    },
+    {
+      "coverImage": "/assets/aistudio/we_are_sympathetic_cover_869e764f.jpg",
+      "id": "we-are-sympathetic",
+      "synopsis": [
+        "As the conflict in Chile extends beyond its borders, the lives of Orlando and Isabel Letelier, Michael Townley, and Mariana Callejas converge in a series of events with international repercussions.",
+        "The Leteliers are resuming their lives in Washington after Orlando’s imprisonment and exile, where they’re emerging as leaders of the resistance to Chile’s military government. Determined to expose the regime’s abuses and challenge its influence abroad, Orlando draws on his international political relationships, while Isabel founds a human rights institution with deep fundraising and artistic connections, but Orlando and Isabel’s marriage, tested by separation and loneliness, faces new strains after Orlando confesses an affair -- though not the fact that it’s still going on.",
+        "Meanwhile, Michael Townley and Mariana Callejas have become Chilean intelligence operatives whose assignments take them from Miami to Mexico City and across Europe, where they cultivate alliances with far-right organizations to organize assassination plots targeting opponents of the Chilean regime. As Mariana manages these relationships and Michael expands into producing biological and chemical weapons, their private ambitions become inseparable from the regime's violence.",
+        "Orlando's campaign is gaining momentum, but Michael Townley is closing in.",
+        "The political conflict that destroyed their lives resonates into our time."
+      ],
+      "epubUrl": "/uploads/David_Serafino_-_We_Are_Sympathetic.epub",
+      "pdfUrl": "/uploads/David_Serafino_-_We_Are_Sympathetic.pdf",
+      "pdfFileName": "David_Serafino_-_We_Are_Sympathetic.pdf",
+      "price": 2,
+      "epubFileName": "David_Serafino_-_We_Are_Sympathetic.epub",
+      "title": "We Are Sympathetic"
+    }
+  ],
+  "videos": [
+    {
+      "outlet": "Rabble Review",
+      "title": "Sweetass by David Serafino",
+      "id": "vid-youtube-sweetass-2026",
+      "date": "10/2026",
+      "type": "video",
+      "description": "David Serafino reads Sweetass for Rabble Review.",
+      "url": "https://www.youtube.com/watch?v=sSGAwsXGTKA",
+      "thumbnailUrl": "/assets/sweetass_youtube_thumbnail.jpg"
+    },
+    {
+      "description": "Author David Serafino reads an excerpt from his published short story 'Firebreak' for Dulcet Literary Magazine.",
+      "logoUrl": "/assets/logos/dulcet_logo_white.png",
+      "id": "vid-dulcet-reel-2025",
+      "outlet": "Dulcet Literary Magazine",
+      "title": "David Serafino Reads Excerpt from Firebreak",
+      "type": "video",
+      "date": "2/2025",
+      "thumbnailUrl": "/assets/aistudio/author_photo_2_5c6ee16d.jpg",
+      "url": "https://www.instagram.com/reel/DGgBg4XJ0dk/"
     }
   ],
   "publications": [
     {
-      "url": "https://thecommononline.org/guava-paste/",
-      "outlet": "The Common",
-      "pdfFileName": "David_Serafino_-_Guava_Paste.pdf",
-      "pdfUrl": "/uploads/David_Serafino_-_Guava_Paste.pdf",
       "epubFileName": "David_Serafino_-_Guava_Paste.epub",
+      "url": "https://thecommononline.org/guava-paste/",
       "downloads": 5,
-      "epubUrl": "/uploads/David_Serafino_-_Guava_Paste.epub",
-      "id": "pub-1793046452989",
       "downloadsPdf": 5,
+      "outlet": "The Common",
+      "pdfUrl": "/uploads/David_Serafino_-_Guava_Paste.pdf",
+      "epubUrl": "/uploads/David_Serafino_-_Guava_Paste.epub",
+      "title": "Guava Paste",
+      "pdfFileName": "David_Serafino_-_Guava_Paste.pdf",
       "date": "10/2026",
-      "title": "Guava Paste"
+      "id": "pub-1793046452989"
     },
     {
-      "pdfUrl": "/uploads/David_Serafino_-_Sweetass.pdf",
-      "url": "https://heyzine.com/flip-book/4365f8884f.html",
       "pdfFileName": "David_Serafino_-_Sweetass.pdf",
-      "outlet": "Rabble Review",
-      "title": "Sweetass",
-      "epubFileName": "David_Serafino_-_Sweetass.epub",
       "id": "pub-1788982275306",
       "epubUrl": "/uploads/David_Serafino_-_Sweetass.epub",
-      "date": "9/2026"
+      "date": "9/2026",
+      "title": "Sweetass",
+      "epubFileName": "David_Serafino_-_Sweetass.epub",
+      "url": "https://heyzine.com/flip-book/4365f8884f.html",
+      "pdfUrl": "/uploads/David_Serafino_-_Sweetass.pdf",
+      "outlet": "Rabble Review"
     },
     {
       "epubFileName": "David_Serafino_-_Trapeze_Artist.epub",
-      "pdfUrl": "/uploads/David_Serafino_-_Trapeze_Artist.pdf",
-      "downloads": 4,
       "title": "Trapeze Artist",
-      "epubUrl": "/uploads/David_Serafino_-_Trapeze_Artist.epub",
-      "outlet": "Los Angeles Review",
-      "pdfFileName": "David_Serafino_-_Trapeze_Artist.pdf",
       "id": "trapeze-artist",
-      "date": "2/2024",
+      "pdfUrl": "/uploads/David_Serafino_-_Trapeze_Artist.pdf",
+      "outlet": "Los Angeles Review",
       "url": "https://losangelesreview.org/trapeze-artist-by-david-serafino/",
-      "downloadsPdf": 3
+      "epubUrl": "/uploads/David_Serafino_-_Trapeze_Artist.epub",
+      "pdfFileName": "David_Serafino_-_Trapeze_Artist.pdf",
+      "downloadsPdf": 3,
+      "date": "2/2024",
+      "downloads": 4
     },
     {
-      "url": "https://www.radonjournal.com/issue7/and3",
-      "pdfUrl": "/uploads/David_Serafino_-_And3.pdf",
-      "title": "And3",
-      "epubUrl": "/uploads/David_Serafino_-_And3.epub",
-      "outlet": "Radon Journal",
       "date": "5/2024",
       "pdfFileName": "David_Serafino_-_And3.pdf",
+      "title": "And3",
+      "url": "https://www.radonjournal.com/issue7/and3",
+      "id": "and3",
+      "epubUrl": "/uploads/David_Serafino_-_And3.epub",
       "epubFileName": "David_Serafino_-_And3.epub",
-      "id": "and3"
+      "outlet": "Radon Journal",
+      "pdfUrl": "/uploads/David_Serafino_-_And3.pdf"
     },
     {
-      "pdfFileName": "David_Serafino_-_Firebreak.pdf",
-      "url": "https://www.dulcetlitmag.com/david-serafino",
-      "id": "firebreak",
+      "pdfUrl": "/uploads/David_Serafino_-_Firebreak.pdf",
       "outlet": "Dulcet",
       "epubUrl": "/uploads/David_Serafino_-_Firebreak.epub",
-      "pdfUrl": "/uploads/David_Serafino_-_Firebreak.pdf",
       "date": "3/2025",
-      "epubFileName": "David_Serafino_-_Firebreak.epub",
-      "title": "Firebreak"
+      "title": "Firebreak",
+      "url": "https://www.dulcetlitmag.com/david-serafino",
+      "id": "firebreak",
+      "pdfFileName": "David_Serafino_-_Firebreak.pdf",
+      "epubFileName": "David_Serafino_-_Firebreak.epub"
     },
     {
-      "title": "Asylum",
+      "url": "https://www.muleskinnerjournal.com/s/Journal-Sixteen-Sabotage-FINAL-12-31-2025.pdf",
       "date": "5/2025",
       "pdfUrl": "/uploads/David_Serafino_-_Asylum.pdf",
-      "epubUrl": "/uploads/David_Serafino_-_Asylum.epub",
       "outlet": "Muleskinner Journal",
+      "title": "Asylum",
+      "pdfFileName": "David_Serafino_-_Asylum.pdf",
       "id": "asylum",
       "epubFileName": "David_Serafino_-_Asylum.epub",
-      "pdfFileName": "David_Serafino_-_Asylum.pdf",
-      "url": "https://www.muleskinnerjournal.com/s/Journal-Sixteen-Sabotage-FINAL-12-31-2025.pdf"
+      "epubUrl": "/uploads/David_Serafino_-_Asylum.epub"
     },
     {
-      "epubUrl": "/uploads/David_Serafino_-_Tommy_Rock.epub",
-      "url": "https://www.oysterriverpages.com/tommy-rock",
-      "outlet": "Oyster River Pages",
-      "pdfFileName": "David_Serafino_-_Tommy_Rock.pdf",
+      "id": "tommy-rock",
       "date": "6/2025",
+      "epubUrl": "/uploads/David_Serafino_-_Tommy_Rock.epub",
       "epubFileName": "David_Serafino_-_Tommy_Rock.epub",
+      "pdfFileName": "David_Serafino_-_Tommy_Rock.pdf",
+      "outlet": "Oyster River Pages",
       "pdfUrl": "/uploads/David_Serafino_-_Tommy_Rock.pdf",
-      "title": "Tommy Rock",
-      "id": "tommy-rock"
+      "url": "https://www.oysterriverpages.com/tommy-rock",
+      "title": "Tommy Rock"
     },
     {
       "title": "Metal Man Meets Ms. Godiva",
-      "url": "https://pagegalleryjournal.com/july/metal-man",
-      "date": "7/2025",
-      "id": "metal-man-meets-ms-godiva",
-      "epubFileName": "David_Serafino_-_Metal_Man_Meets_Ms_Godiva.epub",
       "epubUrl": "/uploads/David_Serafino_-_Metal_Man_Meets_Ms_Godiva.epub",
-      "pdfUrl": "/uploads/David_Serafino_-_Metal_Man_Meets_Ms_Godiva.pdf",
-      "pdfFileName": "David_Serafino_-_Metal_Man_Meets_Ms_Godiva.pdf",
-      "outlet": "The Page Gallery"
-    },
-    {
       "date": "7/2025",
-      "id": "migration-season",
-      "epubFileName": "David_Serafino_-_Migration_Season.epub",
+      "pdfFileName": "David_Serafino_-_Metal_Man_Meets_Ms_Godiva.pdf",
+      "url": "https://pagegalleryjournal.com/july/metal-man",
+      "id": "metal-man-meets-ms-godiva",
+      "pdfUrl": "/uploads/David_Serafino_-_Metal_Man_Meets_Ms_Godiva.pdf",
+      "outlet": "The Page Gallery",
+      "epubFileName": "David_Serafino_-_Metal_Man_Meets_Ms_Godiva.epub"
+    },
+    {
       "title": "Migration Season",
-      "outlet": "Fiction on the Web UK",
-      "epubUrl": "/uploads/David_Serafino_-_Migration_Season.epub",
-      "url": "https://www.fictionontheweb.co.uk/2025/07/migration-season-by-david-serafino.html",
       "pdfFileName": "David_Serafino_-_Migration_Season.pdf",
-      "pdfUrl": "/uploads/David_Serafino_-_Migration_Season.pdf"
+      "outlet": "Fiction on the Web UK",
+      "pdfUrl": "/uploads/David_Serafino_-_Migration_Season.pdf",
+      "id": "migration-season",
+      "url": "https://www.fictionontheweb.co.uk/2025/07/migration-season-by-david-serafino.html",
+      "epubFileName": "David_Serafino_-_Migration_Season.epub",
+      "epubUrl": "/uploads/David_Serafino_-_Migration_Season.epub",
+      "date": "7/2025"
     },
     {
-      "url": "https://www.gulmohurquarterly.com/short-fiction/bookseeker-david-serafino-issue-19",
       "epubUrl": "/uploads/David_Serafino_-_Bookseeker.epub",
-      "pdfFileName": "David_Serafino_-_Bookseeker.pdf",
-      "epubFileName": "David_Serafino_-_Bookseeker.epub",
-      "outlet": "Gulmohur Quarterly",
-      "id": "bookseeker",
-      "pdfUrl": "/uploads/David_Serafino_-_Bookseeker.pdf",
       "date": "9/2025",
-      "title": "Bookseeker"
+      "epubFileName": "David_Serafino_-_Bookseeker.epub",
+      "id": "bookseeker",
+      "outlet": "Gulmohur Quarterly",
+      "pdfUrl": "/uploads/David_Serafino_-_Bookseeker.pdf",
+      "title": "Bookseeker",
+      "pdfFileName": "David_Serafino_-_Bookseeker.pdf",
+      "url": "https://www.gulmohurquarterly.com/short-fiction/bookseeker-david-serafino-issue-19"
     },
     {
-      "id": "transposition",
-      "outlet": "Fulcrum Review",
-      "pdfUrl": "/uploads/David_Serafino_-_Transposition.pdf",
-      "downloadsPdf": 1,
+      "epubFileName": "David_Serafino_-_Transposition.epub",
+      "url": "https://www.fulcrumreview.org/issue-4",
+      "pdfFileName": "David_Serafino_-_Transposition.pdf",
       "date": "9/2025",
       "title": "Transposition",
-      "pdfFileName": "David_Serafino_-_Transposition.pdf",
-      "epubFileName": "David_Serafino_-_Transposition.epub",
+      "epubUrl": "/uploads/David_Serafino_-_Transposition.epub",
+      "downloadsPdf": 1,
       "downloads": 1,
-      "url": "https://www.fulcrumreview.org/issue-4",
-      "epubUrl": "/uploads/David_Serafino_-_Transposition.epub"
+      "id": "transposition",
+      "outlet": "Fulcrum Review",
+      "pdfUrl": "/uploads/David_Serafino_-_Transposition.pdf"
     },
     {
-      "outlet": "Chaotic Merge",
-      "date": "9/2025",
       "id": "we-dont-need-no-water",
-      "epubUrl": "/uploads/David_Serafino_-_We_Don_t_Need_No_Water.epub",
-      "pdfFileName": "David_Serafino_-_We_Don_t_Need_No_Water.pdf",
+      "url": "https://chaoticmergemagazine.com/issue-9/",
       "pdfUrl": "/uploads/David_Serafino_-_We_Don_t_Need_No_Water.pdf",
+      "outlet": "Chaotic Merge",
+      "epubUrl": "/uploads/David_Serafino_-_We_Don_t_Need_No_Water.epub",
       "title": "We Don’t Need No Water",
       "epubFileName": "David_Serafino_-_We_Don_t_Need_No_Water.epub",
-      "url": "https://chaoticmergemagazine.com/issue-9/"
+      "pdfFileName": "David_Serafino_-_We_Don_t_Need_No_Water.pdf",
+      "date": "9/2025"
     },
     {
-      "epubFileName": "David_Serafino_-_Chloroquine.epub",
-      "outlet": "The Mixtape Review",
-      "pdfUrl": "/uploads/David_Serafino_-_Chloroquine.pdf",
-      "pdfFileName": "David_Serafino_-_Chloroquine.pdf",
-      "epubUrl": "/uploads/David_Serafino_-_Chloroquine.epub",
-      "url": "https://theofficialmixtape.wixsite.com/the-mixtape-review/copy-of-love-didn-t-die-1",
       "date": "10/2025",
       "title": "Chloroquine",
+      "pdfUrl": "/uploads/David_Serafino_-_Chloroquine.pdf",
+      "outlet": "The Mixtape Review",
+      "epubFileName": "David_Serafino_-_Chloroquine.epub",
+      "url": "https://theofficialmixtape.wixsite.com/the-mixtape-review/copy-of-love-didn-t-die-1",
+      "pdfFileName": "David_Serafino_-_Chloroquine.pdf",
+      "epubUrl": "/uploads/David_Serafino_-_Chloroquine.epub",
       "id": "chloroquine"
     },
     {
-      "epubFileName": "David_Serafino_-_Island.epub",
-      "epubUrl": "/uploads/David_Serafino_-_Island.epub",
-      "url": "https://thelitnerds.com/2025/10/16/island/",
+      "title": "Island",
       "id": "island",
-      "downloadsPdf": 1,
+      "epubFileName": "David_Serafino_-_Island.epub",
+      "pdfFileName": "David_Serafino_-_Island.pdf",
+      "date": "10/2025",
+      "epubUrl": "/uploads/David_Serafino_-_Island.epub",
+      "downloads": 1,
+      "url": "https://thelitnerds.com/2025/10/16/island/",
       "outlet": "The Lit Nerds",
       "pdfUrl": "/uploads/David_Serafino_-_Island.pdf",
-      "date": "10/2025",
-      "pdfFileName": "David_Serafino_-_Island.pdf",
-      "title": "Island",
-      "downloads": 1
+      "downloadsPdf": 1
     },
     {
-      "url": "https://agnionline.bu.edu/about/our-people/authors/david-serafino/",
-      "epubFileName": "David_Serafino_-_The_Garden.epub",
       "epubUrl": "/uploads/David_Serafino_-_The_Garden.epub",
-      "outlet": "AGNI",
-      "pdfUrl": "/uploads/David_Serafino_-_The_Garden.pdf",
       "id": "the-garden",
-      "pdfFileName": "David_Serafino_-_The_Garden.pdf",
+      "url": "https://agnionline.bu.edu/about/our-people/authors/david-serafino/",
       "date": "10/2025",
-      "title": "The Garden"
+      "title": "The Garden",
+      "epubFileName": "David_Serafino_-_The_Garden.epub",
+      "pdfUrl": "/uploads/David_Serafino_-_The_Garden.pdf",
+      "outlet": "AGNI",
+      "pdfFileName": "David_Serafino_-_The_Garden.pdf"
     },
     {
-      "url": "https://www.gamblingtheaisle.com/monthly-publications/2c9ri8rrqsijpksr30m5xbtf43rybg",
-      "downloads": 1,
+      "pdfUrl": "/uploads/David_Serafino_-_A_Cat_and_His_Man.pdf",
+      "outlet": "Gambling the Aisle",
       "epubFileName": "David_Serafino_-_A_Cat_and_His_Man.epub",
+      "url": "https://www.gamblingtheaisle.com/monthly-publications/2c9ri8rrqsijpksr30m5xbtf43rybg",
+      "id": "a-cat-and-his-man",
+      "title": "A Cat and His Man",
+      "downloads": 1,
       "downloadsPdf": 1,
       "pdfFileName": "David_Serafino_-_A_Cat_and_His_Man.pdf",
       "epubUrl": "/uploads/David_Serafino_-_A_Cat_and_His_Man.epub",
-      "outlet": "Gambling the Aisle",
-      "pdfUrl": "/uploads/David_Serafino_-_A_Cat_and_His_Man.pdf",
-      "date": "12/2025",
-      "id": "a-cat-and-his-man",
-      "title": "A Cat and His Man"
+      "date": "12/2025"
     },
     {
-      "pdfUrl": "/uploads/David_Serafino_-_Victimization_Retreat.pdf",
-      "title": "Victimization Retreat",
       "id": "victimization-retreat",
-      "date": "3/2026",
-      "outlet": "Fiction on the Web UK",
       "url": "https://www.fictionontheweb.co.uk/2026/03/",
+      "pdfFileName": "David_Serafino_-_Victimization_Retreat.pdf",
+      "date": "3/2026",
+      "title": "Victimization Retreat",
       "epubFileName": "David_Serafino_-_Victimization_Retreat.epub",
       "epubUrl": "/uploads/David_Serafino_-_Victimization_Retreat.epub",
-      "pdfFileName": "David_Serafino_-_Victimization_Retreat.pdf"
+      "outlet": "Fiction on the Web UK",
+      "pdfUrl": "/uploads/David_Serafino_-_Victimization_Retreat.pdf"
     }
   ]
 }

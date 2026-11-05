@@ -162,7 +162,11 @@ export default function InterviewsReadings({
             : (contentUrl || `${origin}/`),
           "logo": {
             "@type": "ImageObject",
-            "url": `${origin}/assets/aistudio/author_photo_2_5c6ee16d.jpg`
+            "url": `${origin}/assets/aistudio/author_photo_2_5c6ee16d.jpg`,
+            "creator": {
+              "@type": "Person",
+              "name": "David Serafino"
+            }
           }
         }
       };

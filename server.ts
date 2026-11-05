@@ -233,8 +233,8 @@ function getHardcodedFallback() {
         epubFileName: "corilocho-sample.epub",
         coverImage: "/assets/aistudio/Corilocho_cover_a3b33bf7.jpg",
         synopsis: [
-          "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ambition, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics and diplomacy while his marriage to Isabel unfolds alongside his growing responsibilities, as his political convictions draw him into an increasingly turbulent national landscape and the choices he makes lead to dire consequences for the people closest to him.",
-          "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them into the ideological circles of the Chilean right, where political commitment and personal advancement become increasingly difficult to separate. As saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel's lives in the most fundamental ways.",
+          "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics while his marriage to Isabel unfolds alongside his growing responsibilities, as his principles draw him into an increasingly turbulent national landscape and the choices he makes lead to dire consequences for the people closest to him.",
+          "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them toward the Chilean right, where militant commitment and personal advancement become increasingly difficult to separate. As provocateurs, then saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel’s lives in fundamental ways.",
           "A story of love, idealism, and betrayal, Corilocho traces the personal costs of choices made in the name of political conviction."
         ]
       },
@@ -248,10 +248,10 @@ function getHardcodedFallback() {
         epubFileName: "saltwater-archives-full.epub",
         coverImage: "/assets/aistudio/saltwater_archives_cover_5aad74d9.jpg",
         synopsis: [
-          "As Chile descends into fascism, the ambitions and loyalties of four individuals draw them into an increasingly dangerous world.",
-          "Michael Townley and Mariana Callejas find themselves at the center of a network operating behind the scenes of Chilean politics. Drawn by promises of wealth and influence, Mariana becomes increasingly involved with right-wing paramilitary men, while Michael discovers that his technical abilities offer opportunities far beyond ordinary employment.",
-          "Meanwhile, Orlando Letelier is sent to Dawson Island, near the Antarctic Circle, where he and his fellow political prisoners face harsh conditions and an uncertain future, and Isabel mounts an international campaign to save him even as the military regime targets her personally.",
-          "As personal loyalties collide with political ambition, the consequences of personal choices extend far beyond the people who make them."
+          "As Chile descends into fascism, the loyalties of four individuals draw them into an increasingly dangerous world.",
+          "Drawn by promises of wealth and influence, Mariana becomes increasingly involved with right-wing paramilitary men, while Michael discovers that his talents as a bomb-maker are evolving into an expectation that he will plant the bombs himself.",
+          "Meanwhile, Orlando Letelier is sent to a prison camp on an island near the Antarctic Circle, where he and his fellow political prisoners face harsh conditions and an uncertain future, while Isabel mounts an international campaign to save him, even as the military targets her and her children.",
+          "Where personal loyalties collide with political ambition, the consequences of individual choices extend far beyond the people who make them."
         ]
       },
       {
@@ -264,10 +264,11 @@ function getHardcodedFallback() {
         epubFileName: "we-are-sympathetic-full.epub",
         coverImage: "/assets/aistudio/we_are_sympathetic_cover_869e764f.jpg",
         synopsis: [
-          "As the political conflict in Chile extends beyond its borders, the lives of Orlando and Isabel Letelier, Michael Townley, and Mariana Callejas converge in a series of events with international consequences.",
-          "The Leteliers resume their lives in Washington after Orlando’s imprisonment and exile, where they emerge as leaders of the resistance to Chile’s military government. Determined to expose the regime's abuses and challenge its influence abroad, Orlando draws on his political experience and international connections, while Isabel founds a human rights institution, but the demands of their public campaigns are matched by growing complications. His marriage to Isabel, tested by years of separation and political upheaval, faces new strains after an affair is exposed, which he’s still carrying on in secret.",
-          "Meanwhile, Michael Townley and Mariana Callejas have become intelligence operatives whose assignments take them from Miami to Mexico City and across Europe, where they cultivate alliances with far-right organizations and organize assassination plots targeting opponents of the Chilean government. As Mariana manages these relationships and Michael produces biological, chemical and conventional weapons, their private ambitions become inseparable from the regime's political violence.",
-          "Orlando's campaign is gaining momentum, but Michael Townley is closing in, and the political conflict that has shaped their lives will resonate far beyond them."
+          "As the conflict in Chile extends beyond its borders, the lives of Orlando and Isabel Letelier, Michael Townley, and Mariana Callejas converge in a series of events with international repercussions.",
+          "The Leteliers are resuming their lives in Washington after Orlando’s imprisonment and exile, where they’re emerging as leaders of the resistance to Chile’s military government. Determined to expose the regime’s abuses and challenge its influence abroad, Orlando draws on his international political relationships, while Isabel founds a human rights institution with deep fundraising and artistic connections, but Orlando and Isabel’s marriage, tested by separation and loneliness, faces new strains after Orlando confesses an affair -- though not the fact that it’s still going on.",
+          "Meanwhile, Michael Townley and Mariana Callejas have become Chilean intelligence operatives whose assignments take them from Miami to Mexico City and across Europe, where they cultivate alliances with far-right organizations to organize assassination plots targeting opponents of the Chilean regime. As Mariana manages these relationships and Michael expands into producing biological and chemical weapons, their private ambitions become inseparable from the regime's violence.",
+          "Orlando's campaign is gaining momentum, but Michael Townley is closing in.",
+          "The political conflict that destroyed their lives resonates into our time."
         ]
       }
     ],
@@ -380,27 +381,28 @@ const DEFAULT_BOOK_META: Record<string, { coverImage: string; synopsis: string[]
   corilocho: {
     coverImage: "/assets/aistudio/Corilocho_cover_a3b33bf7.jpg",
     synopsis: [
-      "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ambition, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics and diplomacy while his marriage to Isabel unfolds alongside his growing responsibilities, as his political convictions draw him into an increasingly turbulent national landscape and the choices he makes lead to dire consequences for the people closest to him.",
-      "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them into the ideological circles of the Chilean right, where political commitment and personal advancement become increasingly difficult to separate. As saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel's lives in the most fundamental ways.",
+      "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics while his marriage to Isabel unfolds alongside his growing responsibilities, as his principles draw him into an increasingly turbulent national landscape and the choices he makes lead to dire consequences for the people closest to him.",
+      "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them toward the Chilean right, where militant commitment and personal advancement become increasingly difficult to separate. As provocateurs, then saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel’s lives in fundamental ways.",
       "A story of love, idealism, and betrayal, Corilocho traces the personal costs of choices made in the name of political conviction."
     ]
   },
   "saltwater-archives": {
     coverImage: "/assets/aistudio/saltwater_archives_cover_5aad74d9.jpg",
     synopsis: [
-      "As Chile descends into fascism, the ambitions and loyalties of four individuals draw them into an increasingly dangerous world.",
-      "Michael Townley and Mariana Callejas find themselves at the center of a network operating behind the scenes of Chilean politics. Drawn by promises of wealth and influence, Mariana becomes increasingly involved with right-wing paramilitary men, while Michael discovers that his technical abilities offer opportunities far beyond ordinary employment.",
-      "Meanwhile, Orlando Letelier is sent to Dawson Island, near the Antarctic Circle, where he and his fellow political prisoners face harsh conditions and an uncertain future, and Isabel mounts an international campaign to save him even as the military regime targets her personally.",
-      "As personal loyalties collide with political ambition, the consequences of personal choices extend far beyond the people who make them."
+      "As Chile descends into fascism, the loyalties of four individuals draw them into an increasingly dangerous world.",
+      "Drawn by promises of wealth and influence, Mariana becomes increasingly involved with right-wing paramilitary men, while Michael discovers that his talents as a bomb-maker are evolving into an expectation that he will plant the bombs himself.",
+      "Meanwhile, Orlando Letelier is sent to a prison camp on an island near the Antarctic Circle, where he and his fellow political prisoners face harsh conditions and an uncertain future, while Isabel mounts an international campaign to save him, even as the military targets her and her children.",
+      "Where personal loyalties collide with political ambition, the consequences of individual choices extend far beyond the people who make them."
     ]
   },
   "we-are-sympathetic": {
     coverImage: "/assets/aistudio/we_are_sympathetic_cover_869e764f.jpg",
     synopsis: [
-      "As the political conflict in Chile extends beyond its borders, the lives of Orlando and Isabel Letelier, Michael Townley, and Mariana Callejas converge in a series of events with international consequences.",
-      "The Leteliers resume their lives in Washington after Orlando’s imprisonment and exile, where they emerge as leaders of the resistance to Chile’s military government. Determined to expose the regime's abuses and challenge its influence abroad, Orlando draws on his political experience and international connections, while Isabel founds a human rights institution, but the demands of their public campaigns are matched by growing complications. His marriage to Isabel, tested by years of separation and political upheaval, faces new strains after an affair is exposed, which he’s still carrying on in secret.",
-      "Meanwhile, Michael Townley and Mariana Callejas have become intelligence operatives whose assignments take them from Miami to Mexico City and across Europe, where they cultivate alliances with far-right organizations and organize assassination plots targeting opponents of the Chilean government. As Mariana manages these relationships and Michael produces biological, chemical and conventional weapons, their private ambitions become inseparable from the regime's political violence.",
-      "Orlando's campaign is gaining momentum, but Michael Townley is closing in, and the political conflict that has shaped their lives will resonate far beyond them."
+      "As the conflict in Chile extends beyond its borders, the lives of Orlando and Isabel Letelier, Michael Townley, and Mariana Callejas converge in a series of events with international repercussions.",
+      "The Leteliers are resuming their lives in Washington after Orlando’s imprisonment and exile, where they’re emerging as leaders of the resistance to Chile’s military government. Determined to expose the regime’s abuses and challenge its influence abroad, Orlando draws on his international political relationships, while Isabel founds a human rights institution with deep fundraising and artistic connections, but Orlando and Isabel’s marriage, tested by separation and loneliness, faces new strains after Orlando confesses an affair -- though not the fact that it’s still going on.",
+      "Meanwhile, Michael Townley and Mariana Callejas have become Chilean intelligence operatives whose assignments take them from Miami to Mexico City and across Europe, where they cultivate alliances with far-right organizations to organize assassination plots targeting opponents of the Chilean regime. As Mariana manages these relationships and Michael expands into producing biological and chemical weapons, their private ambitions become inseparable from the regime's violence.",
+      "Orlando's campaign is gaining momentum, but Michael Townley is closing in.",
+      "The political conflict that destroyed their lives resonates into our time."
     ]
   }
 };
@@ -461,9 +463,9 @@ async function readWriterDataAsync() {
               if (
                 !b.synopsis || 
                 b.synopsis.length === 0 || 
-                (b.id === "corilocho" && !b.synopsis[0]?.includes("dire consequences")) ||
-                (b.id === "saltwater-archives" && !b.synopsis[2]?.includes("political prisoners")) ||
-                (b.id === "we-are-sympathetic" && (b.synopsis.length !== 4 || b.synopsis[1]?.includes("Joan Baez") || !b.synopsis[2]?.includes("intelligence operatives")))
+                (b.id === "corilocho" && (!b.synopsis[0]?.includes("marriage, ideology") || !b.synopsis[1]?.includes("provocateurs"))) ||
+                (b.id === "saltwater-archives" && (!b.synopsis[1]?.includes("bomb-maker") || !b.synopsis[2]?.includes("prison camp on an island"))) ||
+                (b.id === "we-are-sympathetic" && (b.synopsis.length !== 5 || !b.synopsis[1]?.includes("separation and loneliness") || !b.synopsis[4]?.includes("destroyed their lives")))
               ) {
                 b.synopsis = meta.synopsis;
                 changed = true;
