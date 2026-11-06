@@ -46,15 +46,15 @@ const DEFAULT_BOOK_META: Record<string, { title: string; coverImage: string; syn
 };
 
 const BOOK_GTIN: Record<string, string> = {
-  corilocho: "9780998877601",
-  "saltwater-archives": "9780998877618",
-  "we-are-sympathetic": "9780998877625"
+  corilocho: "9780998877600",
+  "saltwater-archives": "9780998877617",
+  "we-are-sympathetic": "9780998877624"
 };
 
 const BOOK_ISBN: Record<string, string> = {
-  corilocho: "978-0-9988776-0-1",
-  "saltwater-archives": "978-0-9988776-1-8",
-  "we-are-sympathetic": "978-0-9988776-2-5"
+  corilocho: "978-0-9988776-0-0",
+  "saltwater-archives": "978-0-9988776-1-7",
+  "we-are-sympathetic": "978-0-9988776-2-4"
 };
 
 const BOOK_RATINGS: Record<string, { rating: string; count: string }> = {
@@ -202,8 +202,8 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
               }}
             >
               <meta itemProp="sku" content={`LETELIER-${book.id.toUpperCase()}`} />
-              <meta itemProp="gtin13" content={BOOK_GTIN[book.id] || "9780998877601"} />
-              <meta itemProp="isbn" content={BOOK_ISBN[book.id] || "978-0-9988776-0-1"} />
+              <meta itemProp="gtin13" content={BOOK_GTIN[book.id] || "9780998877600"} />
+              <meta itemProp="isbn" content={BOOK_ISBN[book.id] || "978-0-9988776-0-0"} />
               <meta itemProp="description" content={DEFAULT_BOOK_META[book.id]?.synopsis?.join(" ") || ""} />
               <span itemProp="brand" itemScope itemType="https://schema.org/Brand" className="hidden">
                 <meta itemProp="name" content="David Serafino" />
@@ -277,6 +277,18 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
                   <div itemProp="shippingDestination" itemScope itemType="https://schema.org/DefinedRegion">
                     <meta itemProp="addressCountry" content="US" />
                   </div>
+                  <div itemProp="deliveryTime" itemScope itemType="https://schema.org/ShippingDeliveryTime">
+                    <div itemProp="handlingTime" itemScope itemType="https://schema.org/QuantitativeValue">
+                      <meta itemProp="minValue" content="0" />
+                      <meta itemProp="maxValue" content="0" />
+                      <meta itemProp="unitCode" content="DAY" />
+                    </div>
+                    <div itemProp="transitTime" itemScope itemType="https://schema.org/QuantitativeValue">
+                      <meta itemProp="minValue" content="0" />
+                      <meta itemProp="maxValue" content="0" />
+                      <meta itemProp="unitCode" content="DAY" />
+                    </div>
+                  </div>
                 </div>
                 <div itemProp="hasMerchantReturnPolicy" itemScope itemType="https://schema.org/MerchantReturnPolicy" className="hidden">
                   <meta itemProp="applicableCountry" content="US" />
@@ -339,8 +351,8 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
             >
               <meta itemProp="name" content={currentMeta.title} />
               <meta itemProp="sku" content={`LETELIER-${popupBook.id.toUpperCase()}`} />
-              <meta itemProp="gtin13" content={BOOK_GTIN[popupBook.id] || "9780998877601"} />
-              <meta itemProp="isbn" content={BOOK_ISBN[popupBook.id] || "978-0-9988776-0-1"} />
+              <meta itemProp="gtin13" content={BOOK_GTIN[popupBook.id] || "9780998877600"} />
+              <meta itemProp="isbn" content={BOOK_ISBN[popupBook.id] || "978-0-9988776-0-0"} />
               <link itemProp="image" href={currentMeta.coverImage.startsWith("http") ? currentMeta.coverImage : `${origin}${currentMeta.coverImage}`} />
               <meta itemProp="image" content={currentMeta.coverImage.startsWith("http") ? currentMeta.coverImage : `${origin}${currentMeta.coverImage}`} />
               <span itemProp="brand" itemScope itemType="https://schema.org/Brand" className="hidden">
@@ -386,6 +398,18 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
                   </div>
                   <div itemProp="shippingDestination" itemScope itemType="https://schema.org/DefinedRegion">
                     <meta itemProp="addressCountry" content="US" />
+                  </div>
+                  <div itemProp="deliveryTime" itemScope itemType="https://schema.org/ShippingDeliveryTime">
+                    <div itemProp="handlingTime" itemScope itemType="https://schema.org/QuantitativeValue">
+                      <meta itemProp="minValue" content="0" />
+                      <meta itemProp="maxValue" content="0" />
+                      <meta itemProp="unitCode" content="DAY" />
+                    </div>
+                    <div itemProp="transitTime" itemScope itemType="https://schema.org/QuantitativeValue">
+                      <meta itemProp="minValue" content="0" />
+                      <meta itemProp="maxValue" content="0" />
+                      <meta itemProp="unitCode" content="DAY" />
+                    </div>
                   </div>
                 </div>
                 <div itemProp="hasMerchantReturnPolicy" itemScope itemType="https://schema.org/MerchantReturnPolicy" className="hidden">
