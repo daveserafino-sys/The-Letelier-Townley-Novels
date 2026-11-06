@@ -233,7 +233,7 @@ function getHardcodedFallback() {
         epubFileName: "corilocho-sample.epub",
         coverImage: "/assets/aistudio/Corilocho_cover_a3b33bf7.jpg",
         synopsis: [
-          "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics while his marriage to Isabel unfolds alongside his growing responsibilities, as his principles draw him into an increasingly turbulent national landscape and the choices he makes lead to dire consequences for the people closest to him.",
+          "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics while his marriage to Isabel unfolds alongside his growing responsibilities. As his principles draw him into an increasingly turbulent national landscape, the choices he makes lead to dire consequences for the people closest to him.",
           "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them toward the Chilean right, where militant commitment and personal advancement become increasingly difficult to separate. As provocateurs, then saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel’s lives in fundamental ways.",
           "A story of love, idealism, and betrayal, Corilocho traces the personal costs of choices made in the name of political conviction."
         ]
@@ -381,7 +381,7 @@ const DEFAULT_BOOK_META: Record<string, { coverImage: string; synopsis: string[]
   corilocho: {
     coverImage: "/assets/aistudio/Corilocho_cover_a3b33bf7.jpg",
     synopsis: [
-      "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics while his marriage to Isabel unfolds alongside his growing responsibilities, as his principles draw him into an increasingly turbulent national landscape and the choices he makes lead to dire consequences for the people closest to him.",
+      "Across three decades of political and social upheaval in Chile, four lives are entangled through marriage, ideology, and the pursuit of power. At the center of Corilocho is Orlando Letelier: driven by ambition and patriotism, he builds a career in politics while his marriage to Isabel unfolds alongside his growing responsibilities. As his principles draw him into an increasingly turbulent national landscape, the choices he makes lead to dire consequences for the people closest to him.",
       "Meanwhile, Michael Townley and Mariana Callejas are pursuing ambitions of their own. Their marriage draws them toward the Chilean right, where militant commitment and personal advancement become increasingly difficult to separate. As provocateurs, then saboteurs, and later assassins, their actions set in motion events that will intersect with and shape Orlando and Isabel’s lives in fundamental ways.",
       "A story of love, idealism, and betrayal, Corilocho traces the personal costs of choices made in the name of political conviction."
     ]
