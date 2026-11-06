@@ -218,7 +218,7 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
                 <meta itemProp="url" content="https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/author" />
               </span>
               <span itemProp="isPartOf" itemScope itemType="https://schema.org/BookSeries" className="hidden">
-                <meta itemProp="name" content="The Letelier / Townley Novels" />
+                <meta itemProp="name" content="The Letelier/Townley Novels" />
               </span>
 
               {/* Hidden AggregateRating & Review for Product Snippets */}
@@ -397,24 +397,38 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
                 </div>
               </div>
               
-              {/* Ghost-like Faded Cover Image with rich Schema ImageObject markup */}
+              {/* Silver Halide Cover Image with subtle cool silver-slate photographic tint */}
               <figure 
                 itemProp="image" 
                 itemScope 
                 itemType="https://schema.org/ImageObject"
                 className="flex-shrink-0 flex items-center justify-center m-0 pointer-events-none"
               >
-                <img
-                  itemProp="contentUrl"
-                  src={currentMeta.coverImage}
-                  alt={`${popupBook.title} - Book cover by David Serafino`}
-                  className="w-auto h-auto max-h-[55vh] md:max-h-[70vh] lg:max-h-[76vh] max-w-[160px] sm:max-w-[220px] md:max-w-[280px] lg:max-w-[340px] xl:max-w-[380px] object-contain ghost-cover"
+                <div 
+                  className="relative inline-flex items-center justify-center rounded-[2px] overflow-hidden transition-all duration-300"
                   style={{
-                    filter: "grayscale(100%) contrast(115%) brightness(92%)",
-                    opacity: 0.82,
-                    boxShadow: "0 12px 35px rgba(0, 0, 0, 0.75)"
+                    boxShadow: "0 16px 40px rgba(0, 0, 0, 0.82), 0 0 16px rgba(93, 114, 144, 0.16)"
                   }}
-                />
+                >
+                  <img
+                    itemProp="contentUrl"
+                    src={currentMeta.coverImage}
+                    alt={`${popupBook.title} - Book cover by David Serafino`}
+                    className="w-auto h-auto max-h-[55vh] md:max-h-[70vh] lg:max-h-[76vh] max-w-[160px] sm:max-w-[220px] md:max-w-[280px] lg:max-w-[340px] xl:max-w-[380px] object-contain block ghost-cover select-none"
+                    style={{
+                      filter: "grayscale(100%) sepia(14%) hue-rotate(180deg) saturate(140%) contrast(118%) brightness(102%)",
+                      opacity: 0.90
+                    }}
+                  />
+                  {/* Subtle Silver Halide Tone Wash (halfway cool silver-slate, perfectly matching atmospheric palette) */}
+                  <div 
+                    className="absolute inset-0 w-full h-full bg-[#5d7290]/12 mix-blend-color pointer-events-none"
+                  />
+                  {/* Subtle silver print border edge */}
+                  <div 
+                    className="absolute inset-0 w-full h-full border border-slate-300/15 rounded-[2px] pointer-events-none"
+                  />
+                </div>
                 <meta itemProp="caption" content={`${currentMeta.title} - Book cover by David Serafino`} />
                 <meta itemProp="license" content="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en" />
                 <meta itemProp="acquireLicensePage" content="https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/" />

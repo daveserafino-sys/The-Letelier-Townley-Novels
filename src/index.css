@@ -33,12 +33,12 @@
 }
 
 .silver-halide-filter {
-  filter: grayscale(100%) contrast(1.18) brightness(0.95);
+  filter: grayscale(100%) sepia(14%) hue-rotate(180deg) saturate(140%) contrast(1.18) brightness(1.02);
 }
 
 .ghost-cover {
-  filter: grayscale(100%) contrast(1.15) brightness(0.92);
-  opacity: 0.74;
+  filter: grayscale(100%) sepia(14%) hue-rotate(180deg) saturate(140%) contrast(1.18) brightness(1.02);
+  opacity: 0.90;
 }
 
 .ghost-text {

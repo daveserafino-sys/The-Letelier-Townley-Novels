@@ -154,7 +154,7 @@ export default function AuthorProfile({ onBackToNovels, onBackToStories, onForwa
           "@id": `${origin}/author#profilepage`,
           "url": `${origin}/author`,
           "name": "David Serafino – Author Profile",
-          "headline": "The Letelier / Townley Novels & Selected Publications",
+          "headline": "The Letelier/Townley Novels & Selected Publications",
           "dateCreated": "2026-01-01T00:00:00Z",
           "dateModified": new Date().toISOString(),
           "description": "Author profile and bio of David Serafino, American writer and translator who lives near Medellín, Colombia.",
@@ -194,7 +194,7 @@ export default function AuthorProfile({ onBackToNovels, onBackToStories, onForwa
             "Literary Translation",
             "Chilean History",
             "Operation Condor",
-            "The Letelier / Townley Novels",
+            "The Letelier/Townley Novels",
             "Spanish Language Literature"
           ],
           "sameAs": [

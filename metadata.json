@@ -1,6 +1,6 @@
 {
   "name": "Writer Portfolio and Bookstore",
-  "description": "In 1976, American fascist Michael Townley planted a car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington, D.C. This trilogy explores their lives.",
+  "description": "In 1976, American fascist Michael Townley planted a car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington D.C. A trilogy of novels examine their lives across three decades of political and social upheaval.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
