@@ -11,6 +11,9 @@ dotenv.config();
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
 
+// Enable trust proxy so Cloud Run / reverse proxies accurately set protocol & client IP
+app.set("trust proxy", 1);
+
 // Enable larger payloads for base64 file uploads (admin panel)
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
@@ -23,11 +26,15 @@ if (!fs.existsSync(uploadsDir)) {
 
 // Helper to resolve request host URL dynamically across any host/domain (Render, custom domain, or dev URL)
 function getBaseUrl(req: express.Request): string {
-  const forwardedProto = req.headers["x-forwarded-proto"];
-  const protoStr = Array.isArray(forwardedProto) ? forwardedProto[0] : (forwardedProto ? String(forwardedProto).split(",")[0].trim() : null);
-  const protocol = protoStr || req.protocol || "https";
   const host = req.get("host") || "localhost:3000";
-  return `${protocol}://${host}`;
+  // On localhost, allow http if not forwarded
+  if (host.includes("localhost") || host.includes("127.0.0.1")) {
+    const forwardedProto = req.headers["x-forwarded-proto"];
+    const protoStr = Array.isArray(forwardedProto) ? forwardedProto[0] : (forwardedProto ? String(forwardedProto).split(",")[0].trim() : null);
+    return `${protoStr || req.protocol || "http"}://${host}`;
+  }
+  // For any remote deployment (Cloud Run, Render, custom domains), ALWAYS force https to prevent HTTP->HTTPS redirect issues in Search Console
+  return `https://${host}`;
 }
 
 // Lightweight Health Check Endpoint (ideal for Render keep-alive monitors & uptime pingers)
@@ -35,40 +42,43 @@ app.all(["/api/health", "/healthz"], (req, res) => {
   res.status(200).send("OK");
 });
 
-// Dynamic robots.txt explicitly permitting Googlebot and all search engine crawlers with zero obstacles
-app.all("/robots.txt", (req, res) => {
+// Dynamic robots.txt explicitly permitting Googlebot and all search engine crawlers with zero obstacles (RFC 9309 compliant)
+// Note: Do NOT set X-Robots-Tag on robots.txt itself to prevent crawler validation conflicts
+app.all(["/robots.txt", "/robots.txt/"], (req, res) => {
   const baseUrl = getBaseUrl(req);
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.setHeader("Cache-Control", "public, max-age=86400, s-maxage=86400");
-  res.setHeader("X-Robots-Tag", "all");
-  res.send(
-`User-agent: *
-Allow: /
-
-User-agent: Googlebot
-Allow: /
-
-User-agent: Googlebot-Image
-Allow: /
-
-User-agent: Googlebot-News
-Allow: /
-
-User-agent: Google-InspectionTool
-Allow: /
-
-User-agent: Storebot-Google
-Allow: /
-
-User-agent: GoogleOther
-Allow: /
-
-User-agent: bingbot
+  res.send(`User-agent: *
 Allow: /
 
 Sitemap: ${baseUrl}/sitemap.xml
-`
-  );
+`);
+});
+
+// Canonical URL Redirects: eliminate duplicate pages and trailing slashes to resolve "Page with redirect" in Search Console
+app.use((req, res, next) => {
+  // Strip trailing slashes on all non-root paths (e.g. /author/ -> /author, /stories/ -> /stories)
+  if (req.path.length > 1 && req.path.endsWith("/")) {
+    const cleanPath = req.path.replace(/\/+$/, "");
+    const query = req.url.slice(req.path.length);
+    return res.redirect(301, cleanPath + query);
+  }
+
+  // Redirect known alias routes cleanly with 301 to their canonical counterparts
+  if (req.path === "/novels") {
+    return res.redirect(301, "/");
+  }
+  if (req.path === "/readings" || req.path === "/interviews-and-readings" || req.path === "/readings-and-interviews") {
+    return res.redirect(301, "/interviews");
+  }
+  if (req.path === "/publications") {
+    return res.redirect(301, "/stories");
+  }
+  if (req.path === "/profile" || req.path === "/about") {
+    return res.redirect(301, "/author");
+  }
+
+  next();
 });
 
 // Serve uploaded PDF/EPUB files statically
@@ -568,7 +578,6 @@ app.all(["/sitemap.xml", "/sitemap", "/sitemap_index.xml"], async (req, res) => 
 
     // Root page (Novels trilogy)
     xml += `  <url>\n    <loc>${baseUrl}/</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n`;
-    xml += `  <url>\n    <loc>${baseUrl}/novels</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
 
     // Individual Novels
     for (const b of books) {
@@ -621,7 +630,6 @@ app.all(["/sitemap.xml", "/sitemap", "/sitemap_index.xml"], async (req, res) => 
       xml += `    </video:video>\n`;
     }
     xml += `  </url>\n`;
-    xml += `  <url>\n    <loc>${baseUrl}/readings</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
 
     // Writer's Study
     xml += `  <url>\n    <loc>${baseUrl}/study</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
@@ -1015,35 +1023,108 @@ async function startServer() {
   // Ensure the database has seeded initial contents before opening connection
   await ensureDbSeeded();
 
+  let vite: any = null;
   if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
+    vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: "spa",
+      appType: "custom",
     });
     app.use(vite.middlewares);
-    console.log("Vite dev middleware attached.");
+    console.log("Vite dev middleware attached in custom SSR mode.");
   } else {
     const distPath = path.join(process.cwd(), "dist");
-    const indexHtmlPath = path.join(distPath, "index.html");
-    
     // Serve static assets, skipping default index.html so dynamic canonical/SEO injection applies
     app.use(express.static(distPath, { index: false }));
-
-    app.get("*", (req, res) => {
-      res.setHeader("X-Robots-Tag", "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
-      const baseUrl = getBaseUrl(req);
-      if (fs.existsSync(indexHtmlPath)) {
-        let html = fs.readFileSync(indexHtmlPath, "utf8");
-        // Dynamically replace any hardcoded dev URLs with the live domain (Render or custom domain)
-        html = html.replace(/https:\/\/ais-dev-[a-z0-9-]+\.us-east1\.run\.app/g, baseUrl);
-        res.setHeader("Content-Type", "text/html; charset=utf-8");
-        res.send(html);
-      } else {
-        res.status(404).send("Not found");
-      }
-    });
     console.log("Production static handler attached with dynamic SEO injection.");
   }
+
+  // Catch-all HTML handler for dev and production ensuring 100% self-referential canonical tags and meta data
+  app.get("*", async (req, res, next) => {
+    // If request is for an asset with a file extension (e.g. .jpg, .js, .css), pass through
+    if (req.path.match(/\.[a-zA-Z0-9]+$/) && !req.path.endsWith(".html")) {
+      return next();
+    }
+
+    try {
+      const baseUrl = getBaseUrl(req);
+      const normalizedPath = req.path === "/" ? "/" : req.path.replace(/\/+$/, "");
+      const canonicalUrl = `${baseUrl}${normalizedPath}`;
+
+      let html = "";
+      if (vite) {
+        const indexHtmlPath = path.join(process.cwd(), "index.html");
+        html = fs.readFileSync(indexHtmlPath, "utf8");
+        html = await vite.transformIndexHtml(req.originalUrl, html);
+      } else {
+        const indexHtmlPath = path.join(process.cwd(), "dist", "index.html");
+        if (fs.existsSync(indexHtmlPath)) {
+          html = fs.readFileSync(indexHtmlPath, "utf8");
+        } else {
+          return res.status(404).send("Not found");
+        }
+      }
+
+      // Dynamically replace any hardcoded dev URLs with the live domain
+      html = html.replace(/https:\/\/ais-dev-[a-z0-9-]+\.us-east1\.run\.app/g, baseUrl);
+
+      // Inject accurate self-referential canonical and OpenGraph URLs
+      html = html.replace(/<link\s+rel="canonical"[^>]*>/i, `<link rel="canonical" id="canonical-url" href="${canonicalUrl}" />`);
+      html = html.replace(/<meta\s+property="og:url"[^>]*>/i, `<meta property="og:url" id="og-url" content="${canonicalUrl}" />`);
+
+      // Dynamic Route SEO: ensure search engines and crawlers receive unique, accurate metadata per route
+      if (normalizedPath === "/author") {
+        const authorTitle = "David Serafino – Author Profile";
+        const authorDesc = "David Serafino is an American writer, painter, travel photographer and translator who lives near Medellín, Colombia with his son and pups. His short stories have appeared in AGNI, The Common, The Los Angeles Review, and various other literary magazines and websites. All novels and stories are available for representation.";
+        html = html.replace(/<title>[^<]*<\/title>/i, `<title>${authorTitle}</title>`);
+        html = html.replace(/<meta\s+name="title"\s+content="[^"]*"/i, `<meta name="title" content="${authorTitle}"`);
+        html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"/i, `<meta property="og:title" content="${authorTitle}"`);
+        html = html.replace(/<meta\s+name="description"\s+content="[^"]*"/i, `<meta name="description" content="${authorDesc}"`);
+        html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"/i, `<meta property="og:description" content="${authorDesc}"`);
+      } else if (normalizedPath === "/stories") {
+        const storiesTitle = "Selected Short Stories – David Serafino";
+        const storiesDesc = "Read selected short stories by Dave Serafino across literary journals and publications.";
+        html = html.replace(/<title>[^<]*<\/title>/i, `<title>${storiesTitle}</title>`);
+        html = html.replace(/<meta\s+name="title"\s+content="[^"]*"/i, `<meta name="title" content="${storiesTitle}"`);
+        html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"/i, `<meta property="og:title" content="${storiesTitle}"`);
+        html = html.replace(/<meta\s+name="description"\s+content="[^"]*"/i, `<meta name="description" content="${storiesDesc}"`);
+        html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"/i, `<meta property="og:description" content="${storiesDesc}"`);
+      } else if (normalizedPath === "/interviews") {
+        const intTitle = "Interviews & Readings – David Serafino";
+        const intDesc = "Literary interviews and video readings with American author David Serafino across literary journals and publications.";
+        html = html.replace(/<title>[^<]*<\/title>/i, `<title>${intTitle}</title>`);
+        html = html.replace(/<meta\s+name="title"\s+content="[^"]*"/i, `<meta name="title" content="${intTitle}"`);
+        html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"/i, `<meta property="og:title" content="${intTitle}"`);
+        html = html.replace(/<meta\s+name="description"\s+content="[^"]*"/i, `<meta name="description" content="${intDesc}"`);
+        html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"/i, `<meta property="og:description" content="${intDesc}"`);
+      } else if (normalizedPath === "/study") {
+        const studyTitle = "Writer's Study – David Serafino";
+        const studyDesc = "Inside the study of David Serafino. Historical background on Chile, Operation Condor, and the Letelier and Townley families.";
+        html = html.replace(/<title>[^<]*<\/title>/i, `<title>${studyTitle}</title>`);
+        html = html.replace(/<meta\s+name="title"\s+content="[^"]*"/i, `<meta name="title" content="${studyTitle}"`);
+        html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"/i, `<meta property="og:title" content="${studyTitle}"`);
+        html = html.replace(/<meta\s+name="description"\s+content="[^"]*"/i, `<meta name="description" content="${studyDesc}"`);
+        html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"/i, `<meta property="og:description" content="${studyDesc}"`);
+      } else if (normalizedPath === "/") {
+        const homeTitle = "The Letelier/Townley Novels & Selected Publications";
+        const homeDesc = "In 1976, American fascist Michael Townley planted a car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington D.C. A trilogy of novels examine their lives across three decades of political and social upheaval.";
+        html = html.replace(/<title>[^<]*<\/title>/i, `<title>${homeTitle}</title>`);
+        html = html.replace(/<meta\s+name="title"\s+content="[^"]*"/i, `<meta name="title" content="${homeTitle}"`);
+        html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"/i, `<meta property="og:title" content="${homeTitle}"`);
+        html = html.replace(/<meta\s+name="description"\s+content="[^"]*"/i, `<meta name="description" content="${homeDesc}"`);
+        html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"/i, `<meta property="og:description" content="${homeDesc}"`);
+      }
+
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.setHeader("X-Robots-Tag", "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
+      res.send(html);
+    } catch (err: any) {
+      if (vite) {
+        vite.ssrFixStacktrace(err);
+      }
+      console.error("Error serving HTML:", err);
+      next(err);
+    }
+  });
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);
