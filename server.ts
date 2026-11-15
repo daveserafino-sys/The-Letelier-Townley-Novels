@@ -576,8 +576,8 @@ app.all(["/sitemap.xml", "/sitemap", "/sitemap_index.xml"], async (req, res) => 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n`;
 
-    // Root page (Novels trilogy)
-    xml += `  <url>\n    <loc>${baseUrl}/</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n`;
+    // Root page (Novels trilogy) with primary author portrait from Page 3 carousel
+    xml += `  <url>\n    <loc>${baseUrl}/</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n    <image:image>\n      <image:loc>${baseUrl}/assets/aistudio/author_photo_2_5c6ee16d.jpg</image:loc>\n      <image:title>David Serafino – Author Portrait</image:title>\n      <image:caption>Primary author portrait of David Serafino, author of The Letelier/Townley Novels</image:caption>\n    </image:image>\n  </url>\n`;
 
     // Individual Novels
     for (const b of books) {
@@ -1106,12 +1106,14 @@ async function startServer() {
         html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"/i, `<meta property="og:description" content="${studyDesc}"`);
       } else if (normalizedPath === "/") {
         const homeTitle = "The Letelier/Townley Novels & Selected Publications";
-        const homeDesc = "In 1976, American fascist Michael Townley planted a car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington D.C. A trilogy of novels examine their lives across three decades of political and social upheaval.";
+        const homeDesc = "In 1976, American fascist Michael Townley built and planted the car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington. D.C. These novels explore their lives.";
         html = html.replace(/<title>[^<]*<\/title>/i, `<title>${homeTitle}</title>`);
         html = html.replace(/<meta\s+name="title"\s+content="[^"]*"/i, `<meta name="title" content="${homeTitle}"`);
         html = html.replace(/<meta\s+property="og:title"\s+content="[^"]*"/i, `<meta property="og:title" content="${homeTitle}"`);
+        html = html.replace(/<meta\s+name="twitter:title"\s+content="[^"]*"/i, `<meta name="twitter:title" content="${homeTitle}"`);
         html = html.replace(/<meta\s+name="description"\s+content="[^"]*"/i, `<meta name="description" content="${homeDesc}"`);
         html = html.replace(/<meta\s+property="og:description"\s+content="[^"]*"/i, `<meta property="og:description" content="${homeDesc}"`);
+        html = html.replace(/<meta\s+name="twitter:description"\s+content="[^"]*"/i, `<meta name="twitter:description" content="${homeDesc}"`);
       }
 
       res.setHeader("Content-Type", "text/html; charset=utf-8");

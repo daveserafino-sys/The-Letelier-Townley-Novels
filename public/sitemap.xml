@@ -3,9 +3,14 @@
   <!-- Homepage / Novels Trilogy -->
   <url>
     <loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/assets/aistudio/author_photo_2_5c6ee16d.jpg</image:loc>
+      <image:title>David Serafino – Author Portrait</image:title>
+      <image:caption>Primary author portrait of David Serafino, author of The Letelier/Townley Novels</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://ais-dev-j62lknibbeenstvlcaq4aq-849540705850.us-east1.run.app/novels/corilocho</loc>

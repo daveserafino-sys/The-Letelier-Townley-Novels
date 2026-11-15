@@ -260,6 +260,7 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
                 itemProp="offers" 
                 itemScope 
                 itemType="https://schema.org/Offer" 
+                data-nosnippet=""
                 className="font-serif text-[14.3px] sm:text-[15.4px] text-[#8C7A5B] italic tracking-wide mt-1 mb-4 font-light pointer-events-auto"
               >
                 <meta itemProp="priceCurrency" content="USD" />
@@ -301,7 +302,7 @@ export default function BookScroll({ books, scrollY, merchantConfig, targetBookI
               </div>
 
               {/* PDF and EPUB Buttons centered underneath */}
-              <div className="flex items-center justify-center gap-2.5 pointer-events-auto">
+              <div data-nosnippet="" className="flex items-center justify-center gap-2.5 pointer-events-auto">
                 <button
                   id={`download-pdf-btn-${book.id}`}
                   onClick={() => handleDownload(book, "pdf")}

@@ -84,7 +84,7 @@ export default function App() {
   // Synchronize document title, canonical URL, and SEO meta tags with active view and targets
   useEffect(() => {
     let title = "The Letelier/Townley Novels & Selected Publications";
-    let description = "In 1976, American fascist Michael Townley planted a car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington D.C. A trilogy of novels examine their lives across three decades of political and social upheaval.";
+    let description = "In 1976, American fascist Michael Townley built and planted the car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington. D.C. These novels explore their lives.";
 
     if (currentView === "interviews") {
       title = "Interviews & Readings – David Serafino";
@@ -111,7 +111,7 @@ export default function App() {
         description = (Array.isArray(book?.synopsis) ? book.synopsis.join(" ") : book?.synopsis) || book?.description || "A novel from The Letelier/Townley Novels trilogy by Dave Serafino.";
       } else {
         title = "The Letelier/Townley Novels & Selected Publications";
-        description = "In 1976, American fascist Michael Townley planted a car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington D.C. A trilogy of novels examine their lives across three decades of political and social upheaval.";
+        description = "In 1976, American fascist Michael Townley built and planted the car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington. D.C. These novels explore their lives.";
       }
     }
 
@@ -320,6 +320,7 @@ export default function App() {
 
       {/* Atmospheric Minimalist Header with Parallax Scrolling */}
       <header 
+        data-nosnippet=""
         className="w-full text-center pt-8 pb-4 z-40 relative select-none"
         style={{ 
           transform: `translate3d(0, ${scrollY * 0.25}px, 0)`,
@@ -419,6 +420,9 @@ export default function App() {
           />
         ) : (
           <div className="w-full flex flex-col items-center pointer-events-auto">
+            <p className="sr-only">
+              In 1976, American fascist Michael Townley built and planted the car bomb that killed Orlando Letelier, a socialist economist, in downtown Washington. D.C. These novels explore their lives.
+            </p>
             <BookScroll
               books={writerData.books}
               targetBookId={targetBookId}
@@ -441,7 +445,7 @@ export default function App() {
       )}
 
       {/* Minimalist Editorial Footer with Copyright & CC License */}
-      <footer className={`w-full text-center ${currentView === "books" ? "pt-56 pb-8" : "pt-20 pb-10"} z-[50] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-none`} id="app-footer">
+      <footer data-nosnippet="" className={`w-full text-center ${currentView === "books" ? "pt-56 pb-8" : "pt-20 pb-10"} z-[50] relative select-none flex flex-col items-center justify-center gap-2.5 px-4 mt-auto pointer-events-none`} id="app-footer">
         {/* Page Navigation anchored to the bottom-left corner of the footer */}
         {(currentView === "books" || currentView === "publications" || currentView === "author" || currentView === "interviews") && (
           <div className="absolute bottom-6 left-6 z-50 pointer-events-auto" id="page-navigation-container">
